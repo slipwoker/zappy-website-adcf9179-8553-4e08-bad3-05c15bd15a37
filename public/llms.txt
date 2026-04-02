@@ -24,6 +24,10 @@ https://example.com/contact
 https://example.com/job-seekers
 התאמה חכמה בע"מ - משרות למחפשי עבודה
 
+### משרות פתוחות והשמה למחפשי עבודה
+https://example.com/careers
+התאמה חכמה בע"מ - משרות פתוחות והשמה למחפשי עבודה
+
 ## Legal & Policy
 
 ### Privacy Policy
