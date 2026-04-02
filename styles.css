@@ -5062,10 +5062,10 @@ main { margin-top: 0 !important; padding-top: 0 !important; }
   }
 
   .services-process-section .services-process-steps {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0 24px;
-    align-items: start;
-  }
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 24px;
+  align-items: stretch;
+}
 
   /* Remove mobile vertical connector */
   .services-process-section .services-process-step:not(:last-child)::after {
@@ -5090,11 +5090,12 @@ main { margin-top: 0 !important; padding-top: 0 !important; }
   }
 
   .services-process-section .services-process-step {
-    align-items: center;
-    padding: 0;
-    position: relative;
-    z-index: 1;
-  }
+  align-items: center;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+  height: 100%;
+}
 
   .services-process-section .services-process-step-number {
     font-size: 11px;
@@ -8727,6 +8728,25 @@ body.accessibility-widget-visible ._access-menu {
   body.accessibility-widget-visible ._access-menu {
     display: none !important;
   }
+}
+
+@media (min-width: 768px) {
+.services-process-section .services-process-steps {
+  align-items: stretch !important;
+}
+
+.services-process-section .services-process-step {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.services-process-section .services-process-step-body {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
 }
 
 /* ========== RTL MOBILE NAVBAR FIX (zappy-rtl-mobile-fix) ========== */
