@@ -8484,10 +8484,39 @@ body.accessibility-widget-visible ._access-menu {
 .about-story-section .about-story-stat-label {
   text-align: end !important;
 }
+/* Background decorative orbs */
+
+/* Container */
+
+/* Header */
+
+/* Stats Bar */
+
+/* Main Grid */
+
+/* Steps */
+
+/* Step Card */
+
+/* Connectors */
+
+/* Visual Panel */
+
+/* Dashboard Card */
+
+/* Progress groups */
+
+/* Mini metrics */
+
+/* Floating badge */
+
+/* ===== DESKTOP ===== */
+
+/* ===== MOBILE ===== */
 
 /* ═══════════════════════════════════════════════════════════
    V2 REGENERATED SECTION CSS (אודות-methodology)
-   Added: 2026-04-02T16:56:24.943Z
+   Added: 2026-04-02T16:58:21.272Z
    ═══════════════════════════════════════════════════════════ */
 .about-methodology-section {
   position: relative;
@@ -8495,7 +8524,7 @@ body.accessibility-widget-visible ._access-menu {
   background-color: #07101F;
   background-image:
     radial-gradient(circle at 20% 20%, rgba(86,168,255,0.12) 0, rgba(86,168,255,0) 28%),
-    radial-gradient(circle at 80% 0%, rgba(30,214,230,0.10) 0, rgba(30,214,230,0) 26%),
+    radial-gradient(circle at 80% 0%, rgba(30,214,230,0.1) 0, rgba(30,214,230,0) 26%),
     linear-gradient(180deg, #081223 0%, #0C1A31 58%, #07101F 100%);
   color: var(--text-light);
   padding: 100px 16px 80px;
@@ -8503,28 +8532,28 @@ body.accessibility-widget-visible ._access-menu {
   font-family: 'Assistant', 'Inter', sans-serif;
 }
 
-/* Background decorative orbs */
-.about-methodology-section .ameth-bg-orb {
+/* ── Background Decorations ── */
+.about-methodology-section .ameth-bg-glow {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
 }
-.about-methodology-section .ameth-orb-1 {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(0,188,212,0.07) 0%, transparent 70%);
-  top: -100px;
+.about-methodology-section .ameth-bg-glow--1 {
+  width: 600px;
+  height: 600px;
+  top: -200px;
   inset-inline-end: -100px;
+  background: radial-gradient(circle, rgba(0,188,212,0.08) 0%, transparent 70%);
 }
-.about-methodology-section .ameth-orb-2 {
+.about-methodology-section .ameth-bg-glow--2 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(0,31,63,0.5) 0%, transparent 70%);
-  bottom: 0;
+  bottom: -100px;
   inset-inline-start: -80px;
+  background: radial-gradient(circle, rgba(0,31,63,0.4) 0%, transparent 70%);
 }
-.about-methodology-section .ameth-grid-pattern {
+.about-methodology-section .ameth-grid-overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -8532,12 +8561,10 @@ body.accessibility-widget-visible ._access-menu {
   background-image:
     linear-gradient(rgba(0,188,212,0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,188,212,0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, transparent 75%);
+  background-size: 48px 48px;
 }
 
-/* Container */
+/* ── Container ── */
 .about-methodology-section .ameth-container {
   position: relative;
   z-index: 1;
@@ -8545,23 +8572,24 @@ body.accessibility-widget-visible ._access-menu {
   margin: 0 auto;
 }
 
-/* Header */
+/* ── Header ── */
 .about-methodology-section .ameth-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 60px;
+  max-width: none !important;
 }
-.about-methodology-section .ameth-eyebrow {
+.about-methodology-section .ameth-label {
   display: inline-block;
   font-family: 'Heebo', 'Rubik', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
   background: rgba(0,188,212,0.1);
   border: 1px solid rgba(0,188,212,0.3);
-  padding: 6px 18px;
   border-radius: 999px;
+  padding: 6px 18px;
   margin-bottom: 20px;
 }
 .about-methodology-section .ameth-title {
@@ -8575,322 +8603,307 @@ body.accessibility-widget-visible ._access-menu {
 }
 .about-methodology-section .ameth-title-accent {
   color: var(--accent);
-  display: block;
 }
-.about-methodology-section .ameth-subtitle {
+.about-methodology-section .ameth-intro {
   font-size: 1rem;
   line-height: 1.7;
-  color: rgba(245,247,250,0.7);
-  max-width: 640px;
+  color: rgba(245,247,250,0.75);
+  max-width: 680px;
   margin: 0 auto;
   text-align: center;
 }
 
-/* Stats Bar */
-.about-methodology-section .ameth-stats-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 8px;
-  padding: 20px 40px;
-  margin-bottom: 56px;
-  flex-wrap: wrap;
-}
-.about-methodology-section .ameth-stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-.about-methodology-section .ameth-stat-number {
-  font-family: 'Heebo', 'Rubik', sans-serif;
-  font-size: 2.2rem;
-  font-weight: 900;
-  color: var(--accent);
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-.about-methodology-section .ameth-stat-label {
-  font-size: 0.875rem;
-  color: rgba(245,247,250,0.6);
-  text-align: center;
-}
-.about-methodology-section .ameth-stat-divider {
-  width: 1px;
-  height: 40px;
-  background: rgba(255,255,255,0.15);
-}
-
-/* Main Grid */
+/* ── Main Grid ── */
 .about-methodology-section .ameth-main-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 48px;
-  align-items: start;
+  gap: 32px;
+  margin-bottom: 48px;
 }
 
-/* Steps */
+/* ── Stats Panel ── */
+.about-methodology-section .ameth-stats-panel {
+  background: linear-gradient(180deg, rgba(36,63,112,0.92) 0%, rgba(24,42,77,0.92) 100%);
+  border: 1px solid rgba(112,142,196,0.45);
+  border-radius: 2px;
+  padding: 28px 24px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 18px 40px rgba(6,12,24,0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.about-methodology-section .ameth-stats-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(112,142,196,0.25);
+}
+.about-methodology-section .ameth-stats-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(0,188,212,0.7);
+  flex-shrink: 0;
+}
+.about-methodology-section .ameth-stats-label {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(245,247,250,0.8);
+  flex: 1;
+  text-align: right;
+}
+.about-methodology-section .ameth-stats-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  background: rgba(0,188,212,0.15);
+  border: 1px solid rgba(0,188,212,0.4);
+  border-radius: 4px;
+  padding: 2px 8px;
+  animation: ameth-pulse 2s ease-in-out infinite;
+}
+@keyframes ameth-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.about-methodology-section .ameth-stat-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.about-methodology-section .ameth-stat-row--highlight .ameth-stat-value {
+  color: var(--accent);
+}
+.about-methodology-section .ameth-stat-value {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-light);
+  line-height: 1;
+  text-align: right;
+}
+.about-methodology-section .ameth-stat-desc {
+  font-size: 0.875rem;
+  color: rgba(245,247,250,0.65);
+  text-align: right;
+}
+.about-methodology-section .ameth-stat-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.about-methodology-section .ameth-stat-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), rgba(0,188,212,0.5));
+  border-radius: 999px;
+}
+
+/* ── Sectors ── */
+.about-methodology-section .ameth-sectors {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.about-methodology-section .ameth-sector-chip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(245,247,250,0.85);
+  background: rgba(0,188,212,0.08);
+  border: 1px solid rgba(0,188,212,0.25);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+.about-methodology-section .ameth-sector-chip i {
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+
+/* ── Checklist ── */
+.about-methodology-section .ameth-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.about-methodology-section .ameth-check-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  text-align: right;
+}
+.about-methodology-section .ameth-check-item i {
+  color: var(--accent);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+.about-methodology-section .ameth-check-item span {
+  font-size: 0.875rem;
+  color: rgba(245,247,250,0.8);
+  flex: 1;
+  text-align: right;
+}
+
+/* ── Approved Badge ── */
+.about-methodology-section .ameth-approved-badge {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,188,212,0.08);
+  border: 1px solid rgba(0,188,212,0.35);
+  border-radius: 6px;
+  padding: 10px 14px;
+  text-align: right;
+}
+.about-methodology-section .ameth-approved-badge i {
+  color: var(--accent);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.about-methodology-section .ameth-approved-badge span {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ── Steps ── */
 .about-methodology-section .ameth-steps {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
-
-/* Step Card */
-.about-methodology-section .ameth-step-card {
-  background: linear-gradient(180deg, rgba(36,63,112,0.92) 0%, rgba(24,42,77,0.92) 100%);
-  border: 1px solid rgba(112,142,196,0.35);
-  border-radius: 4px;
-  padding: 28px 28px 24px;
+.about-methodology-section .ameth-step {
   position: relative;
-  transition: border-color 0.3s ease, transform 0.3s ease;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 8px 24px rgba(0,0,0,0.25);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(112,142,196,0.2);
+  border-radius: 2px;
+  padding: 28px 24px;
+  margin-bottom: 0;
 }
-.about-methodology-section .ameth-step-card:hover {
-  border-color: rgba(0,188,212,0.5);
-  transform: translateX(-4px);
+.about-methodology-section .ameth-step:not(.ameth-step--last) {
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+}
+.about-methodology-section .ameth-step--last {
+  border-radius: 0 0 2px 2px;
+}
+.about-methodology-section .ameth-step:hover {
+  background: rgba(0,188,212,0.05);
+  border-color: rgba(0,188,212,0.35);
 }
 .about-methodology-section .ameth-step-header {
   display: grid;
-  grid-template-columns: 52px 1fr;
-  gap: 16px;
+  grid-template-columns: auto 44px 1fr;
   align-items: center;
-  margin-bottom: 16px;
+  gap: 16px;
+  margin-bottom: 14px;
+  direction: rtl;
 }
-.about-methodology-section .ameth-step-icon-wrap {
-  width: 52px;
-  height: 52px;
-  background: rgba(0,188,212,0.12);
-  border: 1px solid rgba(0,188,212,0.35);
-  border-radius: 4px;
+.about-methodology-section .ameth-step-num {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: rgba(0,188,212,0.5);
+  min-width: 28px;
+  text-align: right;
+}
+.about-methodology-section .ameth-step-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(0,188,212,0.1);
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--accent);
   flex-shrink: 0;
 }
-.about-methodology-section .ameth-step-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.about-methodology-section .ameth-step-num {
-  font-family: 'Heebo', 'Rubik', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--accent);
-  opacity: 0.7;
-}
 .about-methodology-section .ameth-step-title {
   font-family: 'Heebo', 'Rubik', sans-serif;
   font-size: 1.375rem;
-  font-weight: 700;
-  line-height: 1.3;
+  font-weight: 800;
+  line-height: 1.4;
   color: var(--text-light);
   margin: 0;
+  text-align: right;
 }
-.about-methodology-section .ameth-step-desc {
+.about-methodology-section .ameth-step-body {
   font-size: 1rem;
   line-height: 1.7;
   color: rgba(245,247,250,0.72);
-  margin: 0 0 16px;
+  margin: 0;
   text-align: right;
+  padding-inline-start: 0;
 }
-.about-methodology-section .ameth-step-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
-}
-.about-methodology-section .ameth-tag {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: rgba(0,188,212,0.9);
-  background: rgba(0,188,212,0.08);
-  border: 1px solid rgba(0,188,212,0.2);
-  padding: 3px 10px;
-  border-radius: 999px;
-  letter-spacing: 0.02em;
-}
-
-/* Connectors */
-.about-methodology-section .ameth-connector {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding-inline-end: 38px;
-  gap: 0;
-}
-.about-methodology-section .ameth-connector-line {
-  width: 1px;
-  height: 24px;
-  background: linear-gradient(to bottom, rgba(0,188,212,0.5), rgba(0,188,212,0.15));
-}
-.about-methodology-section .ameth-connector-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px rgba(0,188,212,0.6);
-}
-
-/* Visual Panel */
-.about-methodology-section .ameth-visual-panel {
-  position: relative;
-}
-.about-methodology-section .ameth-panel-glow {
+.about-methodology-section .ameth-step-connector {
   position: absolute;
-  inset: -30px;
-  background: radial-gradient(ellipse at 50% 30%, rgba(0,188,212,0.12) 0%, transparent 65%);
-  pointer-events: none;
-  z-index: 0;
+  bottom: -1px;
+  inset-inline-start: 50%;
+  width: 2px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.4;
 }
 
-/* Dashboard Card */
-.about-methodology-section .ameth-dashboard-card {
-  position: relative;
-  z-index: 1;
-  background: rgba(255,255,255,0.05);
+/* ── KPI Bar ── */
+.about-methodology-section .ameth-kpi-bar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: linear-gradient(180deg, rgba(36,63,112,0.7) 0%, rgba(24,42,77,0.7) 100%);
+  border: 1px solid rgba(112,142,196,0.3);
+  border-radius: 2px;
+  padding: 24px 16px;
   backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.28);
 }
-.about-methodology-section .ameth-dashboard-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 18px;
-  background: rgba(0,0,0,0.25);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  flex-direction: row-reverse;
-  justify-content: flex-end;
+.about-methodology-section .ameth-kpi {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  padding: 12px 16px;
 }
-.about-methodology-section .ameth-dashboard-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.about-methodology-section .ameth-dot-green { background: #30D158; }
-.about-methodology-section .ameth-dot-yellow { background: #FFD60A; }
-.about-methodology-section .ameth-dot-red { background: #FF453A; }
-.about-methodology-section .ameth-dashboard-title {
-  font-size: 0.75rem;
-  color: rgba(245,247,250,0.5);
-  margin-inline-start: 8px;
-  letter-spacing: 0.04em;
-}
-.about-methodology-section .ameth-dashboard-body {
-  padding: 28px 24px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Progress groups */
-.about-methodology-section .ameth-progress-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.about-methodology-section .ameth-progress-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.about-methodology-section .ameth-progress-label {
-  font-size: 0.875rem;
-  color: rgba(245,247,250,0.75);
-  font-weight: 500;
-}
-.about-methodology-section .ameth-progress-pct {
+.about-methodology-section .ameth-kpi-value {
   font-family: 'Heebo', 'Rubik', sans-serif;
-  font-size: 0.875rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 900;
   color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+  text-align: center;
+  max-width: none !important;
 }
-.about-methodology-section .ameth-progress-track {
-  width: 100%;
-  height: 5px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 999px;
-  overflow: hidden;
+.about-methodology-section .ameth-kpi-label {
+  font-size: 0.8rem;
+  color: rgba(245,247,250,0.65);
+  line-height: 1.4;
+  text-align: center;
+  max-width: none !important;
 }
-.about-methodology-section .ameth-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #19CFE1 0%, #17BFD3 100%);
-  border-radius: 999px;
-  box-shadow: 0 0 8px rgba(0,188,212,0.5);
-  transition: width 0.6s ease;
-}
-.about-methodology-section .ameth-fill-secondary {
-  background: linear-gradient(90deg, rgba(0,188,212,0.6) 0%, rgba(0,188,212,0.4) 100%);
-  box-shadow: none;
-}
-
-/* Mini metrics */
-.about-methodology-section .ameth-mini-metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 0 24px 24px;
-}
-.about-methodology-section .ameth-mini-metric {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 6px;
-  padding: 12px 14px;
-  color: var(--accent);
-}
-.about-methodology-section .ameth-mini-val {
-  font-family: 'Heebo', 'Rubik', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--text-light);
-  line-height: 1.1;
-}
-.about-methodology-section .ameth-mini-lbl {
-  font-size: 0.7rem;
-  color: rgba(245,247,250,0.5);
-  line-height: 1.3;
-}
-
-/* Floating badge */
-.about-methodology-section .ameth-floating-badge {
-  position: relative;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 16px;
-  background: linear-gradient(135deg, rgba(0,188,212,0.2) 0%, rgba(0,31,63,0.6) 100%);
-  border: 1px solid rgba(0,188,212,0.4);
-  border-radius: 8px;
-  padding: 14px 20px;
-  color: var(--text-light);
-  font-size: 0.875rem;
-  font-weight: 600;
-  box-shadow: 0 0 18px rgba(30,214,230,0.2);
-  width: 100%;
-  box-sizing: border-box;
-}
-.about-methodology-section .ameth-floating-badge .fa-shield-alt {
-  color: var(--accent);
-  font-size: 1.1rem;
+.about-methodology-section .ameth-kpi-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(112,142,196,0.3);
   flex-shrink: 0;
 }
 
-/* ===== DESKTOP ===== */
+/* ── Desktop Layout ── */
 @media (min-width: 768px) {
   .about-methodology-section {
     padding: 120px 40px 100px;
@@ -8898,56 +8911,57 @@ body.accessibility-widget-visible ._access-menu {
   .about-methodology-section .ameth-title {
     font-size: 3rem;
   }
-  .about-methodology-section .ameth-title-accent {
-    display: inline;
-  }
   .about-methodology-section .ameth-main-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    grid-template-columns: 340px 1fr;
+    gap: 40px;
     align-items: start;
   }
-  .about-methodology-section .ameth-stats-bar {
-    gap: 60px;
+  .about-methodology-section .ameth-step-body {
+    padding-inline-start: 60px;
   }
-  .about-methodology-section .ameth-floating-badge {
-    width: auto;
+  .about-methodology-section .ameth-kpi-bar {
+    flex-wrap: nowrap;
+  }
+  .about-methodology-section .ameth-kpi {
+    min-width: 0;
   }
 }
 
 @media (min-width: 1024px) {
+  .about-methodology-section {
+    padding: 120px 60px 100px;
+  }
   .about-methodology-section .ameth-main-grid {
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 72px;
+    grid-template-columns: 380px 1fr;
+    gap: 56px;
   }
 }
 
-/* ===== MOBILE ===== */
+/* ── Mobile Overrides ── */
 @media (max-width: 767px) {
-  .about-methodology-section .ameth-stats-bar {
-    flex-direction: column;
-    gap: 16px;
-    padding: 20px 24px;
+  .about-methodology-section .ameth-main-grid {
+    grid-template-columns: 1fr !important;
   }
-  .about-methodology-section .ameth-stat-divider {
-    width: 60px;
-    height: 1px;
+  .about-methodology-section .ameth-kpi-divider {
+    display: none;
   }
-  .about-methodology-section .ameth-step-card {
-    padding: 20px 16px;
+  .about-methodology-section .ameth-kpi-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .about-methodology-section .ameth-kpi {
+    border-bottom: 1px solid rgba(112,142,196,0.2);
   }
   .about-methodology-section .ameth-step-header {
-    grid-template-columns: 44px 1fr;
+    grid-template-columns: auto 40px 1fr;
     gap: 12px;
   }
-  .about-methodology-section .ameth-step-icon-wrap {
-    width: 44px;
-    height: 44px;
+  .about-methodology-section .ameth-step {
+    padding: 20px 16px;
   }
-  .about-methodology-section .ameth-mini-metrics {
-    grid-template-columns: 1fr 1fr;
-  }
-  .about-methodology-section .ameth-connector {
-    padding-inline-end: 30px;
+  .about-methodology-section .ameth-stats-panel {
+    padding: 20px 16px;
   }
 }
 

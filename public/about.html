@@ -243,6 +243,8 @@
     <!-- Mickidum Accessibility Toolbar -->
     <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
 
+
+
 <style data-zappy-section-v2-css="true">
 /* V2 Regenerated Section CSS */
 .about-methodology-section {
@@ -251,7 +253,7 @@
   background-color: #07101F;
   background-image:
     radial-gradient(circle at 20% 20%, rgba(86,168,255,0.12) 0, rgba(86,168,255,0) 28%),
-    radial-gradient(circle at 80% 0%, rgba(30,214,230,0.10) 0, rgba(30,214,230,0) 26%),
+    radial-gradient(circle at 80% 0%, rgba(30,214,230,0.1) 0, rgba(30,214,230,0) 26%),
     linear-gradient(180deg, #081223 0%, #0C1A31 58%, #07101F 100%);
   color: var(--text-light);
   padding: 100px 16px 80px;
@@ -259,28 +261,28 @@
   font-family: 'Assistant', 'Inter', sans-serif;
 }
 
-/* Background decorative orbs */
-.about-methodology-section .ameth-bg-orb {
+/* ── Background Decorations ── */
+.about-methodology-section .ameth-bg-glow {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
 }
-.about-methodology-section .ameth-orb-1 {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(0,188,212,0.07) 0%, transparent 70%);
-  top: -100px;
+.about-methodology-section .ameth-bg-glow--1 {
+  width: 600px;
+  height: 600px;
+  top: -200px;
   inset-inline-end: -100px;
+  background: radial-gradient(circle, rgba(0,188,212,0.08) 0%, transparent 70%);
 }
-.about-methodology-section .ameth-orb-2 {
+.about-methodology-section .ameth-bg-glow--2 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(0,31,63,0.5) 0%, transparent 70%);
-  bottom: 0;
+  bottom: -100px;
   inset-inline-start: -80px;
+  background: radial-gradient(circle, rgba(0,31,63,0.4) 0%, transparent 70%);
 }
-.about-methodology-section .ameth-grid-pattern {
+.about-methodology-section .ameth-grid-overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -288,12 +290,10 @@
   background-image:
     linear-gradient(rgba(0,188,212,0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,188,212,0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, transparent 75%);
+  background-size: 48px 48px;
 }
 
-/* Container */
+/* ── Container ── */
 .about-methodology-section .ameth-container {
   position: relative;
   z-index: 1;
@@ -301,23 +301,24 @@
   margin: 0 auto;
 }
 
-/* Header */
+/* ── Header ── */
 .about-methodology-section .ameth-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 60px;
+  max-width: none !important;
 }
-.about-methodology-section .ameth-eyebrow {
+.about-methodology-section .ameth-label {
   display: inline-block;
   font-family: 'Heebo', 'Rubik', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
   background: rgba(0,188,212,0.1);
   border: 1px solid rgba(0,188,212,0.3);
-  padding: 6px 18px;
   border-radius: 999px;
+  padding: 6px 18px;
   margin-bottom: 20px;
 }
 .about-methodology-section .ameth-title {
@@ -331,322 +332,307 @@
 }
 .about-methodology-section .ameth-title-accent {
   color: var(--accent);
-  display: block;
 }
-.about-methodology-section .ameth-subtitle {
+.about-methodology-section .ameth-intro {
   font-size: 1rem;
   line-height: 1.7;
-  color: rgba(245,247,250,0.7);
-  max-width: 640px;
+  color: rgba(245,247,250,0.75);
+  max-width: 680px;
   margin: 0 auto;
   text-align: center;
 }
 
-/* Stats Bar */
-.about-methodology-section .ameth-stats-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 8px;
-  padding: 20px 40px;
-  margin-bottom: 56px;
-  flex-wrap: wrap;
-}
-.about-methodology-section .ameth-stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-.about-methodology-section .ameth-stat-number {
-  font-family: 'Heebo', 'Rubik', sans-serif;
-  font-size: 2.2rem;
-  font-weight: 900;
-  color: var(--accent);
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-.about-methodology-section .ameth-stat-label {
-  font-size: 0.875rem;
-  color: rgba(245,247,250,0.6);
-  text-align: center;
-}
-.about-methodology-section .ameth-stat-divider {
-  width: 1px;
-  height: 40px;
-  background: rgba(255,255,255,0.15);
-}
-
-/* Main Grid */
+/* ── Main Grid ── */
 .about-methodology-section .ameth-main-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 48px;
-  align-items: start;
+  gap: 32px;
+  margin-bottom: 48px;
 }
 
-/* Steps */
+/* ── Stats Panel ── */
+.about-methodology-section .ameth-stats-panel {
+  background: linear-gradient(180deg, rgba(36,63,112,0.92) 0%, rgba(24,42,77,0.92) 100%);
+  border: 1px solid rgba(112,142,196,0.45);
+  border-radius: 2px;
+  padding: 28px 24px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 18px 40px rgba(6,12,24,0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.about-methodology-section .ameth-stats-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(112,142,196,0.25);
+}
+.about-methodology-section .ameth-stats-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(0,188,212,0.7);
+  flex-shrink: 0;
+}
+.about-methodology-section .ameth-stats-label {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(245,247,250,0.8);
+  flex: 1;
+  text-align: right;
+}
+.about-methodology-section .ameth-stats-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  background: rgba(0,188,212,0.15);
+  border: 1px solid rgba(0,188,212,0.4);
+  border-radius: 4px;
+  padding: 2px 8px;
+  animation: ameth-pulse 2s ease-in-out infinite;
+}
+@keyframes ameth-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.about-methodology-section .ameth-stat-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.about-methodology-section .ameth-stat-row--highlight .ameth-stat-value {
+  color: var(--accent);
+}
+.about-methodology-section .ameth-stat-value {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-light);
+  line-height: 1;
+  text-align: right;
+}
+.about-methodology-section .ameth-stat-desc {
+  font-size: 0.875rem;
+  color: rgba(245,247,250,0.65);
+  text-align: right;
+}
+.about-methodology-section .ameth-stat-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.about-methodology-section .ameth-stat-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), rgba(0,188,212,0.5));
+  border-radius: 999px;
+}
+
+/* ── Sectors ── */
+.about-methodology-section .ameth-sectors {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.about-methodology-section .ameth-sector-chip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(245,247,250,0.85);
+  background: rgba(0,188,212,0.08);
+  border: 1px solid rgba(0,188,212,0.25);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+.about-methodology-section .ameth-sector-chip i {
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+
+/* ── Checklist ── */
+.about-methodology-section .ameth-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.about-methodology-section .ameth-check-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  text-align: right;
+}
+.about-methodology-section .ameth-check-item i {
+  color: var(--accent);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+.about-methodology-section .ameth-check-item span {
+  font-size: 0.875rem;
+  color: rgba(245,247,250,0.8);
+  flex: 1;
+  text-align: right;
+}
+
+/* ── Approved Badge ── */
+.about-methodology-section .ameth-approved-badge {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,188,212,0.08);
+  border: 1px solid rgba(0,188,212,0.35);
+  border-radius: 6px;
+  padding: 10px 14px;
+  text-align: right;
+}
+.about-methodology-section .ameth-approved-badge i {
+  color: var(--accent);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.about-methodology-section .ameth-approved-badge span {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ── Steps ── */
 .about-methodology-section .ameth-steps {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
-
-/* Step Card */
-.about-methodology-section .ameth-step-card {
-  background: linear-gradient(180deg, rgba(36,63,112,0.92) 0%, rgba(24,42,77,0.92) 100%);
-  border: 1px solid rgba(112,142,196,0.35);
-  border-radius: 4px;
-  padding: 28px 28px 24px;
+.about-methodology-section .ameth-step {
   position: relative;
-  transition: border-color 0.3s ease, transform 0.3s ease;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 8px 24px rgba(0,0,0,0.25);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(112,142,196,0.2);
+  border-radius: 2px;
+  padding: 28px 24px;
+  margin-bottom: 0;
 }
-.about-methodology-section .ameth-step-card:hover {
-  border-color: rgba(0,188,212,0.5);
-  transform: translateX(-4px);
+.about-methodology-section .ameth-step:not(.ameth-step--last) {
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+}
+.about-methodology-section .ameth-step--last {
+  border-radius: 0 0 2px 2px;
+}
+.about-methodology-section .ameth-step:hover {
+  background: rgba(0,188,212,0.05);
+  border-color: rgba(0,188,212,0.35);
 }
 .about-methodology-section .ameth-step-header {
   display: grid;
-  grid-template-columns: 52px 1fr;
-  gap: 16px;
+  grid-template-columns: auto 44px 1fr;
   align-items: center;
-  margin-bottom: 16px;
+  gap: 16px;
+  margin-bottom: 14px;
+  direction: rtl;
 }
-.about-methodology-section .ameth-step-icon-wrap {
-  width: 52px;
-  height: 52px;
-  background: rgba(0,188,212,0.12);
-  border: 1px solid rgba(0,188,212,0.35);
-  border-radius: 4px;
+.about-methodology-section .ameth-step-num {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: rgba(0,188,212,0.5);
+  min-width: 28px;
+  text-align: right;
+}
+.about-methodology-section .ameth-step-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(0,188,212,0.1);
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--accent);
   flex-shrink: 0;
 }
-.about-methodology-section .ameth-step-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.about-methodology-section .ameth-step-num {
-  font-family: 'Heebo', 'Rubik', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--accent);
-  opacity: 0.7;
-}
 .about-methodology-section .ameth-step-title {
   font-family: 'Heebo', 'Rubik', sans-serif;
   font-size: 1.375rem;
-  font-weight: 700;
-  line-height: 1.3;
+  font-weight: 800;
+  line-height: 1.4;
   color: var(--text-light);
   margin: 0;
+  text-align: right;
 }
-.about-methodology-section .ameth-step-desc {
+.about-methodology-section .ameth-step-body {
   font-size: 1rem;
   line-height: 1.7;
   color: rgba(245,247,250,0.72);
-  margin: 0 0 16px;
+  margin: 0;
   text-align: right;
+  padding-inline-start: 0;
 }
-.about-methodology-section .ameth-step-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
-}
-.about-methodology-section .ameth-tag {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: rgba(0,188,212,0.9);
-  background: rgba(0,188,212,0.08);
-  border: 1px solid rgba(0,188,212,0.2);
-  padding: 3px 10px;
-  border-radius: 999px;
-  letter-spacing: 0.02em;
-}
-
-/* Connectors */
-.about-methodology-section .ameth-connector {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding-inline-end: 38px;
-  gap: 0;
-}
-.about-methodology-section .ameth-connector-line {
-  width: 1px;
-  height: 24px;
-  background: linear-gradient(to bottom, rgba(0,188,212,0.5), rgba(0,188,212,0.15));
-}
-.about-methodology-section .ameth-connector-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px rgba(0,188,212,0.6);
-}
-
-/* Visual Panel */
-.about-methodology-section .ameth-visual-panel {
-  position: relative;
-}
-.about-methodology-section .ameth-panel-glow {
+.about-methodology-section .ameth-step-connector {
   position: absolute;
-  inset: -30px;
-  background: radial-gradient(ellipse at 50% 30%, rgba(0,188,212,0.12) 0%, transparent 65%);
-  pointer-events: none;
-  z-index: 0;
+  bottom: -1px;
+  inset-inline-start: 50%;
+  width: 2px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.4;
 }
 
-/* Dashboard Card */
-.about-methodology-section .ameth-dashboard-card {
-  position: relative;
-  z-index: 1;
-  background: rgba(255,255,255,0.05);
+/* ── KPI Bar ── */
+.about-methodology-section .ameth-kpi-bar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: linear-gradient(180deg, rgba(36,63,112,0.7) 0%, rgba(24,42,77,0.7) 100%);
+  border: 1px solid rgba(112,142,196,0.3);
+  border-radius: 2px;
+  padding: 24px 16px;
   backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.28);
 }
-.about-methodology-section .ameth-dashboard-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 18px;
-  background: rgba(0,0,0,0.25);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  flex-direction: row-reverse;
-  justify-content: flex-end;
+.about-methodology-section .ameth-kpi {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  padding: 12px 16px;
 }
-.about-methodology-section .ameth-dashboard-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.about-methodology-section .ameth-dot-green { background: #30D158; }
-.about-methodology-section .ameth-dot-yellow { background: #FFD60A; }
-.about-methodology-section .ameth-dot-red { background: #FF453A; }
-.about-methodology-section .ameth-dashboard-title {
-  font-size: 0.75rem;
-  color: rgba(245,247,250,0.5);
-  margin-inline-start: 8px;
-  letter-spacing: 0.04em;
-}
-.about-methodology-section .ameth-dashboard-body {
-  padding: 28px 24px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Progress groups */
-.about-methodology-section .ameth-progress-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.about-methodology-section .ameth-progress-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.about-methodology-section .ameth-progress-label {
-  font-size: 0.875rem;
-  color: rgba(245,247,250,0.75);
-  font-weight: 500;
-}
-.about-methodology-section .ameth-progress-pct {
+.about-methodology-section .ameth-kpi-value {
   font-family: 'Heebo', 'Rubik', sans-serif;
-  font-size: 0.875rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 900;
   color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+  text-align: center;
+  max-width: none !important;
 }
-.about-methodology-section .ameth-progress-track {
-  width: 100%;
-  height: 5px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 999px;
-  overflow: hidden;
+.about-methodology-section .ameth-kpi-label {
+  font-size: 0.8rem;
+  color: rgba(245,247,250,0.65);
+  line-height: 1.4;
+  text-align: center;
+  max-width: none !important;
 }
-.about-methodology-section .ameth-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #19CFE1 0%, #17BFD3 100%);
-  border-radius: 999px;
-  box-shadow: 0 0 8px rgba(0,188,212,0.5);
-  transition: width 0.6s ease;
-}
-.about-methodology-section .ameth-fill-secondary {
-  background: linear-gradient(90deg, rgba(0,188,212,0.6) 0%, rgba(0,188,212,0.4) 100%);
-  box-shadow: none;
-}
-
-/* Mini metrics */
-.about-methodology-section .ameth-mini-metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 0 24px 24px;
-}
-.about-methodology-section .ameth-mini-metric {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 6px;
-  padding: 12px 14px;
-  color: var(--accent);
-}
-.about-methodology-section .ameth-mini-val {
-  font-family: 'Heebo', 'Rubik', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--text-light);
-  line-height: 1.1;
-}
-.about-methodology-section .ameth-mini-lbl {
-  font-size: 0.7rem;
-  color: rgba(245,247,250,0.5);
-  line-height: 1.3;
-}
-
-/* Floating badge */
-.about-methodology-section .ameth-floating-badge {
-  position: relative;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 16px;
-  background: linear-gradient(135deg, rgba(0,188,212,0.2) 0%, rgba(0,31,63,0.6) 100%);
-  border: 1px solid rgba(0,188,212,0.4);
-  border-radius: 8px;
-  padding: 14px 20px;
-  color: var(--text-light);
-  font-size: 0.875rem;
-  font-weight: 600;
-  box-shadow: 0 0 18px rgba(30,214,230,0.2);
-  width: 100%;
-  box-sizing: border-box;
-}
-.about-methodology-section .ameth-floating-badge .fa-shield-alt {
-  color: var(--accent);
-  font-size: 1.1rem;
+.about-methodology-section .ameth-kpi-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(112,142,196,0.3);
   flex-shrink: 0;
 }
 
-/* ===== DESKTOP ===== */
+/* ── Desktop Layout ── */
 @media (min-width: 768px) {
   .about-methodology-section {
     padding: 120px 40px 100px;
@@ -654,56 +640,57 @@
   .about-methodology-section .ameth-title {
     font-size: 3rem;
   }
-  .about-methodology-section .ameth-title-accent {
-    display: inline;
-  }
   .about-methodology-section .ameth-main-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    grid-template-columns: 340px 1fr;
+    gap: 40px;
     align-items: start;
   }
-  .about-methodology-section .ameth-stats-bar {
-    gap: 60px;
+  .about-methodology-section .ameth-step-body {
+    padding-inline-start: 60px;
   }
-  .about-methodology-section .ameth-floating-badge {
-    width: auto;
+  .about-methodology-section .ameth-kpi-bar {
+    flex-wrap: nowrap;
+  }
+  .about-methodology-section .ameth-kpi {
+    min-width: 0;
   }
 }
 
 @media (min-width: 1024px) {
+  .about-methodology-section {
+    padding: 120px 60px 100px;
+  }
   .about-methodology-section .ameth-main-grid {
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 72px;
+    grid-template-columns: 380px 1fr;
+    gap: 56px;
   }
 }
 
-/* ===== MOBILE ===== */
+/* ── Mobile Overrides ── */
 @media (max-width: 767px) {
-  .about-methodology-section .ameth-stats-bar {
-    flex-direction: column;
-    gap: 16px;
-    padding: 20px 24px;
+  .about-methodology-section .ameth-main-grid {
+    grid-template-columns: 1fr !important;
   }
-  .about-methodology-section .ameth-stat-divider {
-    width: 60px;
-    height: 1px;
+  .about-methodology-section .ameth-kpi-divider {
+    display: none;
   }
-  .about-methodology-section .ameth-step-card {
-    padding: 20px 16px;
+  .about-methodology-section .ameth-kpi-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .about-methodology-section .ameth-kpi {
+    border-bottom: 1px solid rgba(112,142,196,0.2);
   }
   .about-methodology-section .ameth-step-header {
-    grid-template-columns: 44px 1fr;
+    grid-template-columns: auto 40px 1fr;
     gap: 12px;
   }
-  .about-methodology-section .ameth-step-icon-wrap {
-    width: 44px;
-    height: 44px;
+  .about-methodology-section .ameth-step {
+    padding: 20px 16px;
   }
-  .about-methodology-section .ameth-mini-metrics {
-    grid-template-columns: 1fr 1fr;
-  }
-  .about-methodology-section .ameth-connector {
-    padding-inline-end: 30px;
+  .about-methodology-section .ameth-stats-panel {
+    padding: 20px 16px;
   }
 }
 </style>
@@ -1437,206 +1424,136 @@
 </section>
 
 <section class="about-methodology-section" data-layout-spec="אודות-methodology" dir="rtl" data-zappy-section="true">
+
   <!-- Background decorative elements -->
-  <div class="ameth-bg-orb ameth-orb-1" aria-hidden="true"></div>
-  <div class="ameth-bg-orb ameth-orb-2" aria-hidden="true"></div>
-  <div class="ameth-grid-pattern" aria-hidden="true"></div>
+  <div class="ameth-bg-glow ameth-bg-glow--1" aria-hidden="true"></div>
+  <div class="ameth-bg-glow ameth-bg-glow--2" aria-hidden="true"></div>
+  <div class="ameth-grid-overlay" aria-hidden="true"></div>
 
   <div class="ameth-container">
 
     <!-- Section Header -->
     <div class="ameth-header">
-      <span class="ameth-eyebrow">המתודולוגיה שלנו</span>
+      <span class="ameth-label">המתודולוגיה שלנו</span>
       <h2 class="ameth-title">גיוס מדויק.<span class="ameth-title-accent">תהליך מוכח.</span></h2>
-      <p class="ameth-subtitle">בהתאמה חכמה בע"מ אנחנו לא מחפשים עובדים — אנחנו מוצאים את ההתאמה המדויקת. כחברת כוח אדם השמה מובילה, כל שלב בתהליך שלנו מבוסס על ניתוח עמוק, סינון קפדני ובדיקת התאמה ארוכת טווח.</p>
+      <p class="ameth-intro">בהתאמה חכמה בע"מ אנחנו לא מחפשים עובדים — אנחנו מוצאים את ההתאמה המדויקת. כחברת כוח אדם השמה מובילה, כל שלב בתהליך שלנו מבוסס על ניתוח עמוק, סינון קפדני ובדיקת התאמה ארוכת טווח.</p>
     </div>
 
-    <!-- Stats Bar -->
-    <div class="ameth-stats-bar">
-      <div class="ameth-stat-item">
-        <span class="ameth-stat-number">100%</span>
-        <span class="ameth-stat-label">שקט רגולטורי וציות</span>
-      </div>
-      <div class="ameth-stat-divider" aria-hidden="true"></div>
-      <div class="ameth-stat-item">
-        <span class="ameth-stat-number">125</span>
-        <span class="ameth-stat-label">עובדים בשטח</span>
-      </div>
-    </div>
-
-    <!-- Main Content: Steps + Visual Panel -->
+    <!-- Main Content Grid -->
     <div class="ameth-main-grid">
 
-      <!-- Steps Column -->
+      <!-- Left Column: Stats Dashboard -->
+      <aside class="ameth-stats-panel">
+        <div class="ameth-stats-header">
+          <div class="ameth-stats-dot"></div>
+          <span class="ameth-stats-label">מערכת ניהול מועמדים</span>
+          <div class="ameth-stats-badge">LIVE</div>
+        </div>
+
+        <div class="ameth-stat-row ameth-stat-row--highlight">
+          <div class="ameth-stat-value">100%</div>
+          <div class="ameth-stat-desc">שקט רגולטורי וציות</div>
+          <div class="ameth-stat-bar"><div class="ameth-stat-bar-fill" style="width:100%"></div></div>
+        </div>
+
+        <div class="ameth-stat-row">
+          <div class="ameth-stat-value">+125</div>
+          <div class="ameth-stat-desc">עובדים בשטח</div>
+          <div class="ameth-stat-bar"><div class="ameth-stat-bar-fill" style="width:85%"></div></div>
+        </div>
+
+        <div class="ameth-sectors">
+          <div class="ameth-sector-chip"><i class="fas fa-industry"></i> תעשייה</div>
+          <div class="ameth-sector-chip"><i class="fas fa-truck"></i> לוגיסטיקה</div>
+          <div class="ameth-sector-chip"><i class="fas fa-building"></i> משרדים</div>
+        </div>
+
+        <div class="ameth-checklist">
+          <div class="ameth-check-item"><i class="fas fa-check-circle"></i><span>ראיון מקצועי</span></div>
+          <div class="ameth-check-item"><i class="fas fa-check-circle"></i><span>בדיקת רקע</span></div>
+          <div class="ameth-check-item"><i class="fas fa-check-circle"></i><span>ציות רגולטורי</span></div>
+          <div class="ameth-check-item"><i class="fas fa-check-circle"></i><span>תאימות תרבותית</span></div>
+          <div class="ameth-check-item"><i class="fas fa-check-circle"></i><span>מעקב שוטף</span></div>
+          <div class="ameth-check-item"><i class="fas fa-check-circle"></i><span>ערך ארוך טווח</span></div>
+        </div>
+
+        <div class="ameth-approved-badge">
+          <i class="fas fa-shield-alt"></i>
+          <span>מאושר לעבודת זרים</span>
+        </div>
+      </aside>
+
+      <!-- Right Column: Steps -->
       <div class="ameth-steps">
 
-        <!-- Step 1 -->
-        <article class="ameth-step-card">
+        <article class="ameth-step">
           <div class="ameth-step-header">
-            <div class="ameth-step-icon-wrap">
-              <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="28" height="28" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 8v4l3 3"></path>
-              </svg>
+            <div class="ameth-step-num">01</div>
+            <div class="ameth-step-icon">
+              <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
             </div>
-            <div class="ameth-step-meta">
-              <span class="ameth-step-num">01</span>
-              <h3 class="ameth-step-title">הבנת שוק העבודה</h3>
-            </div>
+            <h3 class="ameth-step-title">הבנת שוק העבודה</h3>
           </div>
-          <p class="ameth-step-desc">אנחנו מנתחים לעומק את צרכי הסקטור — תעשייה, לוגיסטיקה ומשרדים — ומזהים מגמות תעסוקה, פערי מיומנויות ורמות שכר עדכניות. הידע הזה מאפשר לנו לפעול מהר יותר ובדיוק גבוה יותר מכל מתחרה.</p>
-          <div class="ameth-step-tags">
-            <span class="ameth-tag">תעשייה</span>
-            <span class="ameth-tag">לוגיסטיקה</span>
-            <span class="ameth-tag">משרדים</span>
-          </div>
+          <p class="ameth-step-body">אנחנו מנתחים לעומק את צרכי הסקטור — תעשייה, לוגיסטיקה ומשרדים — ומזהים מגמות תעסוקה, פערי מיומנויות ורמות שכר עדכניות. הידע הזה מאפשר לנו לפעול מהר יותר ובדיוק גבוה יותר מכל מתחרה.</p>
+          <div class="ameth-step-connector" aria-hidden="true"></div>
         </article>
 
-        <!-- Connector -->
-        <div class="ameth-connector" aria-hidden="true">
-          <div class="ameth-connector-line"></div>
-          <div class="ameth-connector-dot"></div>
-        </div>
-
-        <!-- Step 2 -->
-        <article class="ameth-step-card">
+        <article class="ameth-step">
           <div class="ameth-step-header">
-            <div class="ameth-step-icon-wrap">
-              <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="28" height="28" aria-hidden="true">
-                <path d="M9 11l3 3L22 4"></path>
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-              </svg>
+            <div class="ameth-step-num">02</div>
+            <div class="ameth-step-icon">
+              <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
             </div>
-            <div class="ameth-step-meta">
-              <span class="ameth-step-num">02</span>
-              <h3 class="ameth-step-title">סינון קפדני ומוכח</h3>
-            </div>
+            <h3 class="ameth-step-title">סינון קפדני ומוכח</h3>
           </div>
-          <p class="ameth-step-desc">כל מועמד עובר תהליך סינון רב-שלבי: ראיון מקצועי, בדיקת רקע, אימות ניסיון ואבחון כישורים. לעובדים זרים מתבצעת גם בדיקת ציות לחוק ולדרישות הרגולציה הישראלית.</p>
-          <div class="ameth-step-tags">
-            <span class="ameth-tag">ראיון מקצועי</span>
-            <span class="ameth-tag">בדיקת רקע</span>
-            <span class="ameth-tag">ציות רגולטורי</span>
-          </div>
+          <p class="ameth-step-body">כל מועמד עובר תהליך סינון רב-שלבי: ראיון מקצועי, בדיקת רקע, אימות ניסיון ואבחון כישורים. לעובדים זרים מתבצעת גם בדיקת ציות לחוק ולדרישות הרגולציה הישראלית.</p>
+          <div class="ameth-step-connector" aria-hidden="true"></div>
         </article>
 
-        <!-- Connector -->
-        <div class="ameth-connector" aria-hidden="true">
-          <div class="ameth-connector-line"></div>
-          <div class="ameth-connector-dot"></div>
-        </div>
-
-        <!-- Step 3 -->
-        <article class="ameth-step-card">
+        <article class="ameth-step ameth-step--last">
           <div class="ameth-step-header">
-            <div class="ameth-step-icon-wrap">
-              <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="28" height="28" aria-hidden="true">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
+            <div class="ameth-step-num">03</div>
+            <div class="ameth-step-icon">
+              <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             </div>
-            <div class="ameth-step-meta">
-              <span class="ameth-step-num">03</span>
-              <h3 class="ameth-step-title">התאמה ארוכת טווח</h3>
-            </div>
+            <h3 class="ameth-step-title">התאמה ארוכת טווח</h3>
           </div>
-          <p class="ameth-step-desc">אנחנו בוחנים לא רק כישורים טכניים — אלא גם תאימות תרבותית, מוטיבציה ויציבות תעסוקתית. מעקב אחרי ההשמה מבטיח שהחיבור בין עובד למעסיק יחזיק לאורך זמן ויניב ערך אמיתי לשני הצדדים.</p>
-          <div class="ameth-step-tags">
-            <span class="ameth-tag">תאימות תרבותית</span>
-            <span class="ameth-tag">מעקב שוטף</span>
-            <span class="ameth-tag">ערך ארוך טווח</span>
-          </div>
+          <p class="ameth-step-body">אנחנו בוחנים לא רק כישורים טכניים — אלא גם תאימות תרבותית, מוטיבציה ויציבות תעסוקתית. מעקב אחרי ההשמה מבטיח שהחיבור בין עובד למעסיק יחזיק לאורך זמן ויניב ערך אמיתי לשני הצדדים.</p>
         </article>
 
       </div>
+    </div>
 
-      <!-- Visual Panel -->
-      <div class="ameth-visual-panel">
-        <div class="ameth-panel-glow" aria-hidden="true"></div>
-
-        <!-- Dashboard Card -->
-        <div class="ameth-dashboard-card">
-          <div class="ameth-dashboard-header">
-            <span class="ameth-dashboard-dot ameth-dot-green"></span>
-            <span class="ameth-dashboard-dot ameth-dot-yellow"></span>
-            <span class="ameth-dashboard-dot ameth-dot-red"></span>
-            <span class="ameth-dashboard-title">מערכת ניהול מועמדים</span>
-          </div>
-
-          <div class="ameth-dashboard-body">
-            <!-- Progress bars -->
-            <div class="ameth-progress-group">
-              <div class="ameth-progress-row">
-                <span class="ameth-progress-label">ציות רגולטורי</span>
-                <span class="ameth-progress-pct">100%</span>
-              </div>
-              <div class="ameth-progress-track">
-                <div class="ameth-progress-fill" style="width:100%"></div>
-              </div>
-            </div>
-
-            <div class="ameth-progress-group">
-              <div class="ameth-progress-row">
-                <span class="ameth-progress-label">שביעות רצון מעסיקים</span>
-                <span class="ameth-progress-pct">97%</span>
-              </div>
-              <div class="ameth-progress-track">
-                <div class="ameth-progress-fill" style="width:97%"></div>
-              </div>
-            </div>
-
-            <div class="ameth-progress-group">
-              <div class="ameth-progress-row">
-                <span class="ameth-progress-label">שימור עובדים</span>
-                <span class="ameth-progress-pct">89%</span>
-              </div>
-              <div class="ameth-progress-track">
-                <div class="ameth-progress-fill ameth-fill-secondary" style="width:89%"></div>
-              </div>
-            </div>
-
-            <div class="ameth-progress-group">
-              <div class="ameth-progress-row">
-                <span class="ameth-progress-label">מהירות השמה</span>
-                <span class="ameth-progress-pct">92%</span>
-              </div>
-              <div class="ameth-progress-track">
-                <div class="ameth-progress-fill ameth-fill-secondary" style="width:92%"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Mini metric cards -->
-          <div class="ameth-mini-metrics">
-            <div class="ameth-mini-metric">
-              <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
-              <div>
-                <div class="ameth-mini-val">48h</div>
-                <div class="ameth-mini-lbl">זמן תגובה</div>
-              </div>
-            </div>
-            <div class="ameth-mini-metric">
-              <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
-              <div>
-                <div class="ameth-mini-val">+125</div>
-                <div class="ameth-mini-lbl">עובדים פעילים</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Floating badge -->
-        <div class="ameth-floating-badge">
-          <i class="fas fa-shield-alt" aria-hidden="true"></i>
-          <span>מאושר לעבודת זרים</span>
-        </div>
-
+    <!-- Bottom KPI Bar -->
+    <div class="ameth-kpi-bar">
+      <div class="ameth-kpi">
+        <div class="ameth-kpi-value">97%</div>
+        <div class="ameth-kpi-label">שביעות רצון מעסיקים</div>
+      </div>
+      <div class="ameth-kpi-divider" aria-hidden="true"></div>
+      <div class="ameth-kpi">
+        <div class="ameth-kpi-value">89%</div>
+        <div class="ameth-kpi-label">שימור עובדים</div>
+      </div>
+      <div class="ameth-kpi-divider" aria-hidden="true"></div>
+      <div class="ameth-kpi">
+        <div class="ameth-kpi-value">92%</div>
+        <div class="ameth-kpi-label">מהירות השמה</div>
+      </div>
+      <div class="ameth-kpi-divider" aria-hidden="true"></div>
+      <div class="ameth-kpi">
+        <div class="ameth-kpi-value">25h</div>
+        <div class="ameth-kpi-label">זמן תגובה</div>
+      </div>
+      <div class="ameth-kpi-divider" aria-hidden="true"></div>
+      <div class="ameth-kpi">
+        <div class="ameth-kpi-value">+125</div>
+        <div class="ameth-kpi-label">עובדים פעילים</div>
       </div>
     </div>
 
   </div>
+
 </section>
 
 
