@@ -8749,6 +8749,13 @@ body.accessibility-widget-visible ._access-menu {
 }
 }
 
+.about-intro-section .about-intro-lead {
+  font-size: 17px !important;
+  line-height: 2 !important;
+  max-width: 760px !important;
+  text-align: justify !important;
+}
+
 /* ========== RTL MOBILE NAVBAR FIX (zappy-rtl-mobile-fix) ========== */
 /* High-specificity rules to ensure RTL positioning wins over any [lang="en"] conflicts */
 /* For RTL sites: hamburger on RIGHT, phone on LEFT (mirror of LTR layout) */
