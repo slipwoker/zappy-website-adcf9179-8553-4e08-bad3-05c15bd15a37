@@ -1,0 +1,3112 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>משרות למחפשי עבודה</title>
+    <meta name="description" content="התאמה חכמה בע"מ - משרות למחפשי עבודה">
+    <meta name="keywords" content="">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: 'adcf9179-8553-4e08-bad3-05c15bd15a37',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="משרות למחפשי עבודה">
+    <meta property="og:description" content="התאמה חכמה בע&quot;מ - משרות למחפשי עבודה">
+    
+    <meta property="og:locale" content="he_IL">
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="משרות למחפשי עבודה">
+    <meta name="twitter:description" content="התאמה חכמה בע&quot;מ - משרות למחפשי עבודה">
+    <style id="zappy-ai-page-styles">.job-seekers-hero-section {
+  position: relative;
+  overflow: visible;
+  background-color: #07101F;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(86,168,255,0.12) 0, rgba(86,168,255,0) 28%),
+    radial-gradient(circle at 80% 0%, rgba(30,214,230,0.1) 0, rgba(30,214,230,0) 26%),
+    linear-gradient(180deg, #081223 0%, #0C1A31 58%, #07101F 100%);
+  color: var(--text-light);
+  direction: rtl;
+  padding: 120px 24px 96px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.job-seekers-hero-section .jsh-bg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.job-seekers-hero-section .jsh-grid-texture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.7;
+}
+
+.job-seekers-hero-section .jsh-content-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.job-seekers-hero-section .jsh-inner-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: center;
+  direction: rtl;
+}
+
+@media (min-width: 768px) {
+  .job-seekers-hero-section .jsh-inner-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+  }
+}
+
+/* ── Right Column: Text ── */
+.job-seekers-hero-section .jsh-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  text-align: right;
+}
+
+.job-seekers-hero-section .jsh-eyebrow {
+  display: inline-block;
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(0,188,212,0.12);
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 4px;
+  padding: 5px 14px;
+  margin-bottom: 20px;
+}
+
+.job-seekers-hero-section .jsh-headline {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: var(--text-light);
+  margin: 0 0 16px 0;
+}
+
+@media (min-width: 768px) {
+  .job-seekers-hero-section .jsh-headline {
+    font-size: 64px;
+  }
+}
+
+.job-seekers-hero-section .jsh-accent-word {
+  color: var(--accent);
+  -webkit-text-fill-color: var(--accent);
+}
+
+.job-seekers-hero-section .jsh-accent-line {
+  width: 72px;
+  height: 3px;
+  background: linear-gradient(90deg, #19CFE1 0%, #17BFD3 100%);
+  border-radius: 2px;
+  margin-bottom: 24px;
+  margin-inline-start: 0;
+}
+
+.job-seekers-hero-section .jsh-subtitle {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: #E6EDF8;
+  margin: 0 0 36px 0;
+  max-width: 480px;
+  text-align: right;
+}
+
+.job-seekers-hero-section .jsh-cta-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.job-seekers-hero-section .jsh-btn-primary {
+  display: inline-block;
+  background: linear-gradient(90deg, #19CFE1 0%, #17BFD3 100%);
+  color: #ffffff;
+  padding: 16px 36px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 12px 24px rgba(23,191,211,0.22);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  white-space: nowrap;
+}
+
+.job-seekers-hero-section .jsh-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(23,191,211,0.38);
+}
+
+.job-seekers-hero-section .jsh-btn-secondary {
+  display: inline-block;
+  background: rgba(255,255,255,0.04);
+  color: #ffffff;
+  padding: 16px 36px;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.75);
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  white-space: nowrap;
+}
+
+.job-seekers-hero-section .jsh-btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-3px);
+}
+
+/* ── Left Column: Dashboard Panel ── */
+.job-seekers-hero-section .jsh-panel-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.job-seekers-hero-section .jsh-dashboard-panel {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,188,212,0.18);
+  border-radius: 14px;
+  padding: 32px 28px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.job-seekers-hero-section .jsh-panel-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  direction: rtl;
+}
+
+.job-seekers-hero-section .jsh-panel-icon-wrap {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: rgba(0,188,212,0.12);
+  border: 1px solid rgba(0,188,212,0.25);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+.job-seekers-hero-section .jsh-panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  text-align: right;
+}
+
+.job-seekers-hero-section .jsh-panel-label {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+}
+
+.job-seekers-hero-section .jsh-panel-value {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.job-seekers-hero-section .jsh-panel-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0,188,212,0.5) 0%, rgba(0,188,212,0.05) 100%);
+  margin: 22px 0;
+}
+
+/* ── Bottom Fade ── */
+.job-seekers-hero-section .jsh-bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.06) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Mobile Overrides ── */
+@media (max-width: 767px) {
+  .job-seekers-hero-section {
+    padding: 100px 16px 72px;
+    min-height: auto;
+  }
+
+  .job-seekers-hero-section .jsh-inner-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .job-seekers-hero-section .jsh-headline {
+    font-size: 38px;
+  }
+
+  .job-seekers-hero-section .jsh-subtitle {
+    font-size: 16px;
+    max-width: 100%;
+  }
+
+  .job-seekers-hero-section .jsh-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .job-seekers-hero-section .jsh-btn-primary,
+  .job-seekers-hero-section .jsh-btn-secondary {
+    text-align: center;
+    padding: 14px 24px;
+  }
+
+  .job-seekers-hero-section .jsh-dashboard-panel {
+    padding: 24px 18px;
+  }
+
+  .job-seekers-hero-section .jsh-panel-icon-wrap {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+.job-seekers-services-section {
+  background-color: var(--bg-light);
+  background-image: linear-gradient(180deg, #F7F8FA 0%, #EEF1F5 100%);
+  color: var(--text-dark);
+  padding: 88px 24px 160px;
+  position: relative;
+  overflow: visible;
+  direction: rtl;
+  font-family: 'Assistant', 'Inter', sans-serif;
+}
+
+/* ─── Container ─── */
+.job-seekers-services-section .jss-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Intro Block ─── */
+.job-seekers-services-section .jss-intro {
+  margin-bottom: 56px;
+  text-align: right;
+}
+
+.job-seekers-services-section .jss-accent-rule {
+  width: 56px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin-inline-start: auto;
+  margin-bottom: 20px;
+}
+
+.job-seekers-services-section .jss-title {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-dark);
+  margin: 0 0 16px 0;
+  letter-spacing: -0.01em;
+}
+
+.job-seekers-services-section .jss-subtitle {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 680px;
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+
+/* ─── Cards Grid ─── */
+.job-seekers-services-section .jss-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  direction: rtl;
+  align-items: stretch;
+}
+
+/* ─── Individual Card ─── */
+.job-seekers-services-section .jss-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(15, 28, 46, 0.08);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  text-align: right;
+}
+
+.job-seekers-services-section .jss-card:hover {
+  box-shadow: 0 18px 40px rgba(6, 12, 24, 0.14);
+  transform: translateY(-4px);
+}
+
+/* ─── Card Icon ─── */
+.job-seekers-services-section .jss-card-icon-wrap {
+  color: var(--accent);
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.job-seekers-services-section .jss-card-icon-wrap svg {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+/* ─── Card Title ─── */
+.job-seekers-services-section .jss-card-title {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-dark);
+  margin: 0 0 12px 0;
+}
+
+/* ─── Card Description ─── */
+.job-seekers-services-section .jss-card-desc {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0 0 20px 0;
+  flex-grow: 0;
+}
+
+/* ─── Role List ─── */
+.job-seekers-services-section .jss-role-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--border-light);
+  flex-grow: 1;
+}
+
+.job-seekers-services-section .jss-role-list li {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-dark);
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  text-align: right;
+}
+
+.job-seekers-services-section .jss-role-list li::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  order: -1;
+}
+
+.job-seekers-services-section .jss-role-list li:last-child {
+  border-bottom: none;
+}
+
+/* ─── Note Bar ─── */
+.job-seekers-services-section .jss-note-bar {
+  background-color: rgba(0, 188, 212, 0.08);
+  border: 1px solid rgba(0, 188, 212, 0.22);
+  border-radius: 4px;
+  margin-top: 52px;
+  padding: 20px 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.job-seekers-services-section .jss-note-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  direction: rtl;
+  flex-wrap: wrap;
+}
+
+.job-seekers-services-section .jss-note-icon {
+  color: var(--accent);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.job-seekers-services-section .jss-note-text {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-dark);
+  margin: 0;
+  flex: 1;
+  min-width: 200px;
+  text-align: right;
+}
+
+.job-seekers-services-section .jss-note-cta {
+  display: inline-block;
+  background: linear-gradient(90deg, #19CFE1 0%, #17BFD3 100%);
+  color: #FFFFFF;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(23, 191, 211, 0.22);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.job-seekers-services-section .jss-note-cta:hover {
+  box-shadow: 0 12px 28px rgba(23, 191, 211, 0.35);
+  transform: translateY(-2px);
+}
+
+/* ─── Section Transition Divider ─── */
+.job-seekers-services-section .jss-divider-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 72px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.job-seekers-services-section .jss-divider-wrapper svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Tablet (2 columns) ─── */
+@media (max-width: 1024px) {
+  .job-seekers-services-section .jss-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ─── Mobile (1 column) ─── */
+@media (max-width: 768px) {
+  .job-seekers-services-section {
+    padding: 60px 16px 120px;
+  }
+
+  .job-seekers-services-section .jss-intro {
+    margin-bottom: 36px;
+  }
+
+  .job-seekers-services-section .jss-title {
+    font-size: 1.6rem;
+  }
+
+  .job-seekers-services-section .jss-subtitle {
+    max-width: 100%;
+  }
+
+  .job-seekers-services-section .jss-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .job-seekers-services-section .jss-card {
+    padding: 22px 18px;
+  }
+
+  .job-seekers-services-section .jss-note-bar {
+    padding: 16px;
+    margin-top: 36px;
+  }
+
+  .job-seekers-services-section .jss-note-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .job-seekers-services-section .jss-note-cta {
+    width: 100%;
+    text-align: center;
+  }
+
+  .job-seekers-services-section .jss-divider-wrapper {
+    height: 48px;
+  }
+}
+
+.job-seekers-process-section {
+  position: relative;
+  background-color: #081223;
+  background-image:
+    radial-gradient(circle at 15% 25%, rgba(0,188,212,0.08) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(86,168,255,0.07) 0%, transparent 40%),
+    linear-gradient(180deg, #081223 0%, #0C1A31 58%, #07101F 100%);
+  color: var(--text-light);
+  padding: 96px 20px 120px;
+  direction: rtl;
+  overflow: visible;
+}
+
+.job-seekers-process-section .jsp-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── INTRO BLOCK ── */
+.job-seekers-process-section .jsp-intro {
+  text-align: right;
+  margin-bottom: 56px;
+  max-width: 640px;
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+
+.job-seekers-process-section .jsp-eyebrow {
+  display: inline-block;
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--accent);
+}
+
+.job-seekers-process-section .jsp-heading {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-light);
+  margin: 0 0 16px;
+}
+
+.job-seekers-process-section .jsp-subheading {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(245,247,250,0.72);
+  margin: 0;
+}
+
+/* ── CONTENT ROW (Steps + Trust Panel) ── */
+.job-seekers-process-section .jsp-content-row {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* ── STEPS WRAPPER ── */
+.job-seekers-process-section .jsp-steps-wrapper {
+  width: 100%;
+  flex: 1;
+}
+
+/* ── STEPS GRID (mobile: vertical stack) ── */
+.job-seekers-process-section .jsp-steps-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── STEP CARD ── */
+.job-seekers-process-section .jsp-step-card {
+  background: linear-gradient(180deg, rgba(36,63,112,0.92) 0%, rgba(24,42,77,0.92) 100%);
+  border: 1px solid rgba(112,142,196,0.35);
+  border-radius: 2px;
+  padding: 28px 24px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  position: relative;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  flex: 1;
+}
+
+.job-seekers-process-section .jsp-step-card:hover {
+  border-color: rgba(0,188,212,0.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 0 18px rgba(0,188,212,0.12);
+}
+
+.job-seekers-process-section .jsp-step-card--highlight {
+  border-color: rgba(0,188,212,0.45);
+  background: linear-gradient(180deg, rgba(0,80,100,0.55) 0%, rgba(24,42,77,0.92) 100%);
+}
+
+.job-seekers-process-section .jsp-step-number {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 12px;
+  letter-spacing: -0.03em;
+  opacity: 0.9;
+}
+
+.job-seekers-process-section .jsp-step-title {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--text-light);
+  margin: 0 0 10px;
+}
+
+.job-seekers-process-section .jsp-step-desc {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(245,247,250,0.68);
+  margin: 0;
+}
+
+/* ── CONNECTOR (mobile: vertical line) ── */
+.job-seekers-process-section .jsp-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 32px;
+  position: relative;
+}
+
+.job-seekers-process-section .jsp-connector-line {
+  width: 2px;
+  flex: 1;
+  background: linear-gradient(180deg, var(--accent) 0%, rgba(0,188,212,0.3) 100%);
+}
+
+.job-seekers-process-section .jsp-connector-arrow {
+  width: 0;
+  height: 0;
+  border-inline-start: 5px solid transparent;
+  border-inline-end: 5px solid transparent;
+  border-top: 6px solid var(--accent);
+  opacity: 0.7;
+}
+
+/* ── TRUST PANEL ── */
+.job-seekers-process-section .jsp-trust-panel {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 28px 24px;
+  width: 100%;
+}
+
+.job-seekers-process-section .jsp-trust-label {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.job-seekers-process-section .jsp-trust-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.job-seekers-process-section .jsp-trust-item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: right;
+}
+
+.job-seekers-process-section .jsp-trust-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background: rgba(0,188,212,0.12);
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 50%;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.job-seekers-process-section .jsp-trust-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.job-seekers-process-section .jsp-trust-title {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-light);
+  display: block;
+}
+
+.job-seekers-process-section .jsp-trust-sub {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(245,247,250,0.55);
+  display: block;
+}
+
+/* ── BOTTOM FADE ── */
+.job-seekers-process-section .jsp-bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.06) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════
+   DESKTOP LAYOUT (≥ 900px)
+══════════════════════════════════════════ */
+@media (min-width: 900px) {
+
+  .job-seekers-process-section {
+    padding: 96px 40px 120px;
+  }
+
+  .job-seekers-process-section .jsp-intro {
+    max-width: 700px;
+    margin-inline-start: auto;
+    margin-inline-end: 0;
+    margin-bottom: 64px;
+  }
+
+  .job-seekers-process-section .jsp-heading {
+    font-size: 2rem;
+  }
+
+  /* Content row: steps on right, trust panel on left */
+  .job-seekers-process-section .jsp-content-row {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 32px;
+  }
+
+  /* Steps take remaining space */
+  .job-seekers-process-section .jsp-steps-wrapper {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /* Trust panel: fixed width on left */
+  .job-seekers-process-section .jsp-trust-panel {
+    width: 220px;
+    min-width: 200px;
+    flex-shrink: 0;
+    order: 2;
+    align-self: flex-start;
+    position: sticky;
+    top: 120px;
+  }
+
+  .job-seekers-process-section .jsp-steps-wrapper {
+    order: 1;
+  }
+
+  /* Steps grid: horizontal 4-column with connectors */
+  .job-seekers-process-section .jsp-steps-grid {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .job-seekers-process-section .jsp-step-card {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 28px 20px;
+  }
+
+  /* Horizontal connector between steps */
+  .job-seekers-process-section .jsp-connector {
+    flex-direction: row;
+    align-items: center;
+    height: auto;
+    width: 28px;
+    flex-shrink: 0;
+  }
+
+  .job-seekers-process-section .jsp-connector-line {
+    width: 100%;
+    height: 2px;
+    flex: 1;
+    background: linear-gradient(90deg, var(--accent) 0%, rgba(0,188,212,0.3) 100%);
+  }
+
+  .job-seekers-process-section .jsp-connector-arrow {
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-inline-end: none;
+    border-inline-start: 6px solid var(--accent);
+    border-left: 6px solid var(--accent);
+    border-right: none;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+}
+
+/* ══════════════════════════════════════════
+   LARGE DESKTOP (≥ 1100px)
+══════════════════════════════════════════ */
+@media (min-width: 1100px) {
+  .job-seekers-process-section .jsp-heading {
+    font-size: 2.4rem;
+  }
+
+  .job-seekers-process-section .jsp-trust-panel {
+    width: 240px;
+  }
+
+  .job-seekers-process-section .jsp-step-card {
+    padding: 32px 22px;
+  }
+}
+
+/* ══════════════════════════════════════════
+   MOBILE (≤ 768px)
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .job-seekers-process-section {
+    padding: 60px 16px 80px;
+  }
+
+  .job-seekers-process-section .jsp-intro {
+    max-width: 100%;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    margin-bottom: 36px;
+  }
+
+  .job-seekers-process-section .jsp-heading {
+    font-size: 1.6rem;
+  }
+
+  .job-seekers-process-section .jsp-content-row {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .job-seekers-process-section .jsp-trust-panel {
+    width: 100%;
+  }
+
+  .job-seekers-process-section .jsp-step-card {
+    padding: 22px 18px;
+  }
+
+  .job-seekers-process-section .jsp-step-number {
+    font-size: 2rem;
+  }
+
+  .job-seekers-process-section .jsp-connector {
+    height: 24px;
+  }
+}
+
+.job-seekers-contact-form-section {
+  position: relative;
+  overflow: hidden;
+  background-color: #081223;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(0, 188, 212, 0.13) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 0% 100%, rgba(0, 31, 63, 0.4) 0%, transparent 60%),
+    linear-gradient(180deg, #081223 0%, #0C1A31 58%, #07101F 100%);
+  color: var(--text-light);
+  padding: 100px 16px 80px;
+  direction: rtl;
+}
+
+/* Background Decorative Glow */
+.job-seekers-contact-form-section .jscf-bg-glow {
+  position: absolute;
+  top: -120px;
+  inset-inline-end: -80px;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 188, 212, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Grid Texture */
+.job-seekers-contact-form-section .jscf-grid-texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0, 188, 212, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 188, 212, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Container */
+.job-seekers-contact-form-section .jscf-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ── INTRO COLUMN ── */
+.job-seekers-contact-form-section .jscf-intro-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.job-seekers-contact-form-section .jscf-intro-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 188, 212, 0.12);
+  border: 1px solid rgba(0, 188, 212, 0.35);
+  border-radius: 999px;
+  padding: 6px 16px;
+  width: fit-content;
+  color: var(--accent);
+  font-family: Heebo, Rubik, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.job-seekers-contact-form-section .jscf-heading {
+  font-family: Heebo, Rubik, sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.job-seekers-contact-form-section .jscf-intro-text {
+  font-family: Assistant, Inter, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(245, 247, 250, 0.75);
+  margin: 0;
+}
+
+/* Guidance List */
+.job-seekers-contact-form-section .jscf-guidance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.job-seekers-contact-form-section .jscf-guidance-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px 0;
+}
+
+.job-seekers-contact-form-section .jscf-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 188, 212, 0.4), transparent);
+  margin: 0;
+}
+
+.job-seekers-contact-form-section .jscf-guidance-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(0, 188, 212, 0.1);
+  border: 1px solid rgba(0, 188, 212, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.job-seekers-contact-form-section .jscf-guidance-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.job-seekers-contact-form-section .jscf-guidance-title {
+  font-family: Heebo, Rubik, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.job-seekers-contact-form-section .jscf-guidance-text {
+  font-family: Assistant, Inter, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(245, 247, 250, 0.65);
+  margin: 0;
+}
+
+/* ── FORM COLUMN ── */
+.job-seekers-contact-form-section .jscf-form-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.job-seekers-contact-form-section .jscf-form-panel {
+  background: linear-gradient(180deg, rgba(20, 32, 55, 0.95) 0%, rgba(14, 22, 40, 0.98) 100%);
+  border: 1px solid rgba(112, 142, 196, 0.3);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.job-seekers-contact-form-section .jscf-form-header {
+  margin-bottom: 28px;
+}
+
+.job-seekers-contact-form-section .jscf-form-title {
+  font-family: Heebo, Rubik, sans-serif;
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--text-light);
+  margin: 0 0 6px 0;
+}
+
+.job-seekers-contact-form-section .jscf-form-subtitle {
+  font-family: Assistant, Inter, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(245, 247, 250, 0.5);
+  margin: 0;
+}
+
+/* Form Fields Grid */
+.job-seekers-contact-form-section .jscf-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.job-seekers-contact-form-section .jscf-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.job-seekers-contact-form-section .jscf-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.job-seekers-contact-form-section .jscf-field-full {
+  width: 100%;
+}
+
+.job-seekers-contact-form-section .jscf-label {
+  font-family: Assistant, Inter, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(245, 247, 250, 0.8);
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+
+.job-seekers-contact-form-section .jscf-required {
+  color: var(--accent);
+}
+
+.job-seekers-contact-form-section .jscf-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(112, 142, 196, 0.25);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: Assistant, Inter, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-light);
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  text-align: right;
+  direction: rtl;
+  box-sizing: border-box;
+}
+
+.job-seekers-contact-form-section .jscf-input::placeholder {
+  color: rgba(245, 247, 250, 0.3);
+}
+
+.job-seekers-contact-form-section .jscf-input:focus {
+  border-color: rgba(0, 188, 212, 0.6);
+  background: rgba(0, 188, 212, 0.06);
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+}
+
+.job-seekers-contact-form-section .jscf-textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* CV Strip */
+.job-seekers-contact-form-section .jscf-cv-strip {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 14px;
+  align-items: start;
+  background: rgba(0, 188, 212, 0.07);
+  border: 1px solid rgba(0, 188, 212, 0.25);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.job-seekers-contact-form-section .jscf-cv-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(0, 188, 212, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.job-seekers-contact-form-section .jscf-cv-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--text-light);
+}
+
+.job-seekers-contact-form-section .jscf-cv-text strong {
+  font-family: Heebo, Rubik, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+.job-seekers-contact-form-section .jscf-cv-text span {
+  font-family: Assistant, Inter, sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(245, 247, 250, 0.65);
+}
+
+.job-seekers-contact-form-section .jscf-cv-email {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.job-seekers-contact-form-section .jscf-cv-email:hover {
+  text-decoration: underline;
+}
+
+/* Privacy Consent */
+.job-seekers-contact-form-section .jscf-privacy {
+  color: rgba(245, 247, 250, 0.7);
+}
+
+.job-seekers-contact-form-section .privacy-consent-label {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-family: Assistant, Inter, sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(245, 247, 250, 0.7);
+  text-align: right;
+}
+
+.job-seekers-contact-form-section .privacy-consent-checkbox {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.job-seekers-contact-form-section .jscf-consent-link {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* Submit Button */
+.job-seekers-contact-form-section .jscf-submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(90deg, #19CFE1 0%, #17BFD3 100%);
+  color: #ffffff;
+  padding: 16px 42px;
+  border-radius: 8px;
+  border: none;
+  font-family: Heebo, Rubik, sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(23, 191, 211, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.job-seekers-contact-form-section .jscf-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(23, 191, 211, 0.38);
+}
+
+.job-seekers-contact-form-section .jscf-submit-btn:active {
+  transform: translateY(0);
+}
+
+/* Microcopy */
+.job-seekers-contact-form-section .jscf-microcopy {
+  font-family: Assistant, Inter, sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(245, 247, 250, 0.4);
+  text-align: center;
+  margin: 0;
+}
+
+/* ── DESKTOP LAYOUT ── */
+@media (min-width: 768px) {
+  .job-seekers-contact-form-section {
+    padding: 100px 32px 80px;
+  }
+
+  .job-seekers-contact-form-section .jscf-container {
+    grid-template-columns: 5fr 7fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .job-seekers-contact-form-section .jscf-heading {
+    font-size: 2rem;
+  }
+
+  .job-seekers-contact-form-section .jscf-fields-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .job-seekers-contact-form-section {
+    padding: 100px 40px 100px;
+  }
+
+  .job-seekers-contact-form-section .jscf-heading {
+    font-size: 2.2rem;
+  }
+}
+
+/* ── MOBILE OVERRIDES ── */
+@media (max-width: 767px) {
+  .job-seekers-contact-form-section {
+    padding: 100px 16px 60px;
+  }
+
+  .job-seekers-contact-form-section .jscf-container {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .job-seekers-contact-form-section .jscf-fields-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .job-seekers-contact-form-section .jscf-form-panel {
+    padding: 24px 20px;
+  }
+
+  .job-seekers-contact-form-section .jscf-heading {
+    font-size: 1.6rem;
+  }
+
+  .job-seekers-contact-form-section .jscf-bg-glow {
+    width: 300px;
+    height: 300px;
+    top: -60px;
+    inset-inline-end: -40px;
+  }
+}
+
+.job-seekers-cta-section {
+  position: relative;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  padding: 80px 24px 96px;
+  border-top: 3px solid var(--primary);
+  overflow: hidden;
+  direction: rtl;
+  font-family: 'Assistant', 'Inter', sans-serif;
+}
+
+.job-seekers-cta-section .job-seekers-cta-geometric-band {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(135deg, rgba(0, 188, 212, 0.06) 0%, rgba(0, 188, 212, 0.03) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.job-seekers-cta-section .job-seekers-cta-geometric-band::before {
+  content: '';
+  position: absolute;
+  inset-inline-end: -80px;
+  top: -60px;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 188, 212, 0.12);
+  pointer-events: none;
+}
+
+.job-seekers-cta-section .job-seekers-cta-geometric-band::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: -40px;
+  bottom: -80px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 31, 63, 0.07);
+  pointer-events: none;
+}
+
+.job-seekers-cta-section .job-seekers-cta-container {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.job-seekers-cta-section .job-seekers-cta-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.job-seekers-cta-section .job-seekers-cta-heading {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-dark);
+  margin: 0;
+  letter-spacing: -0.01em;
+  max-width: none !important;
+}
+
+.job-seekers-cta-section .job-seekers-cta-description {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 640px;
+  text-align: center;
+}
+
+.job-seekers-cta-section .job-seekers-cta-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.job-seekers-cta-section .job-seekers-btn-primary {
+  display: inline-block;
+  background: linear-gradient(90deg, #19CFE1 0%, #17BFD3 100%);
+  color: #FFFFFF;
+  padding: 16px 42px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 12px 24px rgba(23, 191, 211, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.job-seekers-cta-section .job-seekers-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(23, 191, 211, 0.32);
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.job-seekers-cta-section .job-seekers-btn-secondary {
+  display: inline-block;
+  background: transparent;
+  color: var(--primary);
+  padding: 14px 40px;
+  border-radius: 8px;
+  border: 2px solid var(--primary);
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.job-seekers-cta-section .job-seekers-btn-secondary:hover {
+  background: var(--primary);
+  color: var(--text-light);
+  box-shadow: 0 10px 24px rgba(0, 31, 63, 0.14);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .job-seekers-cta-section {
+    padding: 60px 16px 72px;
+  }
+
+  .job-seekers-cta-section .job-seekers-cta-heading {
+    font-size: 1.6rem;
+  }
+
+  .job-seekers-cta-section .job-seekers-cta-description {
+    font-size: 16px;
+  }
+
+  .job-seekers-cta-section .job-seekers-cta-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .job-seekers-cta-section .job-seekers-btn-primary,
+  .job-seekers-cta-section .job-seekers-btn-secondary {
+    width: 100%;
+    text-align: center;
+    padding: 16px 24px;
+  }
+
+  .job-seekers-cta-section .job-seekers-cta-geometric-band::before {
+    width: 220px;
+    height: 220px;
+    inset-inline-end: -40px;
+    top: -30px;
+  }
+
+  .job-seekers-cta-section .job-seekers-cta-geometric-band::after {
+    width: 160px;
+    height: 160px;
+    inset-inline-start: -20px;
+    bottom: -40px;
+  }
+}</style>
+    <link rel="stylesheet" href="/styles.css">
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: var(--text-dark, #333) !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))), .sub-menu:not(:has(li)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .sub-menu.mobile-expanded { max-height: 500px !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; position: relative !important; min-height: 44px !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; min-width: 0 !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; min-width: 0 !important; padding: 0 !important; line-height: inherit !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu, .navbar li:has(.sub-menu) > .sub-menu, #navMenu li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: auto !important; background: transparent !important; border: none !important; cursor: pointer !important; color: var(--text-light) !important; position: static !important; flex-shrink: 0 !important; align-self: stretch !important; z-index: 2 !important; padding: 0 !important; margin: 0 !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; color: var(--text-light) !important; }
+        .navbar .sub-menu li a, nav.navbar .sub-menu li a, .zappy-products-dropdown .sub-menu a { color: var(--text-light) !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+
+    <style id="mobile-lang-menu-deployed-css">
+    @media (max-width: 768px) {
+      .lang-switcher,
+      .nav-cta-container .lang-switcher,
+      .nav-container .lang-switcher,
+      .navbar .lang-switcher,
+      .navbar .nav-cta-container .lang-switcher,
+      .nav-icons-left .lang-switcher,
+      .nav-ecommerce-icons .lang-switcher { display: none !important; }
+      .mobile-lang-menu { width: 100%; border-top: 1px solid rgba(128,128,128,0.2); padding: 8px 0 0 0; margin-top: 8px; }
+      .mobile-lang-toggle { display: flex !important; align-items: center; justify-content: space-between; width: 100%; padding: 12px 16px; background: none; border: none; cursor: pointer; font-size: 15px; color: inherit; font-family: inherit; }
+      .mobile-lang-toggle::after { content: ''; display: inline-block; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform 0.3s ease; margin-left: 8px; }
+      .mobile-lang-toggle.expanded::after { transform: rotate(-135deg); }
+      .mobile-lang-options { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+      .mobile-lang-options.expanded { max-height: 300px; }
+      .mobile-lang-option { display: flex !important; align-items: center; gap: 10px; padding: 10px 24px; text-decoration: none; color: inherit; font-size: 14px; font-family: inherit; }
+      .mobile-lang-option:hover { background: rgba(128,128,128,0.1); }
+      .mobile-lang-option.active { font-weight: 600; opacity: 0.7; pointer-events: none; }
+      .mobile-lang-option img { width: 20px; height: 20px; border-radius: 50%; }
+    }
+    @media (min-width: 769px) {
+      .mobile-lang-menu { display: none !important; }
+    }
+    </style>
+
+    <style id="zappy-widget-visibility">
+      #mic-access-tool-general-button, .mic-access-tool-general-button,
+      #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+      ._access-icon, #mic-access-tool-box, .mic-access-tool-box,
+      #mic-init-access-tool #mic-access-tool-box, div[id*="mic-access-tool-box"], ._access-menu {
+        display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+      }
+    </style>
+</head>
+<body>
+
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display: none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+
+  <button class="phone-header-btn" data-phone="0537373535" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+
+  <div class="nav-container">
+    <div class="nav-right-group"><div class="nav-brand">
+      <a href="/" class="logo-link">
+        <img src="/assets/logo.webp" alt="התאמה חכמה בע" מ"="" class="logo">
+      </a>
+    </div><ul class="nav-menu" id="navMenu"><li><a href="/services">שירותים</a></li><li><a href="/about">אודות</a></li><li><a href="/job-seekers" class="nav-link">משרות</a></li></ul></div>
+
+    
+
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+<script>
+
+// Navbar Mobile Menu Toggle and Contrast Fix
+(function() {
+  // Use 'load' event instead of 'DOMContentLoaded' to ensure we run AFTER all other scripts
+  window.addEventListener('load', function() {
+    
+    // FIX MOBILE BUTTON CONTRAST
+    // Detect navbar background color and apply contrasting color to mobile buttons
+    const navbar = document.querySelector('.navbar, nav, header');
+    if (!navbar) {
+      console.log('[Navbar] Navbar element not found');
+      return;
+    }
+    
+    // DECLARE VARIABLES EARLY to avoid Temporal Dead Zone errors
+    // These are used in multiple places below
+    let mobileToggle = document.getElementById('mobileToggle') ||
+                       document.querySelector('.mobile-toggle') ||
+                       document.querySelector('.hamburger') ||
+                       document.querySelector('.hamburger-menu') ||
+                       document.querySelector('.menu-toggle') ||
+                       document.querySelector('.burger-menu') ||
+                       document.querySelector('[aria-label="Menu"]') ||
+                       document.querySelector('[aria-label="תפריט"]');
+    
+    const phoneBtn = document.querySelector('.phone-header-btn');
+    
+    const computedStyle = window.getComputedStyle(navbar);
+    let bgColor = computedStyle.backgroundColor;
+    
+    console.log('[Navbar] Initial navbar background:', bgColor);
+    
+    // Check if background is transparent or rgba with 0 alpha
+    const isTransparent = bgColor === 'transparent' || 
+                         bgColor === 'rgba(0, 0, 0, 0)' ||
+                         (bgColor.startsWith('rgba') && bgColor.includes(', 0)'));
+    
+    if (isTransparent) {
+      // Check for background-image or gradient
+      const bgImage = computedStyle.backgroundImage;
+      if (bgImage && bgImage !== 'none') {
+        console.log('[Navbar] Navbar has background image/gradient, using dark text');
+        bgColor = 'rgb(240, 240, 240)'; // Assume light background
+      } else {
+        // Transparent navbar - check body background
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+        console.log('[Navbar] Navbar transparent, using body background:', bodyBg);
+        bgColor = bodyBg;
+      }
+    }
+    
+    // Calculate luminance to determine if background is light or dark
+    const rgb = bgColor.match(/\d+/g);
+    if (rgb && rgb.length >= 3) {
+      const r = parseInt(rgb[0]);
+      const g = parseInt(rgb[1]);
+      const b = parseInt(rgb[2]);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      
+      // Mobile button colors are set by Claude's AI-generated CSS (same as .nav-menu a)
+      // No dynamic color overrides needed - colors come from the generated navbar CSS
+      console.log('[Navbar] Mobile button colors preserved from Claude CSS (luminance:', luminance.toFixed(2) + ')');
+      
+      // FIX ICON SIZES - Ensure SVGs are properly sized and visible
+      // INJECT CRITICAL CSS TO OVERRIDE ANY CONFLICTING RULES
+      const criticalCSS = document.createElement('style');
+      criticalCSS.id = 'zappy-mobile-nav-fix';
+      const htmlLang = document.documentElement.lang || 'en';
+      const htmlDir = document.documentElement.dir || 'ltr';
+      // Check both dir attribute AND lang for RTL detection
+      // dir="rtl" is the most reliable indicator
+      const isRTL = htmlDir === 'rtl' || htmlLang === 'he' || htmlLang === 'ar';
+      
+      criticalCSS.textContent = `
+        /* Hide mobile buttons on desktop, show only on mobile */
+        @media (min-width: 769px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            display: none !important;
+          }
+        }
+        
+        /* Show and position mobile buttons correctly on mobile */
+        @media (max-width: 768px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            position: absolute !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            z-index: 1001 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 6px !important;
+            background: none !important;
+            color: var(--nav-text, var(--text-light)) !important;
+          }
+          
+          /* LTR positioning (default): hamburger LEFT, phone RIGHT */
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .mobile-toggle,
+          html[dir="ltr"] .mobile-toggle {
+            left: 12px !important;
+            right: auto !important;
+          }
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .phone-header-btn,
+          html[dir="ltr"] .phone-header-btn {
+            right: 12px !important;
+            left: auto !important;
+          }
+          
+          /* RTL positioning: hamburger RIGHT, phone LEFT */
+          html[dir="rtl"] .mobile-toggle,
+          html[lang="he"] .mobile-toggle,
+          html[lang="ar"] .mobile-toggle {
+            right: 12px !important;
+            left: auto !important;
+          }
+          html[dir="rtl"] .phone-header-btn,
+          html[lang="he"] .phone-header-btn,
+          html[lang="ar"] .phone-header-btn {
+            left: 12px !important;
+            right: auto !important;
+          }
+          
+          /* CRITICAL: Ensure nav-container has min-height on mobile */
+          /* All children are positioned absolutely/fixed on mobile, so height:auto collapses to 0 */
+          .nav-container {
+            min-height: 70px !important;
+            position: relative !important;
+          }
+          
+          /* Ensure SVG icons are properly sized and inherit color */
+          .mobile-toggle svg,
+          .phone-header-btn svg {
+            width: 24px !important;
+            height: 24px !important;
+            /* Don't force display - let JavaScript control hamburger/close toggle */
+          }
+          
+          /* Reset nav-cta-container on mobile - remove desktop box-shadow/padding */
+          /* that creates a visible ghost box when CTA button is hidden */
+          .nav-cta-container {
+            box-shadow: none !important;
+            padding: 0 !important;
+          }
+          
+          /* Hide nav-cta-container entirely on mobile when there's no lang-switcher */
+          /* (only the CTA button is inside, and it's hidden on mobile) */
+          .nav-cta-container:not(:has(.lang-switcher)) {
+            display: none !important;
+          }
+          
+          /* CRITICAL: Prevent hero image fade gradient from bleeding over headline text */
+          /* The .image-fade-gradient has bottom: -30px (extends below parent) */
+          /* On mobile stacked layout, this overlaps the h1 text below the image */
+          .hero-image-column {
+            overflow: hidden !important;
+          }
+          .image-fade-gradient {
+            bottom: 0 !important;
+          }
+          
+          /* Hide desktop language switcher on mobile - hamburger menu handles it */
+          /* High specificity to override stored CSS */
+          .lang-switcher,
+          .nav-cta-container .lang-switcher,
+          .nav-container .lang-switcher,
+          .navbar .lang-switcher,
+          .navbar .nav-cta-container .lang-switcher {
+            display: none !important;
+          }
+        }
+      `;
+      
+      // Remove existing fix if present and inject new one
+      const existing = document.getElementById('zappy-mobile-nav-fix');
+      if (existing) existing.remove();
+      document.head.appendChild(criticalCSS);
+      
+      console.log('[Navbar] Critical CSS injected for mobile nav positioning');
+      
+      // ONLY apply inline positioning styles on mobile viewport
+      // On desktop, the CSS handles hiding these buttons with display: none
+      // Inline styles were breaking desktop layout by overriding CSS
+      const isMobileViewport = window.innerWidth <= 768;
+      
+      if (mobileToggle) {
+        // Icon sizing applies to all viewports for consistency
+        const hamburgerIcon = mobileToggle.querySelector('.hamburger-icon');
+        const closeIcon = mobileToggle.querySelector('.close-icon');
+        
+        if (hamburgerIcon) {
+          hamburgerIcon.style.setProperty('width', '24px', 'important');
+          hamburgerIcon.style.setProperty('height', '24px', 'important');
+          hamburgerIcon.style.setProperty('display', 'block', 'important'); // Show hamburger by default
+        }
+        if (closeIcon) {
+          closeIcon.style.setProperty('width', '24px', 'important');
+          closeIcon.style.setProperty('height', '24px', 'important');
+          closeIcon.style.setProperty('display', 'none', 'important'); // Hide close icon by default
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          mobileToggle.style.setProperty('position', 'absolute', 'important');
+          mobileToggle.style.setProperty('top', '50%', 'important');
+          mobileToggle.style.setProperty('transform', 'translateY(-50%)', 'important');
+          mobileToggle.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          
+          console.log('[Navbar] Mobile toggle positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          mobileToggle.style.removeProperty('position');
+          mobileToggle.style.removeProperty('top');
+          mobileToggle.style.removeProperty('transform');
+          mobileToggle.style.removeProperty('z-index');
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared mobile toggle inline positioning');
+        }
+      }
+      
+      if (phoneBtn) {
+        // Icon sizing applies to all viewports
+        const phoneIcon = phoneBtn.querySelector('svg');
+        if (phoneIcon) {
+          phoneIcon.style.width = '24px';
+          phoneIcon.style.height = '24px';
+          phoneIcon.setAttribute('width', '24');
+          phoneIcon.setAttribute('height', '24');
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          phoneBtn.style.setProperty('position', 'absolute', 'important');
+          phoneBtn.style.setProperty('top', '50%', 'important');
+          phoneBtn.style.setProperty('transform', 'translateY(-50%)', 'important');
+          phoneBtn.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          
+          console.log('[Navbar] Phone button positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          phoneBtn.style.removeProperty('position');
+          phoneBtn.style.removeProperty('top');
+          phoneBtn.style.removeProperty('transform');
+          phoneBtn.style.removeProperty('z-index');
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared phone button inline positioning');
+        }
+      }
+    } else {
+      console.log('[Navbar] Could not parse background color:', bgColor);
+    }
+    
+    // MOBILE MENU TOGGLE
+    // Re-query in case DOM changed (mobileToggle already declared at top of function)
+    mobileToggle = document.getElementById('mobileToggle') ||
+                   document.querySelector('.mobile-toggle') ||
+                   document.querySelector('.hamburger') ||
+                   document.querySelector('.hamburger-menu') ||
+                   document.querySelector('.menu-toggle') ||
+                   document.querySelector('.burger-menu') ||
+                   document.querySelector('[aria-label="Menu"]') ||
+                   document.querySelector('[aria-label="תפריט"]');
+    
+    // EXPANDED SEARCH: Find nav menu by ID or class
+    const navMenu = document.getElementById('navMenu') ||
+                  document.querySelector('.nav-menu') ||
+                  document.querySelector('.nav-links') ||
+                  document.querySelector('nav ul:not(.submenu)');
+    
+    if (!mobileToggle || !navMenu) {
+      console.log('[Navbar] Mobile toggle or menu not found:', { toggle: !!mobileToggle, menu: !!navMenu });
+      return;
+    }
+    
+    // Ensure navMenu has ID for CSS targeting
+    if (!navMenu.id) {
+      navMenu.id = 'navMenu';
+    }
+    
+    console.log('[Navbar] Initializing mobile menu...');
+    
+    // Remove any existing event listeners by cloning the button
+    const newToggle = mobileToggle.cloneNode(true);
+    mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+    
+    // Toggle menu on button click - use newToggle now
+    newToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const hamburgerIcon = this.querySelector('.hamburger-icon');
+      const closeIcon = this.querySelector('.close-icon');
+      const isActive = navMenu.classList.contains('active');
+      
+      if (isActive) {
+        // Close menu
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed');
+      } else {
+        // Open menu
+        navMenu.classList.add('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'none', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'block', 'important');
+        document.body.style.overflow = 'hidden';
+        console.log('[Navbar] Menu opened');
+      }
+    });
+    
+    // Close menu when clicking nav links (but NOT dropdown toggles)
+    const navLinks = navMenu.querySelectorAll('a');
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        // Don't close if it's a dropdown child (unless it's a real navigation link)
+        if (this.getAttribute('href') === '#') return;
+        
+        const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+        const closeIcon = newToggle.querySelector('.close-icon');
+        
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed (link clicked)');
+      });
+    });
+    
+    // DROPDOWN MENU TOGGLE (for mobile and touch devices)
+    var dropdownToggles = navMenu.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var parent = this.closest('.nav-dropdown');
+        if (!parent) return;
+        
+        // Close other open dropdowns at the same level
+        var siblings = parent.parentNode.querySelectorAll('.nav-dropdown.open');
+        siblings.forEach(function(sib) {
+          if (sib !== parent) sib.classList.remove('open');
+        });
+        
+        parent.classList.toggle('open');
+        console.log('[Navbar] Dropdown toggled:', parent.classList.contains('open') ? 'open' : 'closed');
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        var openDropdowns = document.querySelectorAll('.nav-dropdown.open');
+        openDropdowns.forEach(function(dd) { dd.classList.remove('open'); });
+      }
+    });
+    
+    console.log('[Navbar] Dropdown handlers initialized for ' + dropdownToggles.length + ' dropdowns');
+    
+    // Phone button functionality (phoneBtn already declared at top of function)
+    if (phoneBtn) {
+      phoneBtn.addEventListener('click', function() {
+        // Get phone number from placeholder in page or use default
+        const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+        const phoneNumber = phoneLinks.length > 0 
+          ? phoneLinks[0].getAttribute('href').replace('tel:', '')
+          : '053-737-35-35';
+        
+        window.location.href = 'tel:' + phoneNumber;
+        console.log('[Navbar] Phone button clicked');
+      });
+    }
+    
+    console.log('[Navbar] Mobile menu initialized successfully');
+    
+    // === WHATSAPP BUTTON VISIBILITY FIX ===
+    // Ensure WhatsApp floating button is hidden on desktop and visible on mobile
+    // IMPORTANT: Only target the floating button by its class, NOT generic wa.me links
+    const handleWhatsAppVisibility = function() {
+      const whatsappBtn = document.querySelector('.whatsapp-float');
+      if (whatsappBtn) {
+        const isDesktop = window.innerWidth >= 769;
+        if (isDesktop) {
+          whatsappBtn.style.setProperty('display', 'none', 'important');
+          whatsappBtn.style.setProperty('visibility', 'hidden', 'important');
+          whatsappBtn.style.setProperty('opacity', '0', 'important');
+          whatsappBtn.style.setProperty('pointer-events', 'none', 'important');
+          console.log('[WhatsApp] Button hidden on desktop');
+        } else {
+          whatsappBtn.style.removeProperty('display');
+          whatsappBtn.style.removeProperty('visibility');
+          whatsappBtn.style.removeProperty('opacity');
+          whatsappBtn.style.removeProperty('pointer-events');
+          console.log('[WhatsApp] Button visible on mobile');
+        }
+      }
+    };
+    
+    // Run on load
+    handleWhatsAppVisibility();
+    
+    // Run on resize with debouncing
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleWhatsAppVisibility, 100);
+    });
+  });
+})();
+
+</script>
+  
+  <main class="blog-page ai-generated-page"><section class="job-seekers-hero-section" data-layout-spec="משרות למחפשי עבודה-hero" dir="rtl" data-hero-type="text-only">
+  <div class="jsh-bg-layer" aria-hidden="true"></div>
+  <div class="jsh-grid-texture" aria-hidden="true"></div>
+  <div class="jsh-content-wrapper">
+    <div class="jsh-inner-grid">
+
+      <!-- Right Column: Headline + CTA -->
+      <div class="jsh-text-col">
+        <span class="jsh-eyebrow">הזדמנויות תעסוקה</span>
+        <h1 class="jsh-headline">המשרה הנכונה<br><span class="jsh-accent-word">מחכה לך</span></h1>
+        <div class="jsh-accent-line" aria-hidden="true"></div>
+        <h3 class="jsh-subtitle">אנחנו מתאימים בין אנשים לתפקידים בתעשייה, לוגיסטיקה ומשרדים — מהיר, מקצועי ואישי.</h3>
+        <div class="jsh-cta-row">
+          <a href="/contact" class="jsh-btn-primary">שלחו את הפרטים שלכם</a>
+          <a href="#jobs" class="jsh-btn-secondary">לכל המשרות</a>
+        </div>
+      </div>
+
+      <!-- Left Column: Dashboard Panel -->
+      <div class="jsh-panel-col">
+        <div class="jsh-dashboard-panel">
+
+          <div class="jsh-panel-row">
+            <div class="jsh-panel-icon-wrap">
+              <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><line x1="12" y1="12" x2="12" y2="16"></line><line x1="10" y1="14" x2="14" y2="14"></line></svg>
+            </div>
+            <div class="jsh-panel-content">
+              <span class="jsh-panel-label">תחומי גיוס</span>
+              <p class="jsh-panel-value">תעשייה · לוגיסטיקה · משרדים · מחסנים</p>
+            </div>
+          </div>
+
+          <div class="jsh-panel-divider" aria-hidden="true"></div>
+
+          <div class="jsh-panel-row">
+            <div class="jsh-panel-icon-wrap">
+              <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            </div>
+            <div class="jsh-panel-content">
+              <span class="jsh-panel-label">תהליך שקוף ומהיר</span>
+              <p class="jsh-panel-value">ייעוץ אישי · מיון מקצועי · ליווי עד קבלה</p>
+            </div>
+          </div>
+
+          <div class="jsh-panel-divider" aria-hidden="true"></div>
+
+          <div class="jsh-panel-row">
+            <div class="jsh-panel-icon-wrap">
+              <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <div class="jsh-panel-content">
+              <span class="jsh-panel-label">מהירות תגובה</span>
+              <p class="jsh-panel-value">חוזרים אליכם תוך 24 שעות — מובטח</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Fade Divider -->
+  <div class="jsh-bottom-fade" aria-hidden="true"></div>
+</section>
+
+<section class="job-seekers-services-section" data-layout-spec="משרות למחפשי עבודה-services" dir="rtl">
+  <div class="jss-container">
+
+    <!-- Intro Block -->
+    <div class="jss-intro">
+      <div class="jss-accent-rule"></div>
+      <h2 class="jss-title">תחומי המשרות שלנו</h2>
+      <p class="jss-subtitle">אנו מתמחים בגיוס והשמה בתחומים מגוונים — ממפעלי ייצור ומרכזי לוגיסטיקה ועד משרדים ותפקידי ניהול. כאן תמצאו את קטגוריות התפקידים שאנחנו מאיישים על בסיס יומיומי.</p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="jss-grid">
+
+      <!-- Card 1: תעשייה וייצור -->
+      <article class="jss-card">
+        <div class="jss-card-icon-wrap">
+          <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 20V8l4-4 4 4V4l4-4 4 4v16"></path>
+            <path d="M2 20h20"></path>
+            <rect x="8" y="14" width="3" height="6"></rect>
+            <rect x="13" y="14" width="3" height="6"></rect>
+          </svg>
+        </div>
+        <h3 class="jss-card-title">תעשייה וייצור</h3>
+        <p class="jss-card-desc">גיוס עובדים לקווי ייצור, הרכבה ועיבוד חומרים במפעלים מובילים ברחבי הארץ.</p>
+        <ul class="jss-role-list">
+          <li>מפעיל מכונות ייצור</li>
+          <li>עובד פס הרכבה</li>
+          <li>מפקח משמרת</li>
+          <li>טכנאי תחזוקה</li>
+        </ul>
+      </article>
+
+      <!-- Card 2: לוגיסטיקה ומחסנים -->
+      <article class="jss-card">
+        <div class="jss-card-icon-wrap">
+          <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <h3 class="jss-card-title">לוגיסטיקה ומחסנים</h3>
+        <p class="jss-card-desc">השמת כוח אדם למרכזי לוגיסטיקה, מחסנים ומרכזי הפצה — כולל ניהול מלאי ועבודת שטח.</p>
+        <ul class="jss-role-list">
+          <li>עובד מחסן ולוגיסטיקה</li>
+          <li>מנהל מלאי</li>
+          <li>מלגזן מוסמך</li>
+          <li>קלדן מחסן</li>
+        </ul>
+      </article>
+
+      <!-- Card 3: נהגים והפצה -->
+      <article class="jss-card">
+        <div class="jss-card-icon-wrap">
+          <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="1" y="3" width="15" height="13"></rect>
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+          </svg>
+        </div>
+        <h3 class="jss-card-title">נהגים והפצה</h3>
+        <p class="jss-card-desc">גיוס נהגים מקצועיים לרכבים קלים וכבדים, עם ניסיון בהפצה עירונית ובין-עירונית.</p>
+        <ul class="jss-role-list">
+          <li>נהג משאית כבדה</li>
+          <li>נהג הפצה עירוני</li>
+          <li>נהג רכב קל / שליח</li>
+          <li>נהג מלגזה</li>
+        </ul>
+      </article>
+
+      <!-- Card 4: אדמיניסטרציה ומשרד -->
+      <article class="jss-card">
+        <div class="jss-card-icon-wrap">
+          <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+        </div>
+        <h3 class="jss-card-title">אדמיניסטרציה ומשרד</h3>
+        <p class="jss-card-desc">השמת אנשי מקצוע לתפקידי אדמיניסטרציה, שירות לקוחות וניהול משרדי בחברות מובילות.</p>
+        <ul class="jss-role-list">
+          <li>מזכיר/ה ואדמיניסטרטור/ית</li>
+          <li>נציג/ת שירות לקוחות</li>
+          <li>רכז/ת לוגיסטיקה</li>
+          <li>עוזר/ת מנהל</li>
+        </ul>
+      </article>
+
+      <!-- Card 5: עובדים זרים -->
+      <article class="jss-card">
+        <div class="jss-card-icon-wrap">
+          <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </div>
+        <h3 class="jss-card-title">עובדים זרים</h3>
+        <p class="jss-card-desc">ליווי מלא בגיוס, רישוי ושילוב עובדים זרים לתעשייה, חקלאות ובנייה — תוך עמידה מלאה בדרישות החוק.</p>
+        <ul class="jss-role-list">
+          <li>עובד תעשייה זר</li>
+          <li>עובד חקלאות</li>
+          <li>עובד בנייה ופיתוח</li>
+          <li>עובד ניקיון ותחזוקה</li>
+        </ul>
+      </article>
+
+      <!-- Card 6: משרות זמניות ופרויקטים -->
+      <article class="jss-card">
+        <div class="jss-card-icon-wrap">
+          <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <h3 class="jss-card-title">משרות זמניות ופרויקטים</h3>
+        <p class="jss-card-desc">מענה גמיש לעסקים הזקוקים לכוח אדם לפרויקטים מוגבלים בזמן, עונות שיא ומשימות מיוחדות.</p>
+        <ul class="jss-role-list">
+          <li>עובד עונתי / זמני</li>
+          <li>כוח אדם לאירועים</li>
+          <li>עובד פרויקטלי</li>
+          <li>מחליף חופשות ומחלות</li>
+        </ul>
+      </article>
+
+    </div>
+    <!-- End Cards Grid -->
+
+  </div>
+
+  <!-- Note Bar -->
+  <div class="jss-note-bar">
+    <div class="jss-note-inner">
+      <i class="fa-solid fa-circle-info jss-note-icon" aria-hidden="true"></i>
+      <p class="jss-note-text">משרות נוספות זמינות בכל עת — פנו אלינו ישירות לקבלת רשימת המשרות המעודכנת ולהתאמה אישית לפרופיל שלכם.</p>
+      <a href="/contact" class="jss-note-cta">צרו קשר עכשיו</a>
+    </div>
+  </div>
+
+  <!-- Section Transition Divider -->
+  <div class="jss-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,72 L0,38 Q100,28 200,36 T400,30 Q500,24 600,32 T800,28 Q900,22 1000,32 T1200,36 L1200,72 Z" fill="var(--bg-dark)"></path>
+    </svg>
+  </div>
+
+</section>
+
+<section class="job-seekers-process-section" data-layout-spec="משרות למחפשי עבודה-process" dir="rtl">
+  <div class="jsp-container">
+
+    <!-- Intro Block -->
+    <div class="jsp-intro">
+      <span class="jsp-eyebrow">איך זה עובד</span>
+      <h2 class="jsp-heading">מהרגע שמשאירים פרטים<br>ועד היום הראשון בעבודה</h2>
+      <p class="jsp-subheading">תהליך פשוט, שקוף ומהיר — אנחנו מלווים אתכם בכל שלב עד שמוצאים את ההתאמה הנכונה לכם.</p>
+    </div>
+
+    <!-- Main Content: Steps + Trust Panel -->
+    <div class="jsp-content-row">
+
+      <!-- 4-Step Process -->
+      <div class="jsp-steps-wrapper">
+        <div class="jsp-steps-grid">
+
+          <!-- Step 1 -->
+          <article class="jsp-step-card">
+            <div class="jsp-step-number">01</div>
+            <h3 class="jsp-step-title">משאירים פרטים</h3>
+            <p class="jsp-step-desc">ממלאים טופס קצר עם הפרטים הבסיסיים — תחום העניין, ניסיון קודם ואזור מגורים. זה לוקח פחות מדקה.</p>
+          </article>
+
+          <!-- Connector 1 -->
+          <div class="jsp-connector" aria-hidden="true">
+            <div class="jsp-connector-line"></div>
+            <div class="jsp-connector-arrow"></div>
+          </div>
+
+          <!-- Step 2 -->
+          <article class="jsp-step-card">
+            <div class="jsp-step-number">02</div>
+            <h3 class="jsp-step-title">התאמת משרות</h3>
+            <p class="jsp-step-desc">המערכת שלנו סורקת עשרות משרות פתוחות ומאתרת את ההזדמנויות שמתאימות ביותר לפרופיל שלכם.</p>
+          </article>
+
+          <!-- Connector 2 -->
+          <div class="jsp-connector" aria-hidden="true">
+            <div class="jsp-connector-line"></div>
+            <div class="jsp-connector-arrow"></div>
+          </div>
+
+          <!-- Step 3 -->
+          <article class="jsp-step-card">
+            <div class="jsp-step-number">03</div>
+            <h3 class="jsp-step-title">שיחה והכוונה</h3>
+            <p class="jsp-step-desc">נציג אישי יצור אתכם קשר, יסביר על המשרות המתאימות ויכין אתכם לתהליך הגיוס מול המעסיק.</p>
+          </article>
+
+          <!-- Connector 3 -->
+          <div class="jsp-connector" aria-hidden="true">
+            <div class="jsp-connector-line"></div>
+            <div class="jsp-connector-arrow"></div>
+          </div>
+
+          <!-- Step 4 -->
+          <article class="jsp-step-card jsp-step-card--highlight">
+            <div class="jsp-step-number">04</div>
+            <h3 class="jsp-step-title">יציאה לעבודה</h3>
+            <p class="jsp-step-desc">לאחר האישור הסופי, אתם יוצאים לעבודה עם כל הפרטים מסודרים — חוזה, שעות ותנאים ברורים.</p>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- Trust Panel -->
+      <aside class="jsp-trust-panel">
+        <div class="jsp-trust-label">למה לבחור בנו</div>
+        <ul class="jsp-trust-list">
+          <li class="jsp-trust-item">
+            <span class="jsp-trust-icon" aria-hidden="true">
+              <svg data-element-type="icon" data-icon-type="svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+            </span>
+            <div class="jsp-trust-content">
+              <strong class="jsp-trust-title">ליווי אישי</strong>
+              <span class="jsp-trust-sub">נציג צמוד לאורך כל התהליך</span>
+            </div>
+          </li>
+          <li class="jsp-trust-item">
+            <span class="jsp-trust-icon" aria-hidden="true">
+              <svg data-element-type="icon" data-icon-type="svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path></svg>
+            </span>
+            <div class="jsp-trust-content">
+              <strong class="jsp-trust-title">שקיפות מול המעסיק</strong>
+              <span class="jsp-trust-sub">תנאים ברורים מראש, ללא הפתעות</span>
+            </div>
+          </li>
+          <li class="jsp-trust-item">
+            <span class="jsp-trust-icon" aria-hidden="true">
+              <svg data-element-type="icon" data-icon-type="svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 7V5a2 2 0 00-4 0v2M8 11h.01M12 11h.01M16 11h.01"></path></svg>
+            </span>
+            <div class="jsp-trust-content">
+              <strong class="jsp-trust-title">התאמה לענף</strong>
+              <span class="jsp-trust-sub">תעשייה, לוגיסטיקה ומשרדים</span>
+            </div>
+          </li>
+        </ul>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- Bottom Fade Divider -->
+  <div class="jsp-bottom-fade" aria-hidden="true"></div>
+</section>
+
+<section class="job-seekers-contact-form-section" dir="rtl" data-layout-spec="משרות למחפשי עבודה-contact-form">
+  <!-- Background decorative elements -->
+  <div class="jscf-bg-glow" aria-hidden="true"></div>
+  <div class="jscf-grid-texture" aria-hidden="true"></div>
+
+  <div class="jscf-container">
+    <!-- Right Column: Intro & Guidance -->
+    <div class="jscf-intro-col">
+      <div class="jscf-intro-badge">
+        <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
+        <span>השמה מקצועית</span>
+      </div>
+      <h2 class="jscf-heading">מצאו את המשרה<br>שמתאימה לכם</h2>
+      <p class="jscf-intro-text">אנו מתחברים מדי יום עם מעסיקים מובילים בתעשייה, לוגיסטיקה ומשרדים ברחבי הארץ. מלאו את הטופס ונחזור אליכם עם הזדמנויות תעסוקה שמתאימות לפרופיל שלכם.</p>
+
+      <div class="jscf-guidance-list">
+        <div class="jscf-guidance-item">
+          <div class="jscf-guidance-icon">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+          </div>
+          <div class="jscf-guidance-content">
+            <h3 class="jscf-guidance-title">אילו פרטים כדאי לציין</h3>
+            <p class="jscf-guidance-text">ציינו ניסיון עבודה קודם, כישורים רלוונטיים, ורמת השכלה. ככל שהמידע מפורט יותר — כך נוכל להתאים לכם הזדמנויות מדויקות יותר.</p>
+          </div>
+        </div>
+        <div class="jscf-divider" aria-hidden="true"></div>
+
+        <div class="jscf-guidance-item">
+          <div class="jscf-guidance-icon">
+            <i class="fa-solid fa-industry" aria-hidden="true"></i>
+          </div>
+          <div class="jscf-guidance-content">
+            <h3 class="jscf-guidance-title">אילו תחומים רלוונטיים</h3>
+            <p class="jscf-guidance-text">אנו מגייסים לתעשייה, ייצור, לוגיסטיקה ומחסנים, שירות לקוחות, אדמיניסטרציה ותפקידי משרד — לעובדים ישראלים וזרים כאחד.</p>
+          </div>
+        </div>
+        <div class="jscf-divider" aria-hidden="true"></div>
+
+        <div class="jscf-guidance-item">
+          <div class="jscf-guidance-icon">
+            <i class="fa-solid fa-route" aria-hidden="true"></i>
+          </div>
+          <div class="jscf-guidance-content">
+            <h3 class="jscf-guidance-title">מה קורה אחרי הפנייה</h3>
+            <p class="jscf-guidance-text">נציג גיוס ייצור איתכם קשר תוך 24 שעות, יסקור את הפרופיל שלכם ויציג בפניכם משרות פתוחות המתאימות לניסיונכם.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Left Column: Contact Form -->
+    <div class="jscf-form-col">
+      <div class="jscf-form-panel">
+        <div class="jscf-form-header">
+          <h3 class="jscf-form-title">שלחו פנייה עכשיו</h3>
+          <p class="jscf-form-subtitle">כל הפרטים נשמרים בסודיות מלאה</p>
+        </div>
+
+        <form class="contact-form jscf-form" novalidate="">
+          <div class="jscf-fields-grid">
+            <div class="jscf-field-group">
+              <label class="jscf-label" for="jscf-name">שם מלא <span class="jscf-required">*</span></label>
+              <input class="jscf-input" type="text" id="jscf-name" name="full_name" placeholder="ישראל ישראלי" required="">
+            </div>
+            <div class="jscf-field-group">
+              <label class="jscf-label" for="jscf-email">כתובת אימייל <span class="jscf-required">*</span></label>
+              <input class="jscf-input" type="email" id="jscf-email" name="email" placeholder="example@email.com" required="">
+            </div>
+            <div class="jscf-field-group">
+              <label class="jscf-label" for="jscf-phone">טלפון <span class="jscf-required">*</span></label>
+              <input class="jscf-input" type="tel" id="jscf-phone" name="phone" placeholder="05X-XXX-XXXX" required="">
+            </div>
+            <div class="jscf-field-group">
+              <label class="jscf-label" for="jscf-role">תחום משרה מבוקש</label>
+              <input class="jscf-input" type="text" id="jscf-role" name="desired_role" placeholder="לדוגמה: עובד מחסן, אדמין, ייצור...">
+            </div>
+          </div>
+
+          <div class="jscf-field-group jscf-field-full">
+            <label class="jscf-label" for="jscf-message">ספרו לנו עליכם</label>
+            <textarea class="jscf-input jscf-textarea" id="jscf-message" name="message" rows="4" placeholder="ניסיון עבודה, כישורים מיוחדים, זמינות, ציפיות שכר — כל מידע שיעזור לנו למצוא לכם את ההזדמנות הנכונה"></textarea>
+          </div>
+
+          <!-- CV Callout Strip -->
+          <div class="jscf-cv-strip">
+            <div class="jscf-cv-icon">
+              <i class="fa-solid fa-paperclip" aria-hidden="true"></i>
+            </div>
+            <div class="jscf-cv-text">
+              <strong>שלחו קורות חיים</strong>
+              <span>צרפו את קורות החיים שלכם ישירות לאימייל: <a href="mailto:[business_email]" class="jscf-cv-email">[business_email]</a> — ציינו בנושא האימייל את שמכם ותחום המשרה המבוקש.</span>
+            </div>
+          </div>
+
+          <!-- Privacy Consent -->
+          <div class="privacy-consent jscf-privacy">
+            <label class="privacy-consent-label">
+              <input type="checkbox" name="privacy_consent" class="privacy-consent-checkbox" required="">
+              <span>קראתי ואני מסכים/ה ל<a href="/terms" target="_blank" class="jscf-consent-link">תנאי השימוש</a> ול<a href="/privacy" target="_blank" class="jscf-consent-link">מדיניות הפרטיות</a></span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn-primary jscf-submit-btn">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            שלחו פנייה
+          </button>
+
+          <p class="jscf-microcopy">נציג גיוס יחזור אליכם תוך 24 שעות עסקיות. כל הפרטים נשמרים בסודיות מלאה ולא יועברו לצד שלישי ללא אישורכם.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="job-seekers-cta-section" data-layout-spec="משרות למחפשי עבודה-cta" dir="rtl">
+  <div class="job-seekers-cta-geometric-band" aria-hidden="true"></div>
+  <div class="job-seekers-cta-container">
+    <div class="job-seekers-cta-content">
+      <h2 class="job-seekers-cta-heading">מוכן/ת לצעד הבא בקריירה שלך?</h2>
+      <p class="job-seekers-cta-description">צוות המומחים שלנו ב-התאמה חכמה כאן כדי לחבר אותך עם ההזדמנות המושלמת — בין אם אתה מחפש עבודה בתעשייה, לוגיסטיקה או משרד. בואו נמצא יחד את ההתאמה הנכונה עבורך.</p>
+      <div class="job-seekers-cta-buttons">
+        <a href="/contact" class="job-seekers-btn-primary">שלח קורות חיים</a>
+        <a href="/about" class="job-seekers-btn-secondary">קרא עלינו</a>
+      </div>
+    </div>
+  </div>
+</section></main>
+  
+  <footer class="site-footer" dir="rtl">
+  <div class="footer-main">
+    <div class="footer-container">
+      <div class="footer-grid">
+
+        <!-- Column 1: Company Info -->
+        <div class="footer-col footer-col--brand">
+          <div class="footer-logo-wrap">
+            <img src="/assets/logo.webp" alt="התאמה חכמה בע" מ"="" class="logo">
+          </div>
+          <p class="footer-tagline">מחברים בין כישרון לאפשרות.<br>פתרונות גיוס והשמה חכמים לעסקים ולמועמדים.</p>
+          <div class="footer-social">
+            <a href="https://facebook.com/profile.php?id=61581803822923" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/smartstaff4" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/972537373535" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-col">
+          <h3 class="footer-heading">
+            <span class="footer-heading-accent"></span>
+            ניווט מהיר
+          </h3>
+          <ul class="footer-links">
+            <li><a href="/services"><i class="fas fa-chevron-left footer-link-icon"></i>שירותים</a></li>
+            <li><a href="/about"><i class="fas fa-chevron-left footer-link-icon"></i>אודות</a></li>
+            <li><a href="/contact"><i class="fas fa-chevron-left footer-link-icon"></i>צור קשר</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Contact Info -->
+        <div class="footer-col">
+          <h3 class="footer-heading">
+            <span class="footer-heading-accent"></span>
+            יצירת קשר
+          </h3>
+          <ul class="footer-contact">
+            <li>
+              <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+              <span class="contact-text"><a href="mailto:info@s-staff.co.il">info@s-staff.co.il</a></span>
+            </li>
+            <li>
+              <span class="contact-icon"><i class="fas fa-phone"></i></span>
+              <span class="contact-text"><a href="tel:053-737-35-35">053-737-35-35</a></span>
+            </li>
+            <li><a href="/"><span class="contact-icon"><i class="fas fa-map-marker-alt" style="cursor: pointer;"></i></span>
+              <span class="contact-text">פתח תקוה 5, נתניה, ישראל</span></a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: CTA Panel -->
+        <div class="footer-col footer-col--cta">
+          <h3 class="footer-heading">
+            <span class="footer-heading-accent"></span>
+            מחפשים עובדים?
+          </h3>
+          <p class="footer-cta-text">נשמח לעזור לכם למצוא את המועמד המושלם לתפקיד.</p>
+          <a href="/contact" class="footer-cta-btn">דברו איתנו</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <div class="footer-bottom-inner">
+        <p class="footer-copyright">© 2026 התאמה חכמה בע"מ. כל הזכויות שמורות.</p>
+        <div class="footer-legal">
+          <a href="/privacy">מדיניות פרטיות</a>
+          <span class="footer-legal-sep"></span>
+          <a href="/terms">תנאי שימוש</a>
+          <span class="footer-legal-sep"></span>
+          <a href="/accessibility">נגישות</a>
+          <span class="footer-legal-sep"></span>
+          <a href="https://zappy5.com" target="_blank" class="zappy-attribution">נוצר באמצעות Zappy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  <a href="https://wa.me/972537373535" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <div data-integration="accessibility:toolbar"></div>
+
+    <script src="/script.js"></script>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+
+    <script id="zappy-navbar-scroll-effect">
+    (function(){
+      var nb=document.querySelector('nav.navbar,.navbar:not(.zappy-catalog-menu)');
+      var cm=document.querySelector('.zappy-catalog-menu,#zappy-catalog-menu');
+      if(!nb)return;
+      var fb='rgba(255,255,255,0.85)';
+      var th=60;
+      var rs=getComputedStyle(document.documentElement);
+      var td=rs.getPropertyValue('--text-dark').trim()||'#1a1a1a';
+      var tl=rs.getPropertyValue('--text-light').trim()||'#ffffff';
+      var st=true?td:tl;
+      nb.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease,box-shadow 0.3s ease';
+      if(cm)cm.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease';
+      var neSel='a,.navbar-brand,.navbar-brand a,.dropdown-toggle,.mobile-toggle,.phone-header-btn,.mobile-hamburger-btn,.mobile-close-btn,.mobile-submenu-toggle,.nav-link';
+      var skipCls=['cart-link','login-link','nav-search-toggle','search-toggle'];
+      function sTC(c,clr){var els=c.querySelectorAll(neSel);for(var i=0;i<els.length;i++){var sk=false;if(els[i].closest('.sub-menu')||els[i].closest('.dropdown-menu')){sk=true;}for(var j=0;j<skipCls.length;j++){if(els[i].classList.contains(skipCls[j])){sk=true;break;}}if(!sk)els[i].style.setProperty('color',clr,'important');}}
+      function cTC(c){var els=c.querySelectorAll(neSel);for(var i=0;i<els.length;i++){if(els[i].closest('.sub-menu')||els[i].closest('.dropdown-menu'))continue;els[i].style.removeProperty('color');}}
+      function applyScrolled(){
+        nb.classList.add('scrolled');
+        if(window.innerWidth>768){
+          nb.style.setProperty('--frosted-text',st);
+          nb.style.setProperty('background-image','none','important');
+          nb.style.setProperty('background-color',fb,'important');
+          nb.style.backdropFilter='blur(12px)';nb.style.webkitBackdropFilter='blur(12px)';nb.style.boxShadow='0 2px 16px rgba(0,0,0,0.12)';
+          sTC(nb,st);
+        }
+        if(cm){cm.classList.add('scrolled');if(window.innerWidth>768){cm.style.setProperty('background',fb,'important');cm.style.setProperty('backdrop-filter','blur(12px)','important');cm.style.setProperty('-webkit-backdrop-filter','blur(12px)','important');sTC(cm,st);}}
+      }
+      function onS(){
+        if(window._zappyNavNoDarkHero) return;
+        if(window.innerWidth<=768){nb.classList.remove('scrolled');cTC(nb);if(cm){cm.classList.remove('scrolled');cTC(cm);}return;}
+        var y=window.scrollY||window.pageYOffset;
+        if(y>th){
+          nb.classList.add('scrolled');nb.style.setProperty('background-color',fb,'important');nb.style.setProperty('background-image','none','important');
+          nb.style.setProperty('--frosted-text',st);nb.style.backdropFilter='blur(12px)';nb.style.webkitBackdropFilter='blur(12px)';nb.style.boxShadow='0 2px 16px rgba(0,0,0,0.12)';
+          sTC(nb,st);
+          if(cm){cm.classList.add('scrolled');cm.style.setProperty('background',fb,'important');cm.style.setProperty('backdrop-filter','blur(12px)','important');cm.style.setProperty('-webkit-backdrop-filter','blur(12px)','important');sTC(cm,st);}
+        }else{
+          nb.classList.remove('scrolled');nb.style.setProperty('background-color','transparent','important');nb.style.removeProperty('background-image');
+          nb.style.removeProperty('--frosted-text');nb.style.backdropFilter='none';nb.style.webkitBackdropFilter='none';nb.style.boxShadow='none';
+          cTC(nb);
+          if(cm){cm.classList.remove('scrolled');cm.style.setProperty('background','transparent','important');cm.style.setProperty('backdrop-filter','none','important');cm.style.setProperty('-webkit-backdrop-filter','none','important');cTC(cm);}
+        }
+      }
+      function sLum(rv,gv,bv){rv/=255;gv/=255;bv/=255;rv=rv<=0.03928?rv/12.92:Math.pow((rv+0.055)/1.055,2.4);gv=gv<=0.03928?gv/12.92:Math.pow((gv+0.055)/1.055,2.4);bv=bv<=0.03928?bv/12.92:Math.pow((bv+0.055)/1.055,2.4);return 0.2126*rv+0.7152*gv+0.0722*bv;}
+      window.addEventListener('scroll',onS,{passive:true});
+      window.addEventListener('resize',onS,{passive:true});
+      onS();
+      var heroEl=document.querySelector('section[class*="hero"],[data-hero-type],main>section:first-child');
+      var hasDH=false;
+      if(heroEl){var hCs=getComputedStyle(heroEl);var hBI=hCs.backgroundImage;if(hBI&&hBI!=='none'){if(hBI.indexOf('url(')!==-1){var hM2=hCs.backgroundColor.match(/\d+/g);if(hM2&&hM2.length>=3){hasDH=sLum(parseInt(hM2[0]),parseInt(hM2[1]),parseInt(hM2[2]))<0.4;}else{hasDH=true;}}else if(hBI.indexOf('gradient')!==-1){var cM=hBI.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g);if(cM&&cM.length>0){var tLm=0;for(var ci=0;ci<cM.length;ci++){var pts=cM[ci].match(/\d+/g);tLm+=sLum(parseInt(pts[0]),parseInt(pts[1]),parseInt(pts[2]));}hasDH=(tLm/cM.length)<0.4;}else{hasDH=true;}}else{hasDH=true;}}else{var hM=hCs.backgroundColor.match(/\d+/g);if(hM&&hM.length>=3){hasDH=sLum(parseInt(hM[0]),parseInt(hM[1]),parseInt(hM[2]))<0.4;}}}
+      if(!hasDH){window.removeEventListener('scroll',onS);window.removeEventListener('resize',onS);applyScrolled();window._zappyNavNoDarkHero=true;}
+    })();
+    </script>
+
+    <script id="zappy-mobile-lang-menu-script">
+    (function() {
+      function initMobileLangMenu() {
+        if (window.innerWidth > 768) {
+          var existingMenu = document.querySelector('.mobile-lang-menu');
+          if (existingMenu) existingMenu.remove();
+          return;
+        }
+        if (document.querySelector('.mobile-lang-menu')) return;
+        var switcher = document.querySelector('.lang-switcher');
+        if (!switcher) return;
+        var dropdown = switcher.querySelector('.lang-switcher-dropdown');
+        if (!dropdown) return;
+        var options = dropdown.querySelectorAll('.lang-option');
+        if (options.length === 0) return;
+        var navMenu = document.getElementById('navMenu') || document.querySelector('.nav-menu') || document.querySelector('nav ul');
+        if (!navMenu) return;
+        var currentLang = document.documentElement.lang || 'en';
+        var langConfigs = {
+          he: {name:'עברית',flag:'https://api.iconify.design/circle-flags/il.svg'},
+          en: {name:'English',flag:'https://api.iconify.design/circle-flags/us.svg'},
+          ar: {name:'العربية',flag:'https://api.iconify.design/circle-flags/sa.svg'},
+          fr: {name:'Français',flag:'https://api.iconify.design/circle-flags/fr.svg'},
+          es: {name:'Español',flag:'https://api.iconify.design/circle-flags/es.svg'},
+          de: {name:'Deutsch',flag:'https://api.iconify.design/circle-flags/de.svg'},
+          ru: {name:'Русский',flag:'https://api.iconify.design/circle-flags/ru.svg'},
+          zh: {name:'中文',flag:'https://api.iconify.design/circle-flags/cn.svg'},
+          ja: {name:'日本語',flag:'https://api.iconify.design/circle-flags/jp.svg'},
+          pt: {name:'Português',flag:'https://api.iconify.design/circle-flags/br.svg'},
+          it: {name:'Italiano',flag:'https://api.iconify.design/circle-flags/it.svg'},
+          ko: {name:'한국어',flag:'https://api.iconify.design/circle-flags/kr.svg'}
+        };
+        var container = document.createElement('div');
+        container.className = 'mobile-lang-menu';
+        var currentConfig = langConfigs[currentLang] || {name:currentLang,flag:''};
+        var toggleBtn = document.createElement('button');
+        toggleBtn.className = 'mobile-lang-toggle';
+        toggleBtn.type = 'button';
+        var currentFlagHtml = currentConfig.flag ? '<img src="' + currentConfig.flag + '" width="20" height="20" alt="" style="border-radius:50%;margin-right:8px;margin-left:8px;">' : '';
+        toggleBtn.innerHTML = currentFlagHtml + currentConfig.name;
+        container.appendChild(toggleBtn);
+        var optionsDiv = document.createElement('div');
+        optionsDiv.className = 'mobile-lang-options';
+        var currentLink = document.createElement('a');
+        currentLink.className = 'mobile-lang-option active';
+        currentLink.href = '#';
+        currentLink.innerHTML = currentFlagHtml + currentConfig.name;
+        optionsDiv.appendChild(currentLink);
+        options.forEach(function(opt) {
+          var link = document.createElement('a');
+          link.className = 'mobile-lang-option';
+          link.href = opt.getAttribute('href');
+          link.innerHTML = opt.innerHTML;
+          optionsDiv.appendChild(link);
+        });
+        container.appendChild(optionsDiv);
+        navMenu.appendChild(container);
+        toggleBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleBtn.classList.toggle('expanded');
+          optionsDiv.classList.toggle('expanded');
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileLangMenu); }
+      else { initMobileLangMenu(); }
+      window.addEventListener('resize', function() { clearTimeout(window._mlrt); window._mlrt = setTimeout(initMobileLangMenu, 250); });
+    })();
+    </script>
+</body>
+</html>
