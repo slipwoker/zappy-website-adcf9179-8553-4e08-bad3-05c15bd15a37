@@ -8760,6 +8760,22 @@ body.accessibility-widget-visible ._access-menu {
   display: none !important;
 }
 
+.about-story-section .about-story-stat {
+  align-items: flex-start !important;
+}
+
+.about-story-section .about-story-stat-label {
+  text-align: start !important;
+}
+
+.about-story-section .about-story-stat {
+  align-items: flex-end !important;
+}
+
+.about-story-section .about-story-stat-label {
+  text-align: end !important;
+}
+
 /* ========== RTL MOBILE NAVBAR FIX (zappy-rtl-mobile-fix) ========== */
 /* High-specificity rules to ensure RTL positioning wins over any [lang="en"] conflicts */
 /* For RTL sites: hamburger on RIGHT, phone on LEFT (mirror of LTR layout) */
