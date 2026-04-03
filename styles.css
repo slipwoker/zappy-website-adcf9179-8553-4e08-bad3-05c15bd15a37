@@ -9000,53 +9000,6 @@ body.accessibility-widget-visible ._access-menu {
   flex-shrink: 0 !important;
 }
 
-.services-overview-section .sov-features-list {
-  gap: 16px !important;
-  margin-top: 12px !important;
-}
-
-.services-overview-section .sov-feature-item {
-  grid-template-columns: 44px 1fr !important;
-  gap: 16px !important;
-  align-items: center !important;
-  padding: 14px 18px !important;
-  background: rgba(0, 188, 212, 0.05) !important;
-  border: 1px solid rgba(0, 188, 212, 0.15) !important;
-  border-radius: 10px !important;
-}
-
-.services-overview-section .sov-feature-text {
-  padding-top: 0 !important;
-  line-height: 1.6 !important;
-  font-size: 15px !important;
-}
-
-.services-overview-section .sov-feature-icon {
-  flex-shrink: 0 !important;
-  margin: 0 auto !important;
-}
-
-.services-overview-section .sov-feature-text font,
-.services-overview-section .sov-feature-text b,
-.services-overview-section .sov-feature-text strong {
-  color: inherit !important;
-}
-
-.services-overview-section .sov-feature-text {
-  color: rgba(245,247,250,0.85) !important;
-}
-
-.services-overview-section .sov-feature-text strong,
-.services-overview-section .sov-feature-text b {
-  color: #F5F7FA !important;
-  font-weight: 700 !important;
-}
-
-.services-overview-section .sov-intro-text font,
-.services-overview-section .sov-body-text font {
-  color: inherit !important;
-}
-
 /* ========== RTL MOBILE NAVBAR FIX (zappy-rtl-mobile-fix) ========== */
 /* High-specificity rules to ensure RTL positioning wins over any [lang="en"] conflicts */
 /* For RTL sites: hamburger on RIGHT, phone on LEFT (mirror of LTR layout) */
