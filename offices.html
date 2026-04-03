@@ -1,0 +1,3491 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>משרות פתוחות והשמה למחפשי עבודה</title>
+    <meta name="description" content="התאמה חכמה בע"מ - משרות פתוחות והשמה למחפשי עבודה">
+    <meta name="keywords" content="">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: 'adcf9179-8553-4e08-bad3-05c15bd15a37',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="משרות פתוחות והשמה למחפשי עבודה">
+    <meta property="og:description" content="התאמה חכמה בע&quot;מ - משרות פתוחות והשמה למחפשי עבודה">
+    <meta property="og:image" content="assets/section-hero-careers-hero-image-1-og.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:alt" content="משרות פתוחות והשמה למחפשי עבודה">
+    <meta property="og:locale" content="he_IL">
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="משרות פתוחות והשמה למחפשי עבודה">
+    <meta name="twitter:description" content="התאמה חכמה בע&quot;מ - משרות פתוחות והשמה למחפשי עבודה">
+    <meta name="twitter:image" content="assets/section-hero-careers-hero-image-1-og.jpg">
+    <meta name="twitter:image:alt" content="משרות פתוחות והשמה למחפשי עבודה"><style id="zappy-ai-page-styles">.careers-hero-section {
+  position: relative;
+  min-height: 78vh;
+  background-color: var(--primary);
+  background-image:
+    radial-gradient(circle at 80% 10%, rgba(0,188,212,0.13) 0%, transparent 45%),
+    radial-gradient(circle at 10% 80%, rgba(0,31,63,0.6) 0%, transparent 55%),
+    linear-gradient(165deg, #001F3F 0%, #07101F 60%, #0C1A31 100%);
+  color: var(--text-light);
+  overflow: visible;
+  direction: rtl;
+  padding-bottom: 80px;
+}
+
+/* ── Background full-bleed image ── */
+.careers-hero-section .careers-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.careers-hero-section .careers-hero-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  opacity: 0.18;
+}
+
+/* ── Scrim overlay ── */
+.careers-hero-section .careers-hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, rgba(0,16,40,0.92) 0%, rgba(0,16,40,0.75) 45%, rgba(0,16,40,0.45) 100%),
+    linear-gradient(180deg, rgba(0,16,40,0.4) 0%, rgba(0,16,40,0.0) 60%, rgba(255,255,255,0.0) 100%);
+}
+
+/* ── Bottom fade to white ── */
+.careers-hero-section .careers-hero-bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  pointer-events: none;
+  z-index: 6;
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.96) 100%);
+}
+
+/* ── Container ── */
+.careers-hero-section .careers-hero-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 140px 48px 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+  direction: rtl;
+}
+
+/* ── Text Column (Right) ── */
+.careers-hero-section .careers-hero-text {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.careers-hero-section .careers-hero-badge {
+  display: inline-block;
+  background: rgba(0,188,212,0.18);
+  color: var(--accent);
+  border: 1px solid rgba(0,188,212,0.4);
+  border-radius: 999px;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 6px 18px;
+  margin-bottom: 22px;
+  text-align: right;
+}
+
+.careers-hero-section .careers-hero-h1 {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-light);
+  margin: 0 0 20px 0;
+  text-align: right;
+}
+
+.careers-hero-section .careers-hero-h1 span {
+  background: linear-gradient(90deg, #19CFE1 0%, #17BFD3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.careers-hero-section .careers-hero-subtitle {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.65;
+  color: rgba(230, 237, 248, 0.88);
+  margin: 0 0 34px 0;
+  text-align: right;
+  max-width: 480px;
+}
+
+/* ── CTA Row ── */
+.careers-hero-section .careers-hero-cta-row {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.careers-hero-section .careers-btn-primary {
+  display: inline-block;
+  background: linear-gradient(90deg, #19CFE1 0%, #17BFD3 100%);
+  color: #ffffff;
+  padding: 15px 38px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 12px 24px rgba(23,191,211,0.28);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  white-space: nowrap;
+}
+
+.careers-hero-section .careers-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 36px rgba(23,191,211,0.38);
+}
+
+.careers-hero-section .careers-btn-secondary {
+  display: inline-block;
+  background: rgba(255,255,255,0.06);
+  color: #ffffff;
+  padding: 13px 32px;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.6);
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 1;
+  text-decoration: none;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+
+.careers-hero-section .careers-btn-secondary:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.9);
+}
+
+/* ── Trust Indicators ── */
+.careers-hero-section .careers-hero-trust {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  width: 100%;
+  max-width: 480px;
+  direction: rtl;
+}
+
+.careers-hero-section .careers-trust-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 14px;
+  flex: 1;
+  min-width: 120px;
+}
+
+.careers-hero-section .careers-trust-item span {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(230,237,248,0.9);
+  line-height: 1.4;
+  text-align: right;
+}
+
+.careers-hero-section .careers-trust-icon {
+  color: var(--accent);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.careers-hero-section .careers-trust-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255,255,255,0.2);
+  flex-shrink: 0;
+}
+
+/* ── Image Column (Left) ── */
+.careers-hero-section .careers-hero-image-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.careers-hero-section .careers-hero-image-frame {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.38);
+}
+
+.careers-hero-section .careers-hero-frame-img {
+  display: block;
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 16px;
+}
+
+.careers-hero-section .careers-hero-frame-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(0,31,63,0.1) 0%, rgba(0,16,40,0.55) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Turquoise edge glow along the bottom frame */
+.careers-hero-section .careers-hero-frame-glow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(0,188,212,0) 0%, rgba(0,188,212,0.9) 40%, rgba(25,207,225,1) 60%, rgba(0,188,212,0) 100%);
+  border-radius: 0 0 16px 16px;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 0 18px rgba(0,188,212,0.55), 0 0 40px rgba(0,188,212,0.25);
+}
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 767px) {
+  .careers-hero-section {
+    min-height: auto;
+    padding-bottom: 60px;
+  }
+
+  .careers-hero-section .careers-hero-container {
+    grid-template-columns: 1fr;
+    padding: 100px 16px 60px;
+    gap: 32px;
+    direction: rtl;
+  }
+
+  .careers-hero-section .careers-hero-text {
+    order: 1;
+  }
+
+  .careers-hero-section .careers-hero-image-col {
+    order: 2;
+  }
+
+  .careers-hero-section .careers-hero-h1 {
+    font-size: 2.1rem;
+  }
+
+  .careers-hero-section .careers-hero-subtitle {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  .careers-hero-section .careers-hero-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .careers-hero-section .careers-btn-primary,
+  .careers-hero-section .careers-btn-secondary {
+    text-align: center;
+    width: 100%;
+    padding: 15px 24px;
+  }
+
+  .careers-hero-section .careers-hero-trust {
+    flex-direction: column;
+    gap: 8px;
+    max-width: 100%;
+    padding: 14px 16px;
+  }
+
+  .careers-hero-section .careers-trust-divider {
+    width: 80%;
+    height: 1px;
+    align-self: center;
+  }
+
+  .careers-hero-section .careers-trust-item {
+    padding: 2px 0;
+    min-width: unset;
+    justify-content: flex-end;
+  }
+
+  .careers-hero-section .careers-hero-frame-img {
+    height: 260px;
+  }
+
+  .careers-hero-section .careers-hero-image-frame {
+    max-width: 100%;
+  }
+
+  .careers-hero-section .careers-hero-bottom-fade {
+    height: 80px;
+  }
+}
+
+/* ── Responsive: Tablet ── */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .careers-hero-section .careers-hero-container {
+    padding: 130px 32px 90px;
+    gap: 36px;
+  }
+
+  .careers-hero-section .careers-hero-frame-img {
+    height: 380px;
+  }
+
+  .careers-hero-section .careers-hero-trust {
+    max-width: 100%;
+  }
+}
+
+
+.careers-services-section {
+  background-color: #F7F8FA;
+  background-image: linear-gradient(180deg, #F7F8FA 0%, #EEF1F5 100%);
+  color: var(--text-dark);
+  padding: 100px 24px 100px;
+  direction: rtl;
+  position: relative;
+  overflow: visible;
+  font-family: 'Assistant', 'Inter', sans-serif;
+}
+
+.careers-services-section .careers-services-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* ── Header ── */
+.careers-services-section .careers-services-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.careers-services-section .careers-services-title {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--text-dark);
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+}
+
+.careers-services-section .careers-services-subtitle {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  text-align: center;
+}
+
+/* ── Chips Zone ── */
+.careers-services-section .careers-chips-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.careers-services-section .careers-chips-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.careers-services-section .careers-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.5px solid var(--border-light);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  background: #fff;
+  cursor: default;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+}
+
+.careers-services-section .careers-chip i {
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+
+.careers-services-section .careers-chip:hover {
+  border-color: var(--accent);
+  background: rgba(0,188,212,0.05);
+}
+
+/* ── Divider ── */
+.careers-services-section .careers-divider {
+  width: 100%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent 0%, var(--border-light) 20%, var(--primary) 50%, var(--border-light) 80%, transparent 100%);
+  opacity: 0.3;
+  margin-bottom: 44px;
+}
+
+/* ── Jobs Grid ── */
+.careers-services-section .careers-jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  direction: rtl;
+}
+
+/* ── Job Card ── */
+.careers-services-section .careers-job-card {
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-light);
+  border-radius: 10px;
+  box-shadow: 0 4px 18px rgba(15,28,46,0.07);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.careers-services-section .careers-job-card:hover {
+  box-shadow: 0 12px 36px rgba(0,188,212,0.14), 0 4px 14px rgba(15,28,46,0.08);
+  transform: translateY(-3px);
+  border-color: rgba(0,188,212,0.4);
+}
+
+.careers-services-section .careers-job-card-body {
+  padding: 24px 22px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.careers-services-section .careers-job-title {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--text-dark);
+  margin: 0;
+  text-align: right;
+}
+
+.careers-services-section .careers-job-location {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: right;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-direction: row;
+}
+
+.careers-services-section .careers-job-location i {
+  color: var(--accent);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.careers-services-section .careers-job-desc {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0;
+  text-align: right;
+}
+
+.careers-services-section .careers-job-tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 4px;
+  justify-content: flex-start;
+}
+
+.careers-services-section .careers-tag {
+  display: inline-block;
+  background: rgba(0,188,212,0.1);
+  color: #007A8A;
+  border: 1px solid rgba(0,188,212,0.3);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.careers-services-section .careers-job-btn {
+  display: block;
+  width: calc(100% - 44px);
+  margin: 0 22px 22px;
+  padding: 12px 20px;
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: 7px;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+  letter-spacing: 0.01em;
+}
+
+.careers-services-section .careers-job-btn:hover {
+  background: var(--primary);
+  color: var(--text-light);
+  border-color: var(--primary);
+  box-shadow: 0 8px 20px rgba(0,31,63,0.2);
+}
+
+/* ── Tablet ── */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .careers-services-section .careers-jobs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .careers-services-section {
+    padding: 80px 16px 64px;
+  }
+
+  .careers-services-section .careers-services-title {
+    font-size: 1.6rem;
+  }
+
+  .careers-services-section .careers-services-subtitle {
+    font-size: 1rem;
+  }
+
+  .careers-services-section .careers-jobs-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px;
+  }
+
+  .careers-services-section .careers-job-card-body {
+    padding: 20px 18px 14px;
+  }
+
+  .careers-services-section .careers-job-btn {
+    width: calc(100% - 36px);
+    margin: 0 18px 18px;
+  }
+
+  .careers-services-section .careers-job-title {
+    font-size: 1.2rem;
+  }
+
+  .careers-services-section .careers-chips-row {
+    gap: 8px;
+  }
+
+  .careers-services-section .careers-chip {
+    padding: 5px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+.careers-process-section {
+  position: relative;
+  overflow: visible;
+  background-color: #07101F;
+  background-image:
+    radial-gradient(circle at 15% 25%, rgba(86,168,255,0.10) 0%, rgba(86,168,255,0) 40%),
+    radial-gradient(circle at 85% 70%, rgba(30,214,230,0.09) 0%, rgba(30,214,230,0) 38%),
+    linear-gradient(180deg, #081223 0%, #0C1A31 58%, #07101F 100%);
+  color: var(--text-light);
+  padding: 80px 20px 100px;
+  direction: rtl;
+}
+
+/* Background grid texture */
+.careers-process-section .careers-process-bg-texture {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,188,212,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,188,212,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Container */
+.careers-process-section .careers-process-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Section Intro */
+.careers-process-section .careers-process-intro {
+  text-align: right;
+  max-width: 560px;
+  margin-inline-end: 0;
+  margin-inline-start: auto;
+  margin-bottom: 56px;
+}
+
+.careers-process-section .careers-process-heading {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text-light);
+  margin: 0 0 16px 0;
+}
+
+.careers-process-section .careers-process-heading span {
+  color: var(--accent);
+}
+
+.careers-process-section .careers-process-subtext {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(245,247,250,0.72);
+  margin: 0;
+}
+
+/* Steps layout */
+.careers-process-section .careers-process-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: stretch;
+}
+
+/* Individual Step Panel */
+.careers-process-section .careers-process-step {
+  position: relative;
+  background: linear-gradient(180deg, rgba(36,63,112,0.92) 0%, rgba(24,42,77,0.92) 100%);
+  border: 1px solid rgba(112,142,196,0.45);
+  border-radius: 2px;
+  padding: 36px 32px 32px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 18px 40px rgba(6,12,24,0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.careers-process-section .careers-process-step:hover {
+  border-color: rgba(0,188,212,0.6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 18px 40px rgba(6,12,24,0.22), 0 0 18px rgba(30,214,230,0.12);
+}
+
+/* Step Number */
+.careers-process-section .careers-process-step-number {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--accent);
+  letter-spacing: -0.03em;
+  opacity: 0.9;
+}
+
+/* Step Icon */
+.careers-process-section .careers-process-step-icon {
+  position: absolute;
+  top: 32px;
+  inset-inline-start: 32px;
+  color: rgba(0,188,212,0.35);
+  width: 32px;
+  height: 32px;
+}
+
+/* Step Content */
+.careers-process-section .careers-process-step-content {
+  flex: 1;
+}
+
+.careers-process-section .careers-process-step-title {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--text-light);
+  margin: 0 0 10px 0;
+}
+
+.careers-process-section .careers-process-step-desc {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(245,247,250,0.72);
+  margin: 0;
+}
+
+/* Connector (hidden on mobile, shown on desktop) */
+.careers-process-section .careers-process-connector {
+  display: none;
+}
+
+/* Bottom Note */
+.careers-process-section .careers-process-note {
+  font-family: 'Assistant', 'Inter', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(0,188,212,0.85);
+  text-align: center;
+  margin: 48px auto 0;
+  max-width: 480px;
+  padding: 16px 24px;
+  border: 1px solid rgba(0,188,212,0.22);
+  border-radius: 2px;
+  background: rgba(0,188,212,0.05);
+  letter-spacing: 0.01em;
+}
+
+/* Bottom fade divider */
+.careers-process-section .careers-process-divider-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.careers-process-section .careers-process-divider-wrapper svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== DESKTOP ===== */
+@media (min-width: 768px) {
+
+  .careers-process-section {
+    padding: 100px 40px 120px;
+  }
+
+  .careers-process-section .careers-process-intro {
+    margin-inline-end: 0;
+    margin-inline-start: 0;
+    text-align: right;
+    max-width: 600px;
+    margin-bottom: 64px;
+  }
+
+  .careers-process-section .careers-process-heading {
+    font-size: 2.25rem;
+  }
+
+  /* Horizontal 3-step layout on desktop */
+  .careers-process-section .careers-process-steps {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .careers-process-section .careers-process-step {
+    flex: 1;
+    min-width: 250px;
+  }
+
+  /* Connector visible on desktop */
+  .careers-process-section .careers-process-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    gap: 5px;
+    flex-shrink: 0;
+    width: 40px;
+    position: relative;
+    top: 0;
+  }
+
+  .careers-process-section .careers-process-connector-line {
+    width: 1px;
+    flex: 1;
+    background: linear-gradient(180deg, rgba(0,188,212,0.15) 0%, rgba(0,188,212,0.55) 50%, rgba(0,188,212,0.15) 100%);
+  }
+
+  .careers-process-section .careers-process-connector-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  .careers-process-section .careers-process-step-icon {
+    top: 28px;
+    inset-inline-start: 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .careers-process-section .careers-process-heading {
+    font-size: 2rem;
+  }
+
+  .careers-process-section .careers-process-step {
+    padding: 40px 36px 36px;
+  }
+
+  .careers-process-section .careers-process-step-number {
+    font-size: 4rem;
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 767px) {
+
+  .careers-process-section {
+    padding: 60px 16px 100px;
+  }
+
+  .careers-process-section .careers-process-intro {
+    margin-bottom: 36px;
+    margin-inline-start: 0;
+  }
+
+  .careers-process-section .careers-process-heading {
+    font-size: 1.6rem;
+  }
+
+  .careers-process-section .careers-process-steps {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .careers-process-section .careers-process-connector {
+    display: none;
+  }
+
+  .careers-process-section .careers-process-step {
+    padding: 28px 20px 24px;
+  }
+
+  .careers-process-section .careers-process-step-number {
+    font-size: 2.8rem;
+  }
+
+  .careers-process-section .careers-process-step-icon {
+    inset-inline-start: 20px;
+    top: 24px;
+  }
+
+  .careers-process-section .careers-process-note {
+    margin-top: 32px;
+    font-size: 0.875rem;
+    padding: 14px 16px;
+  }
+}
+
+.careers-contact-form-section {
+  background-color: #F4F5F7;
+  background-image: linear-gradient(180deg, #F7F8FA 0%, #EEF1F5 100%);
+  color: var(--text-dark);
+  padding: 80px 16px 80px;
+  direction: rtl;
+  font-family: 'Assistant', 'Inter', sans-serif;
+}
+
+.careers-contact-form-section .ccf-page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ─── The dark navy panel ─── */
+.careers-contact-form-section .ccf-panel {
+  background-color: #081223;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(86,168,255,0.10) 0%, rgba(86,168,255,0) 40%),
+    radial-gradient(circle at 80% 80%, rgba(30,214,230,0.08) 0%, rgba(30,214,230,0) 40%),
+    linear-gradient(180deg, #081223 0%, #0C1A31 58%, #07101F 100%);
+  border-radius: 12px;
+  border-top: 3px solid var(--accent);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+  padding: 48px 40px;
+  color: var(--text-light);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── 5:7 RTL grid (info right, form left) ─── */
+.careers-contact-form-section .ccf-grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 48px;
+  direction: rtl;
+  align-items: start;
+}
+
+/* ─── Info column (right) ─── */
+.careers-contact-form-section .ccf-info-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.careers-contact-form-section .ccf-label-tag {
+  display: inline-block;
+  background: rgba(0,188,212,0.15);
+  color: var(--accent);
+  border: 1px solid rgba(0,188,212,0.35);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  margin-bottom: 16px;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+}
+
+.careers-contact-form-section .ccf-heading {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.25;
+  color: var(--text-light);
+  margin: 0 0 16px 0;
+  letter-spacing: -0.01em;
+  text-align: right;
+}
+
+.careers-contact-form-section .ccf-desc {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(245,247,250,0.75);
+  margin: 0 0 28px 0;
+  text-align: right;
+}
+
+/* WhatsApp button */
+.careers-contact-form-section .ccf-whatsapp-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+  background: linear-gradient(90deg, #19CFE1 0%, #17BFD3 100%);
+  color: #001F3F;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  padding: 16px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 12px 24px rgba(23,191,211,0.30);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  margin-bottom: 10px;
+}
+
+.careers-contact-form-section .ccf-whatsapp-btn:hover {
+  box-shadow: 0 16px 36px rgba(23,191,211,0.45);
+  transform: translateY(-2px);
+  color: #001F3F;
+}
+
+.careers-contact-form-section .ccf-wa-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: #001F3F;
+}
+
+.careers-contact-form-section .ccf-wa-hint {
+  font-size: 13px;
+  color: rgba(245,247,250,0.55);
+  margin: 0;
+  text-align: right;
+  font-style: italic;
+}
+
+/* ─── Form column (left) ─── */
+.careers-contact-form-section .ccf-form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.careers-contact-form-section .ccf-form-title {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-light);
+  margin: 0 0 24px 0;
+  text-align: right;
+  line-height: 1.4;
+}
+
+.careers-contact-form-section .ccf-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.careers-contact-form-section .ccf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.careers-contact-form-section .ccf-field-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(245,247,250,0.85);
+  text-align: right;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.careers-contact-form-section .ccf-input {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(112,142,196,0.40);
+  border-radius: 6px;
+  color: var(--text-light);
+  font-size: 16px;
+  font-family: 'Assistant', 'Inter', sans-serif;
+  padding: 12px 14px;
+  text-align: right;
+  direction: rtl;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.careers-contact-form-section .ccf-input::placeholder {
+  color: rgba(245,247,250,0.35);
+}
+
+.careers-contact-form-section .ccf-input:focus {
+  border-color: var(--accent);
+  background: rgba(0,188,212,0.07);
+}
+
+/* Consent */
+.careers-contact-form-section .ccf-consent {
+  margin-bottom: 20px;
+}
+
+.careers-contact-form-section .privacy-consent-label {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  direction: rtl;
+  text-align: right;
+}
+
+.careers-contact-form-section .privacy-consent-checkbox {
+  margin-top: 3px;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.careers-contact-form-section .privacy-consent-label span {
+  font-size: 13px;
+  color: rgba(245,247,250,0.70);
+  line-height: 1.6;
+}
+
+.careers-contact-form-section .privacy-consent-label a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.careers-contact-form-section .privacy-consent-label a:hover {
+  color: #19CFE1;
+}
+
+/* Submit button */
+.careers-contact-form-section .ccf-submit-btn {
+  width: 100%;
+  background: linear-gradient(90deg, #19CFE1 0%, #17BFD3 100%);
+  color: #001F3F;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  padding: 16px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(23,191,211,0.22);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  margin-bottom: 20px;
+}
+
+.careers-contact-form-section .ccf-submit-btn:hover {
+  box-shadow: 0 16px 36px rgba(23,191,211,0.40);
+  transform: translateY(-2px);
+}
+
+/* Reassurance row */
+.careers-contact-form-section .ccf-reassurance-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  direction: rtl;
+}
+
+.careers-contact-form-section .ccf-reassurance-item {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(245,247,250,0.55);
+  font-family: 'Assistant', 'Inter', sans-serif;
+  white-space: nowrap;
+}
+
+.careers-contact-form-section .ccf-dot {
+  font-size: 16px;
+  color: var(--accent);
+  line-height: 1;
+  opacity: 0.6;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .careers-contact-form-section .ccf-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .careers-contact-form-section .ccf-whatsapp-btn {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .careers-contact-form-section {
+    padding: 48px 12px 48px;
+  }
+  .careers-contact-form-section .ccf-panel {
+    padding: 32px 20px;
+    border-radius: 8px;
+  }
+  .careers-contact-form-section .ccf-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px;
+  }
+  .careers-contact-form-section .ccf-heading {
+    font-size: 26px;
+  }
+  .careers-contact-form-section .ccf-whatsapp-btn {
+    max-width: 100%;
+  }
+  .careers-contact-form-section .ccf-reassurance-row {
+    gap: 6px;
+  }
+}
+
+.careers-values-section {
+  background-color: #FFFFFF;
+  background-image: linear-gradient(180deg, #F7F8FA 0%, #FFFFFF 100%);
+  color: var(--text-dark);
+  padding: 80px 24px 90px;
+  position: relative;
+  overflow: visible;
+  direction: rtl;
+  font-family: 'Assistant', 'Inter', sans-serif;
+}
+
+.careers-values-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.careers-values-intro {
+  max-width: 680px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+.careers-values-heading {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-dark);
+  letter-spacing: -0.01em;
+  margin: 0 0 16px;
+  max-width: none !important;
+}
+
+.careers-values-subtext {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: none !important;
+  text-align: center;
+}
+
+.careers-values-band {
+  background-image: linear-gradient(135deg, rgba(0, 188, 212, 0.07) 0%, rgba(255, 255, 255, 0) 60%);
+  background-color: transparent;
+  border-radius: 16px;
+  padding: 40px 32px;
+}
+
+.careers-values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  direction: rtl;
+}
+
+.careers-values-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  padding: 32px 28px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.careers-values-card-accent {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent) 0%, rgba(0, 188, 212, 0.3) 100%);
+  border-radius: 4px 4px 0 0;
+}
+
+.careers-values-icon-wrap {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(0, 188, 212, 0.08);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.careers-values-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.careers-values-card-title {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-dark);
+  margin: 0;
+  text-align: right;
+}
+
+.careers-values-card-text {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0;
+  text-align: right;
+}
+
+.careers-values-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+.careers-values-section {
+    padding: 60px 16px 70px;
+  }
+
+.careers-values-intro {
+    margin-bottom: 36px;
+  }
+
+.careers-values-heading {
+    font-size: 1.6rem;
+  }
+
+.careers-values-band {
+    padding: 24px 16px;
+  }
+
+.careers-values-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+.careers-values-card {
+    padding: 24px 20px 20px;
+  }
+
+.careers-faq-section {
+  background: linear-gradient(180deg, #F7F8FA 0%, #EEF1F5 100%);
+  color: var(--text-dark);
+  padding: 80px 24px 72px;
+  direction: rtl;
+  font-family: 'Assistant', 'Inter', sans-serif;
+}
+
+.careers-faq-section .careers-faq-container {
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.careers-faq-section .careers-faq-header {
+  text-align: right;
+  margin-bottom: 12px;
+}
+
+.careers-faq-section .careers-faq-title {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-dark);
+  letter-spacing: -0.01em;
+  margin: 0 0 12px 0;
+  text-align: right;
+}
+
+.careers-faq-section .careers-faq-subtitle {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0;
+  text-align: right;
+}
+
+.careers-faq-section .careers-faq-accent-line {
+  width: 56px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin: 28px 0 36px auto;
+}
+
+.careers-faq-section .careers-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.careers-faq-section .careers-faq-item {
+  padding: 28px 0;
+  text-align: right;
+}
+
+.careers-faq-section .careers-faq-question {
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-dark);
+  margin: 0 0 10px 0;
+  text-align: right;
+}
+
+.careers-faq-section .careers-faq-answer {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-dark);
+  margin: 0;
+  text-align: right;
+}
+
+.careers-faq-section .careers-faq-answer strong {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.careers-faq-section .careers-faq-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border-light);
+  border: none;
+}
+
+.careers-faq-section .careers-faq-cta-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border-light);
+  flex-wrap: wrap;
+  text-align: right;
+}
+
+.careers-faq-section .careers-faq-cta-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-family: 'Heebo', 'Rubik', sans-serif;
+}
+
+.careers-faq-section .careers-faq-cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Heebo', 'Rubik', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.careers-faq-section .careers-faq-cta-link:hover {
+  border-bottom-color: var(--accent);
+  color: var(--primary);
+}
+
+.careers-faq-section .careers-faq-cta-link .fa-arrow-left {
+  font-size: 0.875rem;
+  transition: transform 0.2s ease;
+}
+
+.careers-faq-section .careers-faq-cta-link:hover .fa-arrow-left {
+  transform: translateX(-4px);
+}
+
+@media (max-width: 768px) {
+  .careers-faq-section {
+    padding: 60px 16px 56px;
+  }
+
+  .careers-faq-section .careers-faq-container {
+    padding: 0;
+  }
+
+  .careers-faq-section .careers-faq-title {
+    font-size: 1.625rem;
+  }
+
+  .careers-faq-section .careers-faq-accent-line {
+    margin: 20px 0 28px auto;
+  }
+
+  .careers-faq-section .careers-faq-item {
+    padding: 22px 0;
+  }
+
+  .careers-faq-section .careers-faq-question {
+    font-size: 1.0625rem;
+  }
+
+  .careers-faq-section .careers-faq-cta-row {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: 36px;
+    padding-top: 24px;
+  }
+}</style>
+          <style id="zappy-cta-mobile-style">
+            /* Hide CTA list item on desktop (tablets and up) */
+            @media (min-width: 769px) {
+              .nav-cta-item-mobile {
+                display: none !important;
+              }
+            }
+            /* Show CTA list item on mobile */
+            @media (max-width: 768px) {
+              .nav-cta-item-mobile {
+                display: list-item !important;
+              }
+            }
+          </style>
+        
+          <style id="zappy-nested-menu-style">
+            /* Desktop only: vertically center nav items */
+            @media (min-width: 769px) {
+              .nav-menu,
+              #navMenu {
+                align-items: center !important;
+              }
+            }
+            
+            /* Menu Group styling (non-clickable parent) - TOP LEVEL ONLY with ultra-specific selector */
+            .nav-menu > li > .menu-group-title,
+            #navMenu > li > .menu-group-title {
+              display: inline-block !important;
+              padding: 0.5rem 1rem !important;
+              color: var(--nav-color) !important;
+              font-weight: 500 !important;
+              line-height: 1.7 !important;
+              cursor: default !important;
+              user-select: none !important;
+              vertical-align: middle !important;
+              text-decoration: none !important;
+              margin: 0 !important;
+              transition: color 0.3s ease !important;
+            }
+            
+            .nav-menu > li > .menu-group-title:hover,
+            #navMenu > li > .menu-group-title:hover {
+              color: var(--nav-hover-color) !important;
+            }
+            
+            /* Desktop: show submenu on Menu Group hover */
+            li:has(.menu-group-title):hover > .sub-menu {
+              opacity: 1 !important;
+              visibility: visible !important;
+              transform: translateY(0) !important;
+              pointer-events: auto !important; /* Enable interaction when hovering */
+            }
+            
+            /* Hide menu items marked as hidden (overrides hover states) */
+            .zappy-hidden-menu-item,
+            li:has(.menu-group-title):hover > .sub-menu .zappy-hidden-menu-item {
+              display: none !important;
+              opacity: 0 !important;
+              visibility: hidden !important;
+              pointer-events: none !important;
+            }
+            
+            /* Keep submenu visible when hovering over the submenu itself */
+            .sub-menu:hover {
+              opacity: 1 !important;
+              visibility: visible !important;
+              pointer-events: auto !important;
+            }
+            
+            /* Nested dropdown menu styles - using more specific selectors */
+            .nav-menu .sub-menu,
+            nav .sub-menu,
+            .navbar .sub-menu {
+              display: block !important; /* Ensure submenu is in the DOM */
+              position: absolute !important;
+              top: 100%;
+              left: 0;
+              right: auto;
+              min-width: 200px;
+              background: white;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+              border-radius: 8px;
+              padding: 8px 0;
+              margin-top: 0px; /* Remove gap to prevent hover loss */
+              opacity: 0 !important;
+              visibility: hidden !important;
+              transform: translateY(-10px);
+              transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+              z-index: 1000;
+              list-style: none;
+              pointer-events: none; /* Prevent interaction when hidden */
+            }
+            
+            /* RTL (Hebrew/Arabic) submenu positioning - align to right instead of left */
+            [dir="rtl"] .nav-menu .sub-menu,
+            [dir="rtl"] nav .sub-menu,
+            [dir="rtl"] .navbar .sub-menu,
+            html[lang="he"] .nav-menu .sub-menu,
+            html[lang="he"] nav .sub-menu,
+            html[lang="he"] .navbar .sub-menu,
+            html[lang="ar"] .nav-menu .sub-menu,
+            html[lang="ar"] nav .sub-menu,
+            html[lang="ar"] .navbar .sub-menu {
+              left: auto;
+              right: 0;
+            }
+            
+            /* Show submenu on parent hover - more specific selectors */
+            .nav-menu li:hover > .sub-menu,
+            nav li:hover > .sub-menu,
+            .navbar li:hover > .sub-menu {
+              opacity: 1 !important;
+              visibility: visible !important;
+              transform: translateY(0) !important;
+              pointer-events: auto !important; /* Enable interaction when visible */
+            }
+            
+            /* Parent item must be relatively positioned */
+            .nav-menu li:has(.sub-menu),
+            nav li:has(.sub-menu),
+            .navbar li:has(.sub-menu) {
+              position: relative;
+            }
+            
+            /* Style for submenu items */
+            .sub-menu li {
+              list-style: none;
+              margin: 0;
+              padding: 0;
+            }
+            
+            .sub-menu a,
+            .sub-menu .menu-group-title {
+              display: block !important;
+              padding: 10px 12px !important;
+              color: #333 !important;
+              font-weight: 600 !important;
+              text-decoration: none;
+              transition: background-color 0.2s;
+              white-space: nowrap;
+              cursor: default;
+            }
+            
+            .sub-menu a:hover {
+              background-color: #f5f5f5;
+            }
+            
+            /* CRITICAL: Override submenu styles for TOP-LEVEL Menu Groups only - must come AFTER submenu styles */
+            .nav-menu > li > .menu-group-title,
+            #navMenu > li > .menu-group-title {
+              display: inline-block !important;
+              padding: 0.5rem 1rem !important;
+              color: var(--nav-color) !important;
+              font-weight: 500 !important;
+              line-height: 1.7 !important;
+              cursor: default !important;
+              user-select: none !important;
+              vertical-align: middle !important;
+              text-decoration: none !important;
+              margin: 0 !important;
+              transition: color 0.3s ease !important;
+            }
+            
+            .nav-menu > li > .menu-group-title:hover,
+            #navMenu > li > .menu-group-title:hover {
+              color: var(--nav-hover-color) !important;
+              background-color: transparent !important;
+            }
+            
+            /* On mobile, show nested menus as expandable accordion */
+            @media (max-width: 768px) {
+              /* Mobile submenu styling */
+              .nav-menu .sub-menu,
+              nav .sub-menu,
+              .navbar .sub-menu {
+                position: static !important;
+                transform: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                margin-top: 0 !important;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                visibility: hidden;
+                transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease, padding 0.3s ease;
+                padding: 0 !important;
+                border-radius: 0 !important;
+              }
+              
+              /* Expanded state */
+              .sub-menu.mobile-expanded {
+                max-height: 500px !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                padding: 8px 0 8px 16px !important;
+              }
+              
+              /* RTL padding adjustment */
+              [dir="rtl"] .sub-menu.mobile-expanded,
+              html[lang="he"] .sub-menu.mobile-expanded,
+              html[lang="ar"] .sub-menu.mobile-expanded {
+                padding: 8px 16px 8px 0 !important;
+              }
+              
+              /* Disable hover behavior on mobile */
+              .nav-menu li:hover > .sub-menu,
+              nav li:hover > .sub-menu,
+              .navbar li:hover > .sub-menu {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+              }
+              
+              /* Enable visibility for expanded submenus */
+              .nav-menu li > .sub-menu.mobile-expanded,
+              nav li > .sub-menu.mobile-expanded,
+              .navbar li > .sub-menu.mobile-expanded {
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+              }
+              
+              .sub-menu a {
+                padding: 10px 0 !important;
+                display: block !important;
+                font-size: 14px !important;
+              }
+              
+              .sub-menu a:hover {
+                background-color: transparent !important;
+              }
+              
+              /* Parent item wrapper - flex layout with relative positioning for absolute toggle */
+              .nav-menu li:has(.sub-menu),
+              nav li:has(.sub-menu),
+              .navbar li:has(.sub-menu) {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                align-items: center !important;
+                position: relative !important;
+                min-height: 44px !important;
+              }
+              
+              /* Parent link - takes full width since toggle is absolute (not a flex child) */
+              .nav-menu li:has(.sub-menu) > a,
+              nav li:has(.sub-menu) > a,
+              .navbar li:has(.sub-menu) > a,
+              .nav-menu > li > .menu-group-title,
+              #navMenu > li > .menu-group-title {
+                flex: 1 !important;
+                min-width: 0 !important;
+              }
+              
+              /* Normalize menu-group-title in mobile nav to match link alignment */
+              .nav-menu > li > .menu-group-title,
+              #navMenu > li > .menu-group-title {
+                padding: 0 !important;
+                line-height: inherit !important;
+              }
+              
+              /* Submenu takes full width below parent */
+              .nav-menu li:has(.sub-menu) > .sub-menu,
+              nav li:has(.sub-menu) > .sub-menu,
+              .navbar li:has(.sub-menu) > .sub-menu {
+                flex-basis: 100% !important;
+                width: 100% !important;
+              }
+              
+              /* HIDE EXISTING CHEVRONS/ARROWS from cloned sites to prevent duplicates */
+              .nav-menu li:has(.sub-menu) > a .fa-chevron-down,
+              .nav-menu li:has(.sub-menu) > a .fa-angle-down,
+              .nav-menu li:has(.sub-menu) > a [class*="chevron"],
+              .nav-menu li:has(.sub-menu) > a [class*="arrow"],
+              nav li:has(.sub-menu) > a [class*="chevron"],
+              nav li:has(.sub-menu) > a [class*="arrow"],
+              #navMenu li:has(.sub-menu) > a [class*="chevron"],
+              #navMenu li:has(.sub-menu) > a [class*="arrow"] {
+                display: none !important;
+                visibility: hidden !important;
+              }
+              
+              /* Toggle arrow button - flex child that stretches to match nav-link height */
+              .mobile-submenu-toggle {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                width: 44px !important;
+                height: auto !important;
+                background: transparent !important;
+                border: none !important;
+                cursor: pointer !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: static !important;
+                flex-shrink: 0 !important;
+                align-self: stretch !important;
+                z-index: 2 !important;
+                -webkit-tap-highlight-color: transparent;
+              }
+              
+              .mobile-submenu-toggle::after {
+                content: '' !important;
+                display: block !important;
+                width: 0 !important;
+                height: 0 !important;
+                border-left: 6px solid transparent !important;
+                border-right: 6px solid transparent !important;
+                border-top: 7px solid currentColor !important;
+                transition: transform 0.3s ease !important;
+              }
+              
+              /* Rotate arrow when expanded */
+              .mobile-submenu-toggle.expanded::after {
+                transform: rotate(180deg) !important;
+              }
+            }
+            
+            /* Hide toggle button on desktop */
+            @media (min-width: 769px) {
+              .mobile-submenu-toggle {
+                display: none !important;
+              }
+            }
+          </style>
+          
+          <script id="zappy-mobile-menu-script">
+            // Mobile menu toggle for nested submenus (including Menu Groups)
+            // Uses separate toggle button - link navigates, arrow toggles submenu
+            (function() {
+              function initMobileMenuToggles() {
+                // Only run on mobile
+                if (window.innerWidth > 768) {
+                  // Remove any toggle buttons on desktop
+                  document.querySelectorAll('.mobile-submenu-toggle').forEach(btn => btn.remove());
+                  document.querySelectorAll('.sub-menu.mobile-expanded').forEach(menu => {
+                    menu.classList.remove('mobile-expanded');
+                  });
+                  console.log('[MOBILE MENU] Desktop mode - cleanup done');
+                  return;
+                }
+                
+                console.log('[MOBILE MENU] Initializing mobile menu toggles...');
+                
+                // Find all parent menu items (items with .sub-menu)
+                const menuItemsWithSubmenus = document.querySelectorAll(
+                  '.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)'
+                );
+                
+                console.log('[MOBILE MENU] Found', menuItemsWithSubmenus.length, 'items with submenus');
+                
+                menuItemsWithSubmenus.forEach(function(li) {
+                  // Skip if already has toggle button
+                  if (li.querySelector('.mobile-submenu-toggle')) {
+                    return;
+                  }
+                  
+                  const submenu = li.querySelector('.sub-menu');
+                  const parentLink = li.querySelector(':scope > a') || li.querySelector(':scope > .menu-group-title');
+                  
+                  if (!submenu || !parentLink) return;
+                  
+                  // Create toggle button
+                  const toggleBtn = document.createElement('button');
+                  toggleBtn.className = 'mobile-submenu-toggle';
+                  toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+                  toggleBtn.setAttribute('type', 'button');
+
+                  // Insert toggle button after the link
+                  parentLink.insertAdjacentElement('afterend', toggleBtn);
+                  
+                  console.log('[MOBILE MENU] Created toggle button for:', parentLink.textContent?.trim());
+                  
+                  // Handle toggle button click - only toggles submenu
+                  toggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const isExpanded = submenu.classList.contains('mobile-expanded');
+                    
+                    // Close all other submenus first
+                    document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+                      if (menu !== submenu) {
+                        menu.classList.remove('mobile-expanded');
+                        const otherToggle = menu.parentElement.querySelector('.mobile-submenu-toggle');
+                        if (otherToggle) otherToggle.classList.remove('expanded');
+                      }
+                    });
+                    
+                    // Toggle this submenu
+                    submenu.classList.toggle('mobile-expanded');
+                    toggleBtn.classList.toggle('expanded');
+                    
+                    console.log('[MOBILE MENU] Toggled submenu:', !isExpanded ? 'expanded' : 'collapsed');
+                  });
+                  
+                  // Parent link navigates normally - no preventDefault
+                });
+              }
+              
+              // Initialize on DOM load
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMobileMenuToggles);
+              } else {
+                initMobileMenuToggles();
+              }
+              
+              // Re-initialize on window resize (but use debounce to avoid too many calls)
+              let resizeTimer;
+              window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(initMobileMenuToggles, 250);
+              });
+              
+              // Also initialize when mobile menu becomes visible
+              // This handles cases where the mobile menu is hidden initially
+              const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                  if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const target = mutation.target;
+                    if (target.classList.contains('active') || target.style.display !== 'none') {
+                      console.log('[MOBILE MENU] Mobile menu became visible, re-initializing...');
+                      setTimeout(initMobileMenuToggles, 100);
+                    }
+                  }
+                });
+              });
+              
+              // Observe mobile menu containers
+              const mobileMenus = document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu');
+              mobileMenus.forEach(function(menu) {
+                observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+              });
+            })();
+          </script>
+    <link rel="stylesheet" href="/styles.css">
+
+    <style id="mobile-lang-menu-deployed-css">
+    @media (max-width: 768px) {
+      .lang-switcher,
+      .nav-cta-container .lang-switcher,
+      .nav-container .lang-switcher,
+      .navbar .lang-switcher,
+      .navbar .nav-cta-container .lang-switcher,
+      .nav-icons-left .lang-switcher,
+      .nav-ecommerce-icons .lang-switcher { display: none !important; }
+      .mobile-lang-menu { width: 100%; border-top: 1px solid rgba(128,128,128,0.2); padding: 8px 0 0 0; margin-top: 8px; }
+      .mobile-lang-toggle { display: flex !important; align-items: center; justify-content: space-between; width: 100%; padding: 12px 16px; background: none; border: none; cursor: pointer; font-size: 15px; color: inherit; font-family: inherit; }
+      .mobile-lang-toggle::after { content: ''; display: inline-block; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform 0.3s ease; margin-left: 8px; }
+      .mobile-lang-toggle.expanded::after { transform: rotate(-135deg); }
+      .mobile-lang-options { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+      .mobile-lang-options.expanded { max-height: 300px; }
+      .mobile-lang-option { display: flex !important; align-items: center; gap: 10px; padding: 10px 24px; text-decoration: none; color: inherit; font-size: 14px; font-family: inherit; }
+      .mobile-lang-option:hover { background: rgba(128,128,128,0.1); }
+      .mobile-lang-option.active { font-weight: 600; opacity: 0.7; pointer-events: none; }
+      .mobile-lang-option img { width: 20px; height: 20px; border-radius: 50%; }
+    }
+    @media (min-width: 769px) {
+      .mobile-lang-menu { display: none !important; }
+    }
+    </style>
+
+    <style id="zappy-widget-visibility">
+      #mic-access-tool-general-button, .mic-access-tool-general-button,
+      #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+      ._access-icon, #mic-access-tool-box, .mic-access-tool-box,
+      #mic-init-access-tool #mic-access-tool-box, div[id*="mic-access-tool-box"], ._access-menu {
+        display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+      }
+    </style>
+</head>
+<body>
+
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display: none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+
+  <button class="phone-header-btn" data-phone="0537373535" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+
+  <div class="nav-container">
+    <div class="nav-right-group"><div class="nav-brand">
+      <a href="/" class="logo-link">
+        <img src="/assets/logo.webp" alt="התאמה חכמה בע" מ"="" class="logo">
+      </a>
+    </div><ul class="nav-menu" id="navMenu"><li><a href="/services">שירותים</a></li><li><a href="/offices">משרות</a></li><li><a href="/about">אודות</a></li><li class="nav-cta-item-mobile"><a href="/contact">צור קשר</a></li></ul></div>
+
+    
+
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+<script>
+
+// Navbar Mobile Menu Toggle and Contrast Fix
+(function() {
+  // Use 'load' event instead of 'DOMContentLoaded' to ensure we run AFTER all other scripts
+  window.addEventListener('load', function() {
+    
+    // FIX MOBILE BUTTON CONTRAST
+    // Detect navbar background color and apply contrasting color to mobile buttons
+    const navbar = document.querySelector('.navbar, nav, header');
+    if (!navbar) {
+      console.log('[Navbar] Navbar element not found');
+      return;
+    }
+    
+    // DECLARE VARIABLES EARLY to avoid Temporal Dead Zone errors
+    // These are used in multiple places below
+    let mobileToggle = document.getElementById('mobileToggle') ||
+                       document.querySelector('.mobile-toggle') ||
+                       document.querySelector('.hamburger') ||
+                       document.querySelector('.hamburger-menu') ||
+                       document.querySelector('.menu-toggle') ||
+                       document.querySelector('.burger-menu') ||
+                       document.querySelector('[aria-label="Menu"]') ||
+                       document.querySelector('[aria-label="תפריט"]');
+    
+    const phoneBtn = document.querySelector('.phone-header-btn');
+    
+    const computedStyle = window.getComputedStyle(navbar);
+    let bgColor = computedStyle.backgroundColor;
+    
+    console.log('[Navbar] Initial navbar background:', bgColor);
+    
+    // Check if background is transparent or rgba with 0 alpha
+    const isTransparent = bgColor === 'transparent' || 
+                         bgColor === 'rgba(0, 0, 0, 0)' ||
+                         (bgColor.startsWith('rgba') && bgColor.includes(', 0)'));
+    
+    if (isTransparent) {
+      // Check for background-image or gradient
+      const bgImage = computedStyle.backgroundImage;
+      if (bgImage && bgImage !== 'none') {
+        console.log('[Navbar] Navbar has background image/gradient, using dark text');
+        bgColor = 'rgb(240, 240, 240)'; // Assume light background
+      } else {
+        // Transparent navbar - check body background
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+        console.log('[Navbar] Navbar transparent, using body background:', bodyBg);
+        bgColor = bodyBg;
+      }
+    }
+    
+    // Calculate luminance to determine if background is light or dark
+    const rgb = bgColor.match(/\d+/g);
+    if (rgb && rgb.length >= 3) {
+      const r = parseInt(rgb[0]);
+      const g = parseInt(rgb[1]);
+      const b = parseInt(rgb[2]);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      
+      // Mobile button colors are set by Claude's AI-generated CSS (same as .nav-menu a)
+      // No dynamic color overrides needed - colors come from the generated navbar CSS
+      console.log('[Navbar] Mobile button colors preserved from Claude CSS (luminance:', luminance.toFixed(2) + ')');
+      
+      // FIX ICON SIZES - Ensure SVGs are properly sized and visible
+      // INJECT CRITICAL CSS TO OVERRIDE ANY CONFLICTING RULES
+      const criticalCSS = document.createElement('style');
+      criticalCSS.id = 'zappy-mobile-nav-fix';
+      const htmlLang = document.documentElement.lang || 'en';
+      const htmlDir = document.documentElement.dir || 'ltr';
+      // Check both dir attribute AND lang for RTL detection
+      // dir="rtl" is the most reliable indicator
+      const isRTL = htmlDir === 'rtl' || htmlLang === 'he' || htmlLang === 'ar';
+      
+      criticalCSS.textContent = `
+        /* Hide mobile buttons on desktop, show only on mobile */
+        @media (min-width: 769px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            display: none !important;
+          }
+        }
+        
+        /* Show and position mobile buttons correctly on mobile */
+        @media (max-width: 768px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            position: absolute !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            z-index: 1001 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 6px !important;
+            background: none !important;
+            color: var(--nav-text, var(--text-light)) !important;
+          }
+          
+          /* LTR positioning (default): hamburger LEFT, phone RIGHT */
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .mobile-toggle,
+          html[dir="ltr"] .mobile-toggle {
+            left: 12px !important;
+            right: auto !important;
+          }
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .phone-header-btn,
+          html[dir="ltr"] .phone-header-btn {
+            right: 12px !important;
+            left: auto !important;
+          }
+          
+          /* RTL positioning: hamburger RIGHT, phone LEFT */
+          html[dir="rtl"] .mobile-toggle,
+          html[lang="he"] .mobile-toggle,
+          html[lang="ar"] .mobile-toggle {
+            right: 12px !important;
+            left: auto !important;
+          }
+          html[dir="rtl"] .phone-header-btn,
+          html[lang="he"] .phone-header-btn,
+          html[lang="ar"] .phone-header-btn {
+            left: 12px !important;
+            right: auto !important;
+          }
+          
+          /* CRITICAL: Ensure nav-container has min-height on mobile */
+          /* All children are positioned absolutely/fixed on mobile, so height:auto collapses to 0 */
+          .nav-container {
+            min-height: 70px !important;
+            position: relative !important;
+          }
+          
+          /* Ensure SVG icons are properly sized and inherit color */
+          .mobile-toggle svg,
+          .phone-header-btn svg {
+            width: 24px !important;
+            height: 24px !important;
+            /* Don't force display - let JavaScript control hamburger/close toggle */
+          }
+          
+          /* Reset nav-cta-container on mobile - remove desktop box-shadow/padding */
+          /* that creates a visible ghost box when CTA button is hidden */
+          .nav-cta-container {
+            box-shadow: none !important;
+            padding: 0 !important;
+          }
+          
+          /* Hide nav-cta-container entirely on mobile when there's no lang-switcher */
+          /* (only the CTA button is inside, and it's hidden on mobile) */
+          .nav-cta-container:not(:has(.lang-switcher)) {
+            display: none !important;
+          }
+          
+          /* CRITICAL: Prevent hero image fade gradient from bleeding over headline text */
+          /* The .image-fade-gradient has bottom: -30px (extends below parent) */
+          /* On mobile stacked layout, this overlaps the h1 text below the image */
+          .hero-image-column {
+            overflow: hidden !important;
+          }
+          .image-fade-gradient {
+            bottom: 0 !important;
+          }
+          
+          /* Hide desktop language switcher on mobile - hamburger menu handles it */
+          /* High specificity to override stored CSS */
+          .lang-switcher,
+          .nav-cta-container .lang-switcher,
+          .nav-container .lang-switcher,
+          .navbar .lang-switcher,
+          .navbar .nav-cta-container .lang-switcher {
+            display: none !important;
+          }
+        }
+      `;
+      
+      // Remove existing fix if present and inject new one
+      const existing = document.getElementById('zappy-mobile-nav-fix');
+      if (existing) existing.remove();
+      document.head.appendChild(criticalCSS);
+      
+      console.log('[Navbar] Critical CSS injected for mobile nav positioning');
+      
+      // ONLY apply inline positioning styles on mobile viewport
+      // On desktop, the CSS handles hiding these buttons with display: none
+      // Inline styles were breaking desktop layout by overriding CSS
+      const isMobileViewport = window.innerWidth <= 768;
+      
+      if (mobileToggle) {
+        // Icon sizing applies to all viewports for consistency
+        const hamburgerIcon = mobileToggle.querySelector('.hamburger-icon');
+        const closeIcon = mobileToggle.querySelector('.close-icon');
+        
+        if (hamburgerIcon) {
+          hamburgerIcon.style.setProperty('width', '24px', 'important');
+          hamburgerIcon.style.setProperty('height', '24px', 'important');
+          hamburgerIcon.style.setProperty('display', 'block', 'important'); // Show hamburger by default
+        }
+        if (closeIcon) {
+          closeIcon.style.setProperty('width', '24px', 'important');
+          closeIcon.style.setProperty('height', '24px', 'important');
+          closeIcon.style.setProperty('display', 'none', 'important'); // Hide close icon by default
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          mobileToggle.style.setProperty('position', 'absolute', 'important');
+          mobileToggle.style.setProperty('top', '50%', 'important');
+          mobileToggle.style.setProperty('transform', 'translateY(-50%)', 'important');
+          mobileToggle.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          
+          console.log('[Navbar] Mobile toggle positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          mobileToggle.style.removeProperty('position');
+          mobileToggle.style.removeProperty('top');
+          mobileToggle.style.removeProperty('transform');
+          mobileToggle.style.removeProperty('z-index');
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared mobile toggle inline positioning');
+        }
+      }
+      
+      if (phoneBtn) {
+        // Icon sizing applies to all viewports
+        const phoneIcon = phoneBtn.querySelector('svg');
+        if (phoneIcon) {
+          phoneIcon.style.width = '24px';
+          phoneIcon.style.height = '24px';
+          phoneIcon.setAttribute('width', '24');
+          phoneIcon.setAttribute('height', '24');
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          phoneBtn.style.setProperty('position', 'absolute', 'important');
+          phoneBtn.style.setProperty('top', '50%', 'important');
+          phoneBtn.style.setProperty('transform', 'translateY(-50%)', 'important');
+          phoneBtn.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          
+          console.log('[Navbar] Phone button positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          phoneBtn.style.removeProperty('position');
+          phoneBtn.style.removeProperty('top');
+          phoneBtn.style.removeProperty('transform');
+          phoneBtn.style.removeProperty('z-index');
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared phone button inline positioning');
+        }
+      }
+    } else {
+      console.log('[Navbar] Could not parse background color:', bgColor);
+    }
+    
+    // MOBILE MENU TOGGLE
+    // Re-query in case DOM changed (mobileToggle already declared at top of function)
+    mobileToggle = document.getElementById('mobileToggle') ||
+                   document.querySelector('.mobile-toggle') ||
+                   document.querySelector('.hamburger') ||
+                   document.querySelector('.hamburger-menu') ||
+                   document.querySelector('.menu-toggle') ||
+                   document.querySelector('.burger-menu') ||
+                   document.querySelector('[aria-label="Menu"]') ||
+                   document.querySelector('[aria-label="תפריט"]');
+    
+    // EXPANDED SEARCH: Find nav menu by ID or class
+    const navMenu = document.getElementById('navMenu') ||
+                  document.querySelector('.nav-menu') ||
+                  document.querySelector('.nav-links') ||
+                  document.querySelector('nav ul:not(.submenu)');
+    
+    if (!mobileToggle || !navMenu) {
+      console.log('[Navbar] Mobile toggle or menu not found:', { toggle: !!mobileToggle, menu: !!navMenu });
+      return;
+    }
+    
+    // Ensure navMenu has ID for CSS targeting
+    if (!navMenu.id) {
+      navMenu.id = 'navMenu';
+    }
+    
+    console.log('[Navbar] Initializing mobile menu...');
+    
+    // Remove any existing event listeners by cloning the button
+    const newToggle = mobileToggle.cloneNode(true);
+    mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+    
+    // Toggle menu on button click - use newToggle now
+    newToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const hamburgerIcon = this.querySelector('.hamburger-icon');
+      const closeIcon = this.querySelector('.close-icon');
+      const isActive = navMenu.classList.contains('active');
+      
+      if (isActive) {
+        // Close menu
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed');
+      } else {
+        // Open menu
+        navMenu.classList.add('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'none', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'block', 'important');
+        document.body.style.overflow = 'hidden';
+        console.log('[Navbar] Menu opened');
+      }
+    });
+    
+    // Close menu when clicking nav links (but NOT dropdown toggles)
+    const navLinks = navMenu.querySelectorAll('a');
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        // Don't close if it's a dropdown child (unless it's a real navigation link)
+        if (this.getAttribute('href') === '#') return;
+        
+        const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+        const closeIcon = newToggle.querySelector('.close-icon');
+        
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed (link clicked)');
+      });
+    });
+    
+    // DROPDOWN MENU TOGGLE (for mobile and touch devices)
+    var dropdownToggles = navMenu.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var parent = this.closest('.nav-dropdown');
+        if (!parent) return;
+        
+        // Close other open dropdowns at the same level
+        var siblings = parent.parentNode.querySelectorAll('.nav-dropdown.open');
+        siblings.forEach(function(sib) {
+          if (sib !== parent) sib.classList.remove('open');
+        });
+        
+        parent.classList.toggle('open');
+        console.log('[Navbar] Dropdown toggled:', parent.classList.contains('open') ? 'open' : 'closed');
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        var openDropdowns = document.querySelectorAll('.nav-dropdown.open');
+        openDropdowns.forEach(function(dd) { dd.classList.remove('open'); });
+      }
+    });
+    
+    console.log('[Navbar] Dropdown handlers initialized for ' + dropdownToggles.length + ' dropdowns');
+    
+    // Phone button functionality (phoneBtn already declared at top of function)
+    if (phoneBtn) {
+      phoneBtn.addEventListener('click', function() {
+        // Get phone number from placeholder in page or use default
+        const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+        const phoneNumber = phoneLinks.length > 0 
+          ? phoneLinks[0].getAttribute('href').replace('tel:', '')
+          : '053-737-35-35';
+        
+        window.location.href = 'tel:' + phoneNumber;
+        console.log('[Navbar] Phone button clicked');
+      });
+    }
+    
+    console.log('[Navbar] Mobile menu initialized successfully');
+    
+    // === WHATSAPP BUTTON VISIBILITY FIX ===
+    // Ensure WhatsApp floating button is hidden on desktop and visible on mobile
+    // IMPORTANT: Only target the floating button by its class, NOT generic wa.me links
+    const handleWhatsAppVisibility = function() {
+      const whatsappBtn = document.querySelector('.whatsapp-float');
+      if (whatsappBtn) {
+        const isDesktop = window.innerWidth >= 769;
+        if (isDesktop) {
+          whatsappBtn.style.setProperty('display', 'none', 'important');
+          whatsappBtn.style.setProperty('visibility', 'hidden', 'important');
+          whatsappBtn.style.setProperty('opacity', '0', 'important');
+          whatsappBtn.style.setProperty('pointer-events', 'none', 'important');
+          console.log('[WhatsApp] Button hidden on desktop');
+        } else {
+          whatsappBtn.style.removeProperty('display');
+          whatsappBtn.style.removeProperty('visibility');
+          whatsappBtn.style.removeProperty('opacity');
+          whatsappBtn.style.removeProperty('pointer-events');
+          console.log('[WhatsApp] Button visible on mobile');
+        }
+      }
+    };
+    
+    // Run on load
+    handleWhatsAppVisibility();
+    
+    // Run on resize with debouncing
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleWhatsAppVisibility, 100);
+    });
+  });
+})();
+
+</script>
+  
+  <main class="blog-page ai-generated-page"><section class="careers-hero-section" data-layout-spec="משרות פתוחות והשמה למחפשי עבודה-hero" dir="rtl" data-hero-type="fullscreen-scrim">
+  <!-- Background Image Layer -->
+  <div class="careers-hero-bg">
+    <img data-hero-bg="true" data-context="Wide editorial photo of diverse smiling workers — Israeli and foreign — in a modern industrial or logistics warehouse environment. Workers wearing safety vests, looking confident and happy. Bright, clean facility with shelving or conveyor belts visible in background. Warm natural lighting, professional and positive atmosphere conveying opportunity and teamwork. Shot from a slightly low angle to feel empowering." width="1200" height="700" src="/assets/section-hero-careers-hero-image-1.webp" alt="עובדים מחייכים במפעל לוגיסטי מודרני" class="careers-hero-img">
+    <div class="careers-hero-img-glow"></div>
+  </div>
+
+  <!-- Scrim Overlay -->
+  <div class="careers-hero-scrim" aria-hidden="true"></div>
+
+  <!-- Content Grid -->
+  <div class="careers-hero-container">
+    <!-- Right Column: Text Block -->
+    <div class="careers-hero-text">
+      <span class="careers-hero-badge">גיוס והשמה מקצועי</span>
+      <h1 class="careers-hero-h1">מצא את המשרה<br>שמחכה לך</h1>
+      <h3 class="careers-hero-subtitle">אנחנו מחברים בין אנשים מוכשרים להזדמנויות אמיתיות — בתעשייה, בלוגיסטיקה ובמשרדים ברחבי הארץ.</h3>
+
+      <!-- CTA Row -->
+      <div class="careers-hero-cta-row">
+        <a href="#quick-apply" class="btn-primary careers-btn-primary">שלח קורות חיים</a>
+        <a href="/contact" class="btn-secondary careers-btn-secondary">דבר איתנו</a>
+      </div>
+
+      <!-- Trust Indicators -->
+      <div class="careers-hero-trust">
+        <div class="careers-trust-item">
+          <i class="fa-solid fa-circle-check careers-trust-icon" aria-hidden="true"></i>
+          <span>ללא עלות למחפשי עבודה</span>
+        </div>
+        <div class="careers-trust-divider" aria-hidden="true"></div>
+        <div class="careers-trust-item">
+          <i class="fa-solid fa-user-tie careers-trust-icon" aria-hidden="true"></i>
+          <span>ליווי אישי</span>
+        </div>
+        <div class="careers-trust-divider" aria-hidden="true"></div>
+        <div class="careers-trust-item">
+          <i class="fa-solid fa-location-dot careers-trust-icon" aria-hidden="true"></i>
+          <span>משרות בפריסה ארצית</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Left Column: Editorial Image -->
+    <div class="careers-hero-image-col">
+      <div class="careers-hero-image-frame">
+        <img data-context="Close editorial portrait-style photo of 2-3 smiling workers — a mix of Israeli and foreign workers — in a clean modern industrial or logistics warehouse. Workers in safety vests, looking confident and friendly. Warm lighting, sense of teamwork and professionalism. Suitable for a staffing agency hero section." width="1200" height="700" src="/assets/section-hero-careers-hero-image-1.webp" alt="עובדים מחייכים — גיוס והשמה מקצועי" class="careers-hero-frame-img">
+        <div class="careers-hero-frame-overlay" aria-hidden="true"></div>
+        <div class="careers-hero-frame-glow" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Gradient Fade to White -->
+  <div class="careers-hero-bottom-fade" aria-hidden="true"></div>
+</section>
+
+<section class="careers-services-section" data-layout-spec="משרות פתוחות והשמה למחפשי עבודה-services" dir="rtl" id="zappy-section-1">
+  <div class="careers-services-container">
+
+    <!-- Section Header -->
+    <div class="careers-services-header">
+      <h2 class="careers-services-title">משרות פתוחות – מצא את התפקיד הבא שלך</h2>
+      <p class="careers-services-subtitle">אנחנו מחברים בין אנשים מוכשרים לבין מעסיקים מובילים בתעשייה, הלוגיסטיקה והמשרד. כל ההזדמנויות שלנו מאוישות ישירות על ידי צוות גיוס מקצועי.</p>
+    </div>
+
+    <!-- Category Chips -->
+    <div class="careers-chips-zone">
+      <div class="careers-chips-row">
+        <span class="careers-chip"><i class="fa fa-map-marker-alt"></i> צפון</span>
+        <span class="careers-chip"><i class="fa fa-map-marker-alt"></i> מרכז</span>
+        <span class="careers-chip"><i class="fa fa-map-marker-alt"></i> דרום</span>
+      </div>
+      <div class="careers-chips-row">
+        <span class="careers-chip"><i class="fa fa-warehouse" data-element-type="icon" data-element-id="icon-1775152648508-0a7s02ef0" data-icon-type="fontawesome"></i> מחסן</span>
+        <span class="careers-chip"><i class="fa fa-industry" data-element-type="icon" data-element-id="icon-1775152648508-3xqd1tw42" data-icon-type="fontawesome"></i> ייצור</span>
+        <span class="careers-chip"><i class="fa fa-briefcase" data-element-type="icon" data-element-id="icon-1775152648508-ilt8jl6kn" data-icon-type="fontawesome"></i> משרדי</span>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="careers-divider" aria-hidden="true"></div>
+
+    <!-- Job Cards Grid -->
+    <div class="careers-jobs-grid zappy-preserve-css-grid" id="zappy-auto-grid-1775152648527-znl11g" data-zappy-auto-grid="true" data-original-item-width="384" data-original-gap="24px" style="--zappy-grid-cols: repeat(3, minmax(0, 1fr)); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));" data-zappy-explicit-columns="true">
+
+      <!-- Card 1 -->
+      <article class="careers-job-card" data-grid-item-index="0">
+        <div class="careers-job-card-body">
+          <h3 class="careers-job-title">עובד מחסן – משמרות</h3>
+          <p class="careers-job-location"><i class="fa fa-map-marker-alt"></i> אזור המרכז – פתח תקווה</p>
+          <p class="careers-job-desc">קליטת סחורה, ספירות מלאי ועבודה עם מלגזה בסביבת מחסן דינמית ומודרנית.</p>
+          <div class="careers-job-tags">
+            <span class="careers-tag">מיידי</span>
+            <span class="careers-tag">משמרות</span>
+            <span class="careers-tag">מתאים לחיילים משוחררים</span>
+          </div>
+        </div>
+        <p class="zappy-editable"><a href="#contact" class="careers-job-btn" data-element-type="button" data-element-id="btn-1775152648505-yuup7ioxe" data-native-element="true">פרטים נוספים והגשה</a>
+      </p></article>
+
+      <!-- Card 2 -->
+      <article class="careers-job-card" data-grid-item-index="1">
+        <div class="careers-job-card-body">
+          <h3 class="careers-job-title">עובד ייצור – קו אריזה</h3>
+          <p class="careers-job-location"><i class="fa fa-map-marker-alt"></i> אזור הצפון – חיפה</p>
+          <p class="careers-job-desc">עבודה על קו ייצור ואריזה במפעל מזון מוביל, כולל הכשרה מלאה במקום.</p>
+          <div class="careers-job-tags">
+            <span class="careers-tag">מיידי</span>
+            <span class="careers-tag">משמרות</span>
+          </div>
+        </div>
+        <p class="zappy-editable"><a href="#contact" class="careers-job-btn" data-element-type="button" data-element-id="btn-1775152648505-1blg0rqxr" data-native-element="true">פרטים נוספים והגשה</a>
+      </p></article>
+
+      <!-- Card 3 -->
+      <article class="careers-job-card" data-grid-item-index="2">
+        <div class="careers-job-card-body">
+          <h3 class="careers-job-title">מנהל/ת לשכת גיוס</h3>
+          <p class="careers-job-location"><i class="fa fa-map-marker-alt"></i> אזור המרכז – תל אביב</p>
+          <p class="careers-job-desc">ניהול תהליכי גיוס מקצה לקצה, עבודה מול לקוחות עסקיים ותיאום ראיונות.</p>
+          <div class="careers-job-tags">
+            <span class="careers-tag">משרה מלאה</span>
+            <span class="careers-tag">ניסיון נדרש</span>
+          </div>
+        </div>
+        <p class="zappy-editable"><a href="#contact" class="careers-job-btn" data-element-type="button" data-element-id="btn-1775152648505-gyg7n7flj" data-native-element="true">פרטים נוספים והגשה</a>
+      </p></article>
+
+      <!-- Card 4 -->
+      <article class="careers-job-card" data-grid-item-index="3">
+        <div class="careers-job-card-body">
+          <h3 class="careers-job-title">נהג/ת הפצה – רישיון C</h3>
+          <p class="careers-job-location" ><i class="fa fa-map-marker-alt" style="cursor: pointer;"></i> אזור הדרום – אשקלון</p>
+          <p class="careers-job-desc">הפצת סחורה ללקוחות עסקיים בדרום הארץ, כולל רכב חברה ותנאים מצוינים.</p>
+          <div class="careers-job-tags">
+            <span class="careers-tag">מיידי</span>
+            <span class="careers-tag">רישיון C</span>
+            <span class="careers-tag">מתאים לחיילים משוחררים</span>
+          </div>
+        </div>
+        <p class="zappy-editable"><a href="#contact" class="careers-job-btn" data-element-type="button" data-element-id="btn-1775152648505-o6c4qzfj5" data-native-element="true">פרטים נוספים והגשה</a>
+      </p></article>
+
+      <!-- Card 5 -->
+      <article class="careers-job-card" data-grid-item-index="4">
+        <div class="careers-job-card-body">
+          <h3 class="careers-job-title">פקיד/ת קבלה ומשרד</h3>
+          <p class="careers-job-location"><i class="fa fa-map-marker-alt"></i> אזור המרכז – רמת גן</p>
+          <p class="careers-job-desc">קבלת קהל, מענה טלפוני ותמיכה אדמיניסטרטיבית בחברה בינלאומית יוקרתית.</p>
+          <div class="careers-job-tags">
+            <span class="careers-tag">משרה מלאה</span>
+            <span class="careers-tag">אנגלית ברמה גבוהה</span>
+          </div>
+        </div>
+        <p class="zappy-editable"><a href="#contact" class="careers-job-btn" data-element-type="button" data-element-id="btn-1775152648505-0yupylvll" data-native-element="true">פרטים נוספים והגשה</a>
+      </p></article>
+
+      <!-- Card 6 -->
+      <article class="careers-job-card" data-grid-item-index="5">
+        <div class="careers-job-card-body">
+          <h3 class="careers-job-title">מלגזן/ית מוסמך/ת</h3>
+          <p class="careers-job-location"><i class="fa fa-map-marker-alt"></i> אזור הצפון – עכו</p>
+          <p class="careers-job-desc">הפעלת מלגזה בסביבת מחסן לוגיסטי גדול, דרישה לרישיון מלגזה בתוקף.</p>
+          <div class="careers-job-tags">
+            <span class="careers-tag">מיידי</span>
+            <span class="careers-tag">רישיון מלגזה</span>
+            <span class="careers-tag">משמרות</span>
+          </div>
+        </div>
+        <p class="zappy-editable"><a href="#contact" class="careers-job-btn" data-element-type="button" data-element-id="btn-1775152648505-q1xooqjg6" data-native-element="true">פרטים נוספים והגשה</a>
+      </p></article>
+
+      <!-- Card 7 -->
+      <article class="careers-job-card" data-grid-item-index="6">
+        <div class="careers-job-card-body">
+          <h3 class="careers-job-title" >עובד/ת ניקיון&nbsp;</h3>
+          <p class="careers-job-location" ><i class="fa fa-map-marker-alt" style="cursor: pointer;"></i> אזור הדרום – קרית מלאכי</p>
+          <p class="careers-job-desc">ניקיון ותחזוקה של מתקנים תעשייתיים, כולל הדרכה מקצועית ועבודה בצוות.</p>
+          <div class="careers-job-tags">
+            <span class="careers-tag">מיידי</span>
+            <span class="careers-tag">מתאים לחיילים משוחררים</span>
+          </div>
+        </div>
+        <p class="zappy-editable"><a href="#contact" class="careers-job-btn" data-element-type="button" data-element-id="btn-1775152648505-fty5nu738" data-native-element="true">פרטים נוספים והגשה</a>
+      </p></article>
+
+      <!-- Card 8 -->
+      <article class="careers-job-card" data-grid-item-index="7">
+        <div class="careers-job-card-body">
+          <h3 class="careers-job-title">רכז/ת לוגיסטיקה</h3>
+          <p class="careers-job-location" ><i class="fa fa-map-marker-alt" style="cursor: pointer;"></i> אזור המרכז – רמלה</p>
+          <p class="careers-job-desc" >תיאום שילוח, מעקב הזמנות ועבודה עם ספקים בסביבה לוגיסטית מהירה.</p>
+          <div class="careers-job-tags">
+            <span class="careers-tag">ניסיון בלוגיסטיקה</span>
+            <span class="careers-tag">אקסל ברמה גבוהה</span>
+          </div>
+        </div>
+        <p class="zappy-editable"><a href="#contact" class="careers-job-btn" data-element-type="button" data-element-id="btn-1775152648505-p6abjq1vt" data-native-element="true">פרטים נוספים והגשה</a>
+      </p></article>
+
+      <!-- Card 9 -->
+      <article class="careers-job-card" data-grid-item-index="8">
+        <div class="careers-job-card-body">
+          <h3 class="careers-job-title">עובד/ת ייצור – תעשיית המתכת</h3>
+          <p class="careers-job-location" ><i class="fa fa-map-marker-alt" style="cursor: pointer;"></i> אזור הצפון – חדרה</p>
+          <p class="careers-job-desc" >עבודה על מכונות ייצור במפעל מתכת, הכשרה מקצועית מלאה ניתנת על ידי המעסיק.</p>
+          <div class="careers-job-tags">
+            <span class="careers-tag">מיידי</span>
+            <span class="careers-tag">משמרות</span>
+            <span class="careers-tag">מתאים לחיילים משוחררים</span>
+          </div>
+        </div>
+        <p class="zappy-editable"><a href="#contact" class="careers-job-btn" data-element-type="button" data-element-id="btn-1775152648505-o5gj3vbhm" data-native-element="true">פרטים נוספים והגשה</a>
+      </p></article>
+
+    </div>
+    <!-- End Grid -->
+
+  </div>
+</section>
+
+<section class="careers-process-section" data-layout-spec="משרות פתוחות והשמה למחפשי עבודה-process" dir="rtl">
+  <div class="careers-process-bg-texture" aria-hidden="true"></div>
+
+  <div class="careers-process-container">
+
+    <!-- Section Intro -->
+    <div class="careers-process-intro">
+      <h2 class="careers-process-heading">איך מתחילים לעבוד איתנו?</h2>
+      <p class="careers-process-subtext">תהליך ההשמה שלנו פשוט, מהיר ושקוף. שלושה שלבים קצרים מפרידים בינך לבין המשרה הבאה שלך — ואנחנו לצדך בכל אחד מהם.</p>
+    </div>
+
+    <!-- Steps Grid -->
+    <div class="careers-process-steps">
+
+      <!-- Step 1 -->
+      <article class="careers-process-step card-bordered">
+        <div class="careers-process-step-number">01</div>
+        <div class="careers-process-step-content">
+          <h3 class="careers-process-step-title">הגשת פנייה</h3>
+          <p class="careers-process-step-desc">שולחים לנו קורות חיים דרך האתר או פונים ישירות דרך WhatsApp — בקליק אחד, בלי בירוקרטיה. אנחנו זמינים ומגיבים מהר.</p>
+        </div>
+        <div class="careers-process-step-icon" aria-hidden="true">
+          <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        </div>
+      </article>
+
+      <!-- Connector 1 -->
+      <div class="careers-process-connector" aria-hidden="true">
+        <div class="careers-process-connector-line"></div>
+        <div class="careers-process-connector-dot"></div>
+        <div class="careers-process-connector-dot"></div>
+        <div class="careers-process-connector-dot"></div>
+      </div>
+
+      <!-- Step 2 -->
+      <article class="careers-process-step card-bordered">
+        <div class="careers-process-step-number">02</div>
+        <div class="careers-process-step-content">
+          <h3 class="careers-process-step-title">שיחת היכרות קצרה</h3>
+          <p class="careers-process-step-desc">מגייס מקצועי מצוות התאמה חכמה יצור אתך קשר לשיחת טלפון קצרה — כדי להבין את הניסיון שלך, העדפותיך, וכיצד נוכל להתאים לך את ההזדמנות הנכונה.</p>
+        </div>
+        <div class="careers-process-step-icon" aria-hidden="true">
+          <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.18 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.59a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        </div>
+      </article>
+
+      <!-- Connector 2 -->
+      <div class="careers-process-connector" aria-hidden="true">
+        <div class="careers-process-connector-line"></div>
+        <div class="careers-process-connector-dot"></div>
+        <div class="careers-process-connector-dot"></div>
+        <div class="careers-process-connector-dot"></div>
+      </div>
+
+      <!-- Step 3 -->
+      <article class="careers-process-step card-bordered">
+        <div class="careers-process-step-number">03</div>
+        <div class="careers-process-step-content">
+          <h3 class="careers-process-step-title">כניסה מלווה לעבודה</h3>
+          <p class="careers-process-step-desc">מכינים אותך לפני היום הראשון, מלווים אותך בתחילת הדרך ונשארים זמינים לאורך כל הדרך. ההצלחה שלך היא ההצלחה שלנו.</p>
+        </div>
+        <div class="careers-process-step-icon" aria-hidden="true">
+          <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Bottom Note -->
+    <p class="careers-process-note">אנחנו לא משאירים מועמדים באי-ודאות — מעדכנים ומלווים לאורך הדרך.</p>
+
+  </div>
+
+  <!-- Bottom fade divider -->
+  <div class="careers-process-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,80 L0,42 Q80,28 160,38 T320,32 Q400,40 480,30 T640,36 Q720,28 800,38 T960,32 Q1040,42 1120,34 T1200,40 L1200,80 Z" fill="var(--bg-light)"></path>
+    </svg>
+  </div>
+
+</section>
+
+<section class="careers-contact-form-section" data-layout-spec="משרות פתוחות והשמה למחפשי עבודה-contact-form" dir="rtl" id="zappy-section-3">
+  <div class="ccf-page-wrapper">
+    <div class="ccf-panel">
+      <div class="ccf-grid zappy-preserve-css-grid" data-zappy-grid-align="start" data-original-item-width="405" data-original-gap="48px" style="--zappy-grid-cols: repeat(2, minmax(0, 1fr)); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));" data-zappy-explicit-columns="true">
+
+        <!-- Right side: heading + reassurance + WhatsApp -->
+        <div class="ccf-info-col" data-grid-item-index="0">
+          <div class="ccf-label-tag">הגשת מועמדות</div>
+          <h2 class="ccf-heading">מצאנו לך עבודה.<br>נשאר רק לדבר.</h2>
+          <p class="ccf-desc" >אנחנו מתחברים לאנשים&nbsp; לא לקורות חיים. ספר לנו מה אתה מחפש, ואנחנו נמצא את ההתאמה הנכונה עבורך. הליך פשוט, מהיר ובלי בירוקרטיה.</p>
+
+          <p><a href="https://wa.me/[whatsapp_handle]" target="_blank" class="ccf-whatsapp-btn" data-element-type="button" data-element-id="btn-1775152897635-ft00ppoeq" data-native-element="true">
+            <span class="ccf-wa-icon">
+              <svg data-element-type="icon" data-icon-type="svg" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.17 1.6 5.99L0 24l6.18-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.21-1.25-6.22-3.48-8.52zM12 22c-1.85 0-3.66-.5-5.24-1.44l-.37-.22-3.87 1.01 1.04-3.77-.24-.39A9.93 9.93 0 0 1 2 12C2 6.48 6.48 2 12 2c2.67 0 5.18 1.04 7.07 2.93A9.93 9.93 0 0 1 22 12c0 5.52-4.48 10-10 10zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.09 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.89.12.58-.09 1.76-.72 2.01-1.41.25-.69.25-1.28.17-1.41-.07-.12-.27-.19-.57-.34z" fill="currentColor"></path>
+              </svg>
+            </span>
+            <span>שלח הודעה בוואטסאפ</span>
+          </a>
+          </p><p class="ccf-wa-hint">אפשר להתחיל גם בלי קורות חיים</p>
+        </div>
+
+        <!-- Left side: form -->
+        <div class="ccf-form-col" data-grid-item-index="1">
+          <h3 class="ccf-form-title">השאר פרטים ונחזור אליך</h3>
+          <form class="contact-form ccf-form" novalidate="">
+
+            <div class="ccf-field">
+              <label class="ccf-field-label" for="ccf-name">שם מלא</label>
+              <input class="ccf-input" type="text" id="ccf-name" name="full_name" placeholder="ישראל ישראלי" required="">
+            </div>
+
+            <div class="ccf-field">
+              <label class="ccf-field-label" for="ccf-phone">טלפון</label>
+              <input class="ccf-input" type="tel" id="ccf-phone" name="phone" placeholder="05X-XXXXXXX" required="">
+            </div>
+
+            <div class="ccf-field">
+              <label class="ccf-field-label" for="ccf-area">אזור מגורים</label>
+              <input class="ccf-input" type="text" id="ccf-area" name="area" placeholder="לדוגמה: תל אביב, חיפה, ירושלים" required="">
+            </div>
+
+            <div class="privacy-consent ccf-consent">
+              <label class="privacy-consent-label">
+                <input type="checkbox" name="privacy_consent" class="privacy-consent-checkbox" required="">
+                <span>קראתי ואני מסכים/ה ל<a href="/terms" target="_blank">תנאי השימוש</a> ול<a href="/privacy" target="_blank">מדיניות הפרטיות</a></span>
+              </label>
+            </div>
+
+            <button type="submit" class="ccf-submit-btn" data-element-type="button" data-element-id="btn-1775152897635-npburcirg" data-native-element="true">שלח — אנחנו נחזור אליך</button>
+
+          </form>
+
+          <div class="ccf-reassurance-row">
+            <span class="ccf-reassurance-item">חזרה מהירה</span>
+            <span class="ccf-dot" aria-hidden="true">·</span>
+            <span class="ccf-reassurance-item">ללא עלות</span>
+            <span class="ccf-dot" aria-hidden="true">·</span>
+            <span class="ccf-reassurance-item">שיחה קצרה ופשוטה</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="careers-values-section" data-layout-spec="משרות פתוחות והשמה למחפשי עבודה-values" dir="rtl">
+  <div class="careers-values-container">
+    <div class="careers-values-intro">
+      <h2 class="careers-values-heading">למה לבחור בנו למציאת עבודה?</h2>
+      <p class="careers-values-subtext">ב"התאמה חכמה" אנחנו לא רק מוצאים לך עבודה — אנחנו מלווים אותך לאורך כל הדרך. מהרגע הראשון ועד לקליטה מלאה במקום העבודה, אנחנו כאן בשבילך עם שירות אישי, תנאים הוגנים וגישה לתפקידים מהטובים בשוק.</p>
+    </div>
+    <div class="careers-values-band">
+      <div class="careers-values-grid">
+        <article class="careers-values-card">
+          <div class="careers-values-card-accent"></div>
+          <div class="careers-values-icon-wrap">
+            <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              <path d="M21 21v-2a4 4 0 0 0-3-3.87"></path>
+            </svg>
+          </div>
+          <div class="careers-values-card-body">
+            <h3 class="careers-values-card-title">ליווי אישי לאורך כל הדרך</h3>
+            <p class="careers-values-card-text">אנחנו מאמינים בגישה אנושית ואישית. יועץ גיוס ייעודי ילווה אותך מהרגע הראשון, יעזור לך להתכונן לראיון, ויהיה זמין לשאלות ולתמיכה גם לאחר הקליטה.</p>
+          </div>
+        </article>
+        <article class="careers-values-card">
+          <div class="careers-values-card-accent"></div>
+          <div class="careers-values-icon-wrap">
+            <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+              <line x1="2" y1="10" x2="22" y2="10"></line>
+              <path d="M7 15h2"></path>
+              <path d="M11 15h4"></path>
+            </svg>
+          </div>
+          <div class="careers-values-card-body">
+            <h3 class="careers-values-card-title">שכר הוגן וזכויות מלאות מהיום הראשון</h3>
+            <p class="careers-values-card-text">אצלנו שקיפות היא ערך מרכזי. תקבל שכר מדויק ובזמן, יחד עם כל הזכויות הסוציאליות המגיעות לך — ביטוח לאומי, דמי הבראה, ימי מחלה וחופשה — כבר מרגע תחילת העסקה.</p>
+          </div>
+        </article>
+        <article class="careers-values-card">
+          <div class="careers-values-card-accent"></div>
+          <div class="careers-values-icon-wrap">
+            <svg data-element-type="icon" data-icon-type="svg" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+              <path d="M8 21h8"></path>
+              <path d="M12 17v4"></path>
+              <path d="M7 8h4"></path>
+              <path d="M7 12h10"></path>
+            </svg>
+          </div>
+          <div class="careers-values-card-body">
+            <h3 class="careers-values-card-title">גישה לתפקידים מובילים בשוק</h3>
+            <p class="careers-values-card-text">הפורטפוליו שלנו כולל מאות משרות פתוחות בתעשייה, לוגיסטיקה ומשרדים בחברות המובילות בישראל. בין אם אתה מחפש עבודה ראשונה, שינוי כיוון או קידום — יש לנו את ההזדמנות הנכונה בשבילך.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="careers-faq-section" data-layout-spec="משרות פתוחות והשמה למחפשי עבודה-faq" dir="rtl" id="zappy-section-5">
+  <div class="careers-faq-container">
+
+    <div class="careers-faq-header">
+      <h2 class="careers-faq-title">שאלות נפוצות</h2>
+      <p class="careers-faq-subtitle">כל מה שרצית לדעת לפני שמתחילים — תשובות ברורות, ישירות ומהירות.</p>
+    </div>
+
+    <div class="careers-faq-accent-line" aria-hidden="true"></div>
+
+    <div class="careers-faq-list">
+
+      <article class="careers-faq-item" data-grid-item-index="0">
+        <h3 class="careers-faq-question" style="cursor: pointer;" aria-expanded="false">האם השירות עולה כסף למחפשי עבודה?</h3>
+        <p class="careers-faq-answer" style="max-height: 0px; overflow: hidden; opacity: 0; transition: max-height 0.35s, opacity 0.25s, padding 0.25s; padding-top: 0px; padding-bottom: 0px;">השירות שלנו <strong>חינמי לחלוטין עבור מחפשי עבודה</strong>. אנחנו גובים את שכרנו מהמעסיקים בלבד— כך שאתם מקבלים ליווי מקצועי, ייעוץ אישי וגישה למשרות איכותיות, ללא עלות וללא התחייבות.</p>
+      </article>
+
+      <div class="careers-faq-divider" aria-hidden="true"></div>
+
+      <article class="careers-faq-item" data-grid-item-index="2">
+        <h3 class="careers-faq-question" style="cursor: pointer;" aria-expanded="false">כמה זמן לוקח עד לקבל מענה אחרי שליחת קורות חיים?</h3>
+        <p class="careers-faq-answer" style="max-height: 0px; overflow: hidden; opacity: 0; transition: max-height 0.35s, opacity 0.25s, padding 0.25s; padding-top: 0px; padding-bottom: 0px;">אנחנו מתחייבים לחזור אליכם תוך <strong>עד 3 ימי עסקים</strong> מרגע קבלת פנייתכם.<br>&nbsp;במקרים רבים המענה מגיע מהר יותר בייחוד כשיש משרות פתוחות המתאימות לפרופיל שלכם.</p>
+      </article>
+
+      <div class="careers-faq-divider" aria-hidden="true"></div>
+
+      <article class="careers-faq-item" data-grid-item-index="4">
+        <h3 class="careers-faq-question" style="cursor: pointer;" aria-expanded="false">האם יש משרות גם ללא ניסיון קודם?</h3>
+        <p class="careers-faq-answer" style="max-height: 0px; overflow: hidden; opacity: 0; transition: max-height 0.35s, opacity 0.25s, padding 0.25s; padding-top: 0px; padding-bottom: 0px;">בהחלט. חלק ניכר מהמשרות שלנו בתחומי התעשייה, הלוגיסטיקה והאחסנה <strong>אינן דורשות ניסיון מוקדם</strong>. אנחנו מאמינים בפוטנציאל האישי ומסייעים לאנשים להיכנס לשוק העבודה גם בפעם הראשונה.</p>
+      </article>
+
+      <div class="careers-faq-divider" aria-hidden="true"></div>
+
+      <article class="careers-faq-item" data-grid-item-index="6">
+        <h3 class="careers-faq-question" style="cursor: pointer;" aria-expanded="false">באילו תחומים אתם מתמחים בגיוס?</h3>
+        <p class="careers-faq-answer" style="max-height: 0px; overflow: hidden; opacity: 0; transition: max-height 0.35s, opacity 0.25s, padding 0.25s; padding-top: 0px; padding-bottom: 0px;">אנחנו מתמחים בגיוס לתחומי <strong>ייצור ותעשייה, לוגיסטיקה ומחסנאות, עבודות כפיים ותחזוקה, וכן תפקידי משרד ואדמיניסטרציה</strong>. אנחנו מחברים בין עובדים ישראלים וזרים לבין חברות מובילות בכל הארץ.</p>
+      </article>
+
+      <div class="careers-faq-divider" aria-hidden="true"></div>
+
+      <article class="careers-faq-item active" data-grid-item-index="8">
+        <h3 class="careers-faq-question" style="cursor: pointer;" aria-expanded="true">מה קורה אם לא מצאתי משרה מתאימה ברשימה?</h3>
+        <p class="careers-faq-answer" style="max-height: 54px; overflow: hidden; opacity: 1; transition: max-height 0.35s, opacity 0.25s, padding 0.25s;">הרשימה מתעדכנת באופן שוטף, אך לא תמיד כל המשרות מפורסמות. <strong>פנו אלינו ישירות</strong> עם קורות החיים שלכם ונעשה כל מאמץ למצוא עבורכם הזדמנות מתאימה גם אם אינה מופיעה באתר כרגע.</p>
+      </article>
+
+    </div>
+
+    <div class="careers-faq-cta-row">
+      <span class="careers-faq-cta-text">לא מצאתם משרה מתאימה?</span>
+      <a href="/contact" class="careers-faq-cta-link">דברו איתנו <i class="fa-solid fa-arrow-left" aria-hidden="true" data-element-type="icon" data-element-id="icon-1775152648508-ojeouzd5r" data-icon-type="fontawesome"></i></a>
+    </div>
+
+  </div>
+</section></main>
+  
+  <footer class="site-footer" dir="rtl">
+  <div class="footer-main">
+    <div class="footer-container">
+      <div class="footer-grid">
+
+        <!-- Column 1: Company Info -->
+        <div class="footer-col footer-col--brand">
+          <div class="footer-logo-wrap">
+            <img src="/assets/logo.webp" alt="התאמה חכמה בע" מ"="" class="logo">
+          </div>
+          <p class="footer-tagline">מחברים בין כישרון לאפשרות.<br>פתרונות גיוס והשמה חכמים לעסקים ולמועמדים.</p>
+          <div class="footer-social">
+            <a href="https://facebook.com/profile.php?id=61581803822923" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/smartstaff4" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/972537373535" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-col">
+          <h3 class="footer-heading">
+            <span class="footer-heading-accent"></span>
+            ניווט מהיר
+          </h3>
+          <ul class="footer-links">
+            <li><a href="/services"><i class="fas fa-chevron-left footer-link-icon"></i>שירותים</a></li>
+            <li><a href="/about"><i class="fas fa-chevron-left footer-link-icon"></i>אודות</a></li>
+            <li><a href="/contact"><i class="fas fa-chevron-left footer-link-icon"></i>צור קשר</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Contact Info -->
+        <div class="footer-col">
+          <h3 class="footer-heading">
+            <span class="footer-heading-accent"></span>
+            יצירת קשר
+          </h3>
+          <ul class="footer-contact">
+            <li>
+              <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+              <span class="contact-text"><a href="mailto:info@s-staff.co.il">info@s-staff.co.il</a></span>
+            </li>
+            <li>
+              <span class="contact-icon"><i class="fas fa-phone"></i></span>
+              <span class="contact-text"><a href="tel:053-737-35-35">053-737-35-35</a></span>
+            </li>
+            <li><a href="/"><span class="contact-icon"><i class="fas fa-map-marker-alt" style="cursor: pointer;"></i></span>
+              <span class="contact-text">פתח תקוה 5, נתניה, ישראל</span></a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: CTA Panel -->
+        <div class="footer-col footer-col--cta">
+          <h3 class="footer-heading">
+            <span class="footer-heading-accent"></span>
+            מחפשים עובדים?
+          </h3>
+          <p class="footer-cta-text">נשמח לעזור לכם למצוא את המועמד המושלם לתפקיד.</p>
+          <a href="/contact" class="footer-cta-btn">דברו איתנו</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <div class="footer-bottom-inner">
+        <p class="footer-copyright">© 2026 התאמה חכמה בע"מ. כל הזכויות שמורות.</p>
+        <div class="footer-legal">
+          <a href="/privacy">מדיניות פרטיות</a>
+          <span class="footer-legal-sep"></span>
+          <a href="/terms">תנאי שימוש</a>
+          <span class="footer-legal-sep"></span>
+          <a href="/accessibility">נגישות</a>
+          <span class="footer-legal-sep"></span>
+          <a href="https://zappy5.com" target="_blank" class="zappy-attribution">נוצר באמצעות Zappy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  <a href="https://wa.me/972537373535" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <div data-integration="accessibility:toolbar"></div>
+
+    <script src="/script.js"></script>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+
+    <script id="zappy-navbar-scroll-effect">
+    (function(){
+      var nb=document.querySelector('nav.navbar,.navbar:not(.zappy-catalog-menu)');
+      var cm=document.querySelector('.zappy-catalog-menu,#zappy-catalog-menu');
+      if(!nb)return;
+      var fb='rgba(255,255,255,0.85)';
+      var th=60;
+      var rs=getComputedStyle(document.documentElement);
+      var td=rs.getPropertyValue('--text-dark').trim()||'#1a1a1a';
+      var tl=rs.getPropertyValue('--text-light').trim()||'#ffffff';
+      var st=true?td:tl;
+      nb.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease,box-shadow 0.3s ease';
+      if(cm)cm.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease';
+      var neSel='a,.navbar-brand,.navbar-brand a,.dropdown-toggle,.mobile-toggle,.phone-header-btn,.mobile-hamburger-btn,.mobile-close-btn,.mobile-submenu-toggle,.nav-link';
+      var skipCls=['cart-link','login-link','nav-search-toggle','search-toggle'];
+      function sTC(c,clr){var els=c.querySelectorAll(neSel);for(var i=0;i<els.length;i++){var sk=false;if(els[i].closest('.sub-menu')||els[i].closest('.dropdown-menu')){sk=true;}for(var j=0;j<skipCls.length;j++){if(els[i].classList.contains(skipCls[j])){sk=true;break;}}if(!sk)els[i].style.setProperty('color',clr,'important');}}
+      function cTC(c){var els=c.querySelectorAll(neSel);for(var i=0;i<els.length;i++){if(els[i].closest('.sub-menu')||els[i].closest('.dropdown-menu'))continue;els[i].style.removeProperty('color');}}
+      function applyScrolled(){
+        nb.classList.add('scrolled');
+        if(window.innerWidth>768){
+          nb.style.setProperty('--frosted-text',st);
+          nb.style.setProperty('background-image','none','important');
+          nb.style.setProperty('background-color',fb,'important');
+          nb.style.backdropFilter='blur(12px)';nb.style.webkitBackdropFilter='blur(12px)';nb.style.boxShadow='0 2px 16px rgba(0,0,0,0.12)';
+          sTC(nb,st);
+        }
+        if(cm){cm.classList.add('scrolled');if(window.innerWidth>768){cm.style.setProperty('background',fb,'important');cm.style.setProperty('backdrop-filter','blur(12px)','important');cm.style.setProperty('-webkit-backdrop-filter','blur(12px)','important');sTC(cm,st);}}
+      }
+      function onS(){
+        if(window._zappyNavNoDarkHero) return;
+        if(window.innerWidth<=768){nb.classList.remove('scrolled');cTC(nb);if(cm){cm.classList.remove('scrolled');cTC(cm);}return;}
+        var y=window.scrollY||window.pageYOffset;
+        if(y>th){
+          nb.classList.add('scrolled');nb.style.setProperty('background-color',fb,'important');nb.style.setProperty('background-image','none','important');
+          nb.style.setProperty('--frosted-text',st);nb.style.backdropFilter='blur(12px)';nb.style.webkitBackdropFilter='blur(12px)';nb.style.boxShadow='0 2px 16px rgba(0,0,0,0.12)';
+          sTC(nb,st);
+          if(cm){cm.classList.add('scrolled');cm.style.setProperty('background',fb,'important');cm.style.setProperty('backdrop-filter','blur(12px)','important');cm.style.setProperty('-webkit-backdrop-filter','blur(12px)','important');sTC(cm,st);}
+        }else{
+          nb.classList.remove('scrolled');nb.style.setProperty('background-color','transparent','important');nb.style.removeProperty('background-image');
+          nb.style.removeProperty('--frosted-text');nb.style.backdropFilter='none';nb.style.webkitBackdropFilter='none';nb.style.boxShadow='none';
+          cTC(nb);
+          if(cm){cm.classList.remove('scrolled');cm.style.setProperty('background','transparent','important');cm.style.setProperty('backdrop-filter','none','important');cm.style.setProperty('-webkit-backdrop-filter','none','important');cTC(cm);}
+        }
+      }
+      function sLum(rv,gv,bv){rv/=255;gv/=255;bv/=255;rv=rv<=0.03928?rv/12.92:Math.pow((rv+0.055)/1.055,2.4);gv=gv<=0.03928?gv/12.92:Math.pow((gv+0.055)/1.055,2.4);bv=bv<=0.03928?bv/12.92:Math.pow((bv+0.055)/1.055,2.4);return 0.2126*rv+0.7152*gv+0.0722*bv;}
+      window.addEventListener('scroll',onS,{passive:true});
+      window.addEventListener('resize',onS,{passive:true});
+      onS();
+      var heroEl=document.querySelector('section[class*="hero"],[data-hero-type],main>section:first-child');
+      var hasDH=false;
+      if(heroEl){var hCs=getComputedStyle(heroEl);var hBI=hCs.backgroundImage;if(hBI&&hBI!=='none'){if(hBI.indexOf('url(')!==-1){var hM2=hCs.backgroundColor.match(/\d+/g);if(hM2&&hM2.length>=3){hasDH=sLum(parseInt(hM2[0]),parseInt(hM2[1]),parseInt(hM2[2]))<0.4;}else{hasDH=true;}}else if(hBI.indexOf('gradient')!==-1){var cM=hBI.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g);if(cM&&cM.length>0){var tLm=0;for(var ci=0;ci<cM.length;ci++){var pts=cM[ci].match(/\d+/g);tLm+=sLum(parseInt(pts[0]),parseInt(pts[1]),parseInt(pts[2]));}hasDH=(tLm/cM.length)<0.4;}else{hasDH=true;}}else{hasDH=true;}}else{var hM=hCs.backgroundColor.match(/\d+/g);if(hM&&hM.length>=3){hasDH=sLum(parseInt(hM[0]),parseInt(hM[1]),parseInt(hM[2]))<0.4;}}}
+      if(!hasDH){window.removeEventListener('scroll',onS);window.removeEventListener('resize',onS);applyScrolled();window._zappyNavNoDarkHero=true;}
+    })();
+    </script>
+
+    <script id="zappy-mobile-lang-menu-script">
+    (function() {
+      function initMobileLangMenu() {
+        if (window.innerWidth > 768) {
+          var existingMenu = document.querySelector('.mobile-lang-menu');
+          if (existingMenu) existingMenu.remove();
+          return;
+        }
+        if (document.querySelector('.mobile-lang-menu')) return;
+        var switcher = document.querySelector('.lang-switcher');
+        if (!switcher) return;
+        var dropdown = switcher.querySelector('.lang-switcher-dropdown');
+        if (!dropdown) return;
+        var options = dropdown.querySelectorAll('.lang-option');
+        if (options.length === 0) return;
+        var navMenu = document.getElementById('navMenu') || document.querySelector('.nav-menu') || document.querySelector('nav ul');
+        if (!navMenu) return;
+        var currentLang = document.documentElement.lang || 'en';
+        var langConfigs = {
+          he: {name:'עברית',flag:'https://api.iconify.design/circle-flags/il.svg'},
+          en: {name:'English',flag:'https://api.iconify.design/circle-flags/us.svg'},
+          ar: {name:'العربية',flag:'https://api.iconify.design/circle-flags/sa.svg'},
+          fr: {name:'Français',flag:'https://api.iconify.design/circle-flags/fr.svg'},
+          es: {name:'Español',flag:'https://api.iconify.design/circle-flags/es.svg'},
+          de: {name:'Deutsch',flag:'https://api.iconify.design/circle-flags/de.svg'},
+          ru: {name:'Русский',flag:'https://api.iconify.design/circle-flags/ru.svg'},
+          zh: {name:'中文',flag:'https://api.iconify.design/circle-flags/cn.svg'},
+          ja: {name:'日本語',flag:'https://api.iconify.design/circle-flags/jp.svg'},
+          pt: {name:'Português',flag:'https://api.iconify.design/circle-flags/br.svg'},
+          it: {name:'Italiano',flag:'https://api.iconify.design/circle-flags/it.svg'},
+          ko: {name:'한국어',flag:'https://api.iconify.design/circle-flags/kr.svg'}
+        };
+        var container = document.createElement('div');
+        container.className = 'mobile-lang-menu';
+        var currentConfig = langConfigs[currentLang] || {name:currentLang,flag:''};
+        var toggleBtn = document.createElement('button');
+        toggleBtn.className = 'mobile-lang-toggle';
+        toggleBtn.type = 'button';
+        var currentFlagHtml = currentConfig.flag ? '<img src="' + currentConfig.flag + '" width="20" height="20" alt="" style="border-radius:50%;margin-right:8px;margin-left:8px;">' : '';
+        toggleBtn.innerHTML = currentFlagHtml + currentConfig.name;
+        container.appendChild(toggleBtn);
+        var optionsDiv = document.createElement('div');
+        optionsDiv.className = 'mobile-lang-options';
+        var currentLink = document.createElement('a');
+        currentLink.className = 'mobile-lang-option active';
+        currentLink.href = '#';
+        currentLink.innerHTML = currentFlagHtml + currentConfig.name;
+        optionsDiv.appendChild(currentLink);
+        options.forEach(function(opt) {
+          var link = document.createElement('a');
+          link.className = 'mobile-lang-option';
+          link.href = opt.getAttribute('href');
+          link.innerHTML = opt.innerHTML;
+          optionsDiv.appendChild(link);
+        });
+        container.appendChild(optionsDiv);
+        navMenu.appendChild(container);
+        toggleBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleBtn.classList.toggle('expanded');
+          optionsDiv.classList.toggle('expanded');
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileLangMenu); }
+      else { initMobileLangMenu(); }
+      window.addEventListener('resize', function() { clearTimeout(window._mlrt); window._mlrt = setTimeout(initMobileLangMenu, 250); });
+    })();
+    </script>
+</body>
+</html>
