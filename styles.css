@@ -9000,6 +9000,22 @@ body.accessibility-widget-visible ._access-menu {
   flex-shrink: 0 !important;
 }
 
+.services-overview-section .sov-features-list {
+  gap: 6px !important;
+}
+
+.services-overview-section .sov-feature-item {
+  align-items: center !important;
+}
+
+.services-overview-section .sov-feature-text {
+  padding-top: 0 !important;
+}
+
+.services-overview-section .sov-feature-text br {
+  display: none !important;
+}
+
 /* ========== RTL MOBILE NAVBAR FIX (zappy-rtl-mobile-fix) ========== */
 /* High-specificity rules to ensure RTL positioning wins over any [lang="en"] conflicts */
 /* For RTL sites: hamburger on RIGHT, phone on LEFT (mirror of LTR layout) */
