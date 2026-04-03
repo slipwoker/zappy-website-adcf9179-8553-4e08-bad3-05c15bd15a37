@@ -1575,7 +1575,7 @@
 
 
 
-<section class="services-overview-section" data-layout-spec="שירותים-overview" dir="rtl" data-zappy-section="true" id="zappy-section-0-dup-1775201885990">
+<section class="services-overview-section" data-layout-spec="שירותים-overview" dir="rtl" data-zappy-section="true" id="zappy-section-0-dup-1775201885990" style="opacity: 1;">
   <!-- Background decorative elements -->
   <div class="sov-bg-glow sov-bg-glow--top" aria-hidden="true"></div>
   <div class="sov-bg-glow sov-bg-glow--bottom" aria-hidden="true"></div>
@@ -1639,8 +1639,8 @@
 
         <!-- CTA Buttons -->
         <div class="sov-cta-row">
-          <a href="/contact" class="btn-primary sov-btn-primary">צרו קשר עכשיו</a>
-          <a href="/services" class="btn-secondary sov-btn-secondary">לכל השירותים ←</a>
+          <a href="/contact" class="btn-primary sov-btn-primary" data-element-type="button" data-element-id="btn-1775202936198-gzrm2vz2k" data-native-element="true">צרו קשר עכשיו</a>
+          <a href="/services" class="btn-secondary sov-btn-secondary" data-element-type="button" data-element-id="btn-1775202936198-y3sf7dkpz" data-native-element="true">לכל השירותים ←</a>
         </div>
       </div>
 
@@ -1649,7 +1649,7 @@
         <!-- Image card -->
         <div class="sov-image-card">
           <div class="sov-image-wrapper">
-            <img alt="מרכז פעילות התאמה חכמה - ניהול כוח אדם מתקדם" class="sov-main-image" data-placeholder="services-overview-image-1" data-context="Premium Israeli staffing agency office scene: a modern glass-walled command center with large monitors showing workforce dashboards, navy blue and turquoise color scheme, professional HR team working at sleek desks, industrial and logistics imagery on screens, high-end corporate atmosphere, dramatic lighting, photorealistic" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            <div data-zappy-zoom-wrapper="true" data-element-id="img-1775202936200-vjt64zxt4" data-element-type="image" data-zappy-zoom-wrapper-width="568px" data-zappy-zoom-wrapper-height="381px" data-zappy-zoom-wrapper-width-mode="px" data-zappy-zoom-clip="true" data-zappy-wrapper-margins-applied="true" style="position: relative !important; overflow: hidden !important; width: 568px !important; max-width: 100% !important; margin-left: auto !important; margin-right: auto !important; height: 381px !important; display: block !important;"><img alt="מרכז פעילות התאמה חכמה - ניהול כוח אדם מתקדם" class="sov-main-image zappy-editable-image" data-placeholder="services-overview-image-1" data-context="Premium Israeli staffing agency office scene: a modern glass-walled command center with large monitors showing workforce dashboards, navy blue and turquoise color scheme, professional HR team working at sleek desks, industrial and logistics imagery on screens, high-end corporate atmosphere, dramatic lighting, photorealistic" style="width: 164.391% !important; height: 140% !important; object-fit: cover !important; object-position: 50% 50% !important; max-width: none !important; display: block; margin-top: 0px !important; margin-bottom: 0px !important; position: absolute !important; left: -32.1953% !important; top: -20% !important; max-height: none !important" data-element-type="image" data-element-id="img-1775202936200-vjt64zxt4" data-resize-handler-attached="true" data-zappy-original-width="568" data-zappy-original-height="381" src="/assets/image-services-overview-image-1-1775203026480-ryg7qt.webp?v=1775203028331" data-zappy-object-position="50% 50%" data-zappy-zoom="1.4"></div>
             <div class="sov-image-overlay" aria-hidden="true"></div>
           </div>
 
@@ -2355,6 +2355,122 @@
       if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileLangMenu); }
       else { initMobileLangMenu(); }
       window.addEventListener('resize', function() { clearTimeout(window._mlrt); window._mlrt = setTimeout(initMobileLangMenu, 250); });
+    })();
+    </script>
+
+    <script>
+    (function(){
+      var _applied=false;
+      function fixDesktopWrappers(){
+        if(window.innerWidth<=768)return;
+        document.querySelectorAll('[data-zappy-zoom-wrapper="true"]').forEach(function(w){
+          var mode=w.getAttribute('data-zappy-zoom-wrapper-width-mode');
+          if(mode==='full'||mode==='grid-responsive')return;
+          var storedW=parseFloat(w.getAttribute('data-zappy-zoom-wrapper-width'));
+          if(!storedW||!isFinite(storedW))return;
+          var parent=w.parentElement;
+          if(!parent)return;
+          var parentW=parent.getBoundingClientRect().width;
+          if(parentW>0&&storedW<parentW*0.6&&storedW<=400){
+            var ratio=storedW/parseFloat(w.getAttribute('data-zappy-zoom-wrapper-height')||'1');
+            var newW=Math.round(Math.min(parentW,800));
+            var newH=Math.round(newW/ratio);
+            w.style.setProperty('width',newW+'px','important');
+            w.style.setProperty('height',newH+'px','important');
+          }
+        });
+      }
+      function applyMobile(){
+        if(_applied)return;_applied=true;
+        document.querySelectorAll('[data-zappy-zoom-wrapper="true"]').forEach(function(w){
+          var cw=w.style.getPropertyValue('width');
+          if(!cw||cw==='100%')return;
+          if(!w._zappyDesktop)w._zappyDesktop={wStyle:w.getAttribute('style')};
+          var img=w.querySelector('img');
+          if(!img)return;
+          if(!img._zappyDesktop)img._zappyDesktop={src:img.getAttribute('src'),style:img.getAttribute('style')};
+          var mobileZoom=parseFloat(img.getAttribute('data-zappy-mobile-zoom'));
+          var mobileSrc=img.getAttribute('data-zappy-mobile-src');
+          var mobilePos=img.getAttribute('data-zappy-mobile-object-position');
+          w.style.setProperty('width','100%','important');
+          w.style.setProperty('max-width','100%','important');
+          if(mobileSrc)img.src=mobileSrc;
+          var pos=mobilePos||img.style.getPropertyValue('object-position')||'50% 50%';
+          if(mobileZoom>1){
+            var wH=w.getAttribute('data-zappy-zoom-wrapper-height');
+            w.style.setProperty('height',wH||'200px','important');
+            img.style.setProperty('position','relative','important');
+            img.style.setProperty('width','100%','important');
+            img.style.setProperty('height','auto','important');
+            img.style.setProperty('min-height','100%','important');
+            img.style.setProperty('max-width','none','important');
+            img.style.setProperty('max-height','none','important');
+            img.style.setProperty('object-fit','cover','important');
+            img.style.setProperty('left','0','important');
+            img.style.setProperty('top','0','important');
+            img.style.setProperty('object-position',pos,'important');
+            img.style.setProperty('transform','scale('+mobileZoom+')','important');
+            img.style.setProperty('transform-origin',pos,'important');
+          }else{
+            w.style.setProperty('height','auto','important');
+            img.style.setProperty('position','relative','important');
+            img.style.setProperty('width','100%','important');
+            img.style.setProperty('height','auto','important');
+            img.style.setProperty('max-width','100%','important');
+            img.style.setProperty('max-height','400px','important');
+            img.style.setProperty('object-fit','cover','important');
+            img.style.setProperty('left','0','important');
+            img.style.setProperty('top','0','important');
+            img.style.setProperty('transform','none','important');
+            if(mobilePos)img.style.setProperty('object-position',pos,'important');
+          }
+        });
+        document.querySelectorAll('img[data-zappy-mobile-src],img[data-zappy-mobile-object-position],img[data-zappy-mobile-zoom]').forEach(function(img){
+          if(img.closest('[data-zappy-zoom-wrapper="true"]'))return;
+          if(!img._zappyDesktop)img._zappyDesktop={src:img.getAttribute('src'),style:img.getAttribute('style')};
+          var mobileSrc=img.getAttribute('data-zappy-mobile-src');
+          var mobilePos=img.getAttribute('data-zappy-mobile-object-position');
+          var mobileZoom=parseFloat(img.getAttribute('data-zappy-mobile-zoom'));
+          if(mobileSrc)img.src=mobileSrc;
+          if(mobilePos)img.style.setProperty('object-position',mobilePos,'important');
+          if(mobileZoom>1){
+            img.style.setProperty('transform','scale('+mobileZoom+')','important');
+            img.style.setProperty('transform-origin',mobilePos||'50% 50%','important');
+            var p=img.parentElement;
+            if(p)p.style.setProperty('overflow','hidden','important');
+          }
+        });
+      }
+      function revertDesktop(){
+        if(!_applied)return;_applied=false;
+        document.querySelectorAll('[data-zappy-zoom-wrapper="true"]').forEach(function(w){
+          if(w._zappyDesktop&&w._zappyDesktop.wStyle!=null){w.setAttribute('style',w._zappyDesktop.wStyle);}
+          var img=w.querySelector('img');
+          if(img&&img._zappyDesktop){
+            if(img._zappyDesktop.src!=null)img.setAttribute('src',img._zappyDesktop.src);
+            if(img._zappyDesktop.style!=null)img.setAttribute('style',img._zappyDesktop.style);
+            else img.removeAttribute('style');
+          }
+        });
+        document.querySelectorAll('img[data-zappy-mobile-src],img[data-zappy-mobile-object-position],img[data-zappy-mobile-zoom]').forEach(function(img){
+          if(img.closest('[data-zappy-zoom-wrapper="true"]'))return;
+          if(img._zappyDesktop){
+            if(img._zappyDesktop.src!=null)img.setAttribute('src',img._zappyDesktop.src);
+            if(img._zappyDesktop.style!=null)img.setAttribute('style',img._zappyDesktop.style);
+            else img.removeAttribute('style');
+          }
+        });
+        fixDesktopWrappers();
+      }
+      function init(){
+        var mq=window.matchMedia('(max-width:768px)');
+        function onChange(e){if(e.matches)applyMobile();else revertDesktop();}
+        if(mq.matches)applyMobile();
+        else fixDesktopWrappers();
+        try{mq.addEventListener('change',onChange);}catch(e){mq.addListener(onChange);}
+      }
+      if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
+      else setTimeout(init,50);
     })();
     </script>
 </body>
