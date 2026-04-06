@@ -1,51 +1,61 @@
-# Business — Generative Engine Optimization Map
+# התאמה חכמה בע"מ — Generative Engine Optimization Map
+
+> Premium Israeli staffing and placement agency called 'HaTamah Hachamah' (Smart Match), specializing in recruiting both Israeli and foreign workers for industrial, logistics, and office sectors. The brand projects authority and trustworthiness through a deep navy blue palette, while the vibrant turquoise accent conveys innovation and a modern tech-forward approach. The visual identity combines a luxury corporate aesthetic — think glass-walled offices — with industrial and logistics motifs, creating a dual appeal to high-end corporate clients and blue-collar industry employers alike.
 
 ---
 
 ## Pages
 
 ### חברת כוח אדם השמה — התאמה חכמה
-https://example.com
+https://hatamachakmabm.zappy5.app
 התאמה חכמה היא חברת כוח אדם השמה מובילה לתעשייה, לוגיסטיקה ומשרדים. אנו מחברים בין עובדים מיומנים למעסיקים מצליחים — בדיוק, במהירות ובאמינות. גלו את ההבדל.
 
 ### פתרונות גיוס שמניעים תוצאות — התאמה חכמה
-https://example.com/services
+https://hatamachakmabm.zappy5.app/services
 מגיוס עובדים זרים ועד השמה למשרדים ומפעלים — שירותי כוח האדם של התאמה חכמה מותאמים לצרכי העסק שלך. סוכנות כוח אדם לתעשייה עם ניסיון מוכח. בדקו את השירותים שלנו.
 
 ### משרות
-https://example.com/candidates
+https://hatamachakmabm.zappy5.app/candidates
 התאמה חכמה בע"מ - משרות פתוחות והשמה למחפשי עבודה
 
 ### הסיפור מאחורי ההתאמה המושלמת — התאמה חכמה
-https://example.com/about
+https://hatamachakmabm.zappy5.app/about
 אנחנו לא סתם חברת כוח אדם — אנחנו שותפים אסטרטגיים לצמיחה שלך. למדו על הערכים, הניסיון והחזון שהפכו את התאמה חכמה לשם דבר בגיוס עובדים לתעשייה ולמשרד.
 
 ### דברו איתנו — ההתאמה הנכונה מתחילה כאן — התאמה חכמה
-https://example.com/contact
+https://hatamachakmabm.zappy5.app/contact
 מחפשים עובדים מיומנים או מעוניינים להתקדם בקריירה? צרו קשר עם חברת כוח האדם וההשמה התאמה חכמה עוד היום. נחזור אליכם במהירות עם פתרון מותאם אישית בדיוק לצרכים שלכם.
 
 ## Legal & Policy
 
 ### Privacy Policy
-https://example.com/privacy
+https://hatamachakmabm.zappy5.app/privacy
 Information about how user data is collected, stored, and protected.
 
 ### Terms & Conditions
-https://example.com/terms
+https://hatamachakmabm.zappy5.app/terms
 Legal terms describing service usage, rights, and policies.
 
 ### Accessibility Statement
-https://example.com/accessibility
+https://hatamachakmabm.zappy5.app/accessibility
 Information about WCAG compliance and accessibility features.
 
 ---
 
 # Business Context (for LLM understanding)
 
-## About Business
+## About התאמה חכמה בע"מ
+Premium Israeli staffing and placement agency called 'HaTamah Hachamah' (Smart Match), specializing in recruiting both Israeli and foreign workers for industrial, logistics, and office sectors. The brand projects authority and trustworthiness through a deep navy blue palette, while the vibrant turquoise accent conveys innovation and a modern tech-forward approach. The visual identity combines a luxury corporate aesthetic — think glass-walled offices — with industrial and logistics motifs, creating a dual appeal to high-end corporate clients and blue-collar industry employers alike.
+
+## Target Audience
+עובדים ישראלים וזרים, מפעלים, חברות לוגיסטיקה ומשרדים
+
+## Industry
+כוח אדם, גיוס והשמה
+
 ---
 
 # Additional Resources
 
-- **Sitemap**: https://example.com/sitemap.xml
-- **Robots.txt**: https://example.com/robots.txt
+- **Sitemap**: https://hatamachakmabm.zappy5.app/sitemap.xml
+- **Robots.txt**: https://hatamachakmabm.zappy5.app/robots.txt
